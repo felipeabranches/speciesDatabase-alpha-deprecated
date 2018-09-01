@@ -19,7 +19,7 @@ else
 }
 
 $author = 'speciesDatabase';
-$site_name = 'Guia Ilustrado de Peixes da Serra do Cipó - MG';
+$site_name = 'speciesDatabase';
 $bootstrap_cdn = 0;
 $bootstrap_vsn = '4.1.3';
 $bootstrap_path = $base_url.'/libraries/bootstrap-'.$bootstrap_vsn.'-dist';
