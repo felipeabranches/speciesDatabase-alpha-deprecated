@@ -1,7 +1,7 @@
 <?php
 include_once 'init.php';
 include_once 'modules/taxa_tree.php';
-$page_title = 'Espécies';
+$page_title = 'Species';
 ?>
 <!doctype html>
 <html lang="pt">
@@ -21,39 +21,17 @@ $page_title = 'Espécies';
     <div class="row">
         <div class="col-12 col-md-8">
             <div class="my-3 p-3 bg-white rounded box-shadow">
-                <h5>Ordem Characiformes</h5>
-                <?php taxa_recursive_tree(1); ?>
-            </div>
-            <div class="my-3 p-3 bg-white rounded box-shadow">
-                <h5>Ordem Cyprinodontiformes</h5>
-                <?php taxa_recursive_tree(31); ?>
-            </div>
-            <div class="my-3 p-3 bg-white rounded box-shadow">
-                <h5>Ordem Gymnotiformes</h5>
-                <?php taxa_recursive_tree(2); ?>
-            </div>
-            <div class="my-3 p-3 bg-white rounded box-shadow">
-                <h5>Ordem Perciformes</h5>
-                <?php taxa_recursive_tree(3); ?>
-            </div>
-            <div class="my-3 p-3 bg-white rounded box-shadow">
-                <h5>Ordem Siluriformes</h5>
-                <?php taxa_recursive_tree(4); ?>
+                <?php
+                echo '<h5>Choose a title</h5>'; // complete with a title that match with your id
+		taxa_recursive_tree('id'); // complete with a disere id to be this list parent
+		?>
             </div>
             <?php mysqli_close($mysqli); ?>
         </div>
 
         <div class="col-12 col-md-4">
             <div class="my-3 p-3 bg-white rounded box-shadow">
-                <?php include_once 'modules/references.php'; ?>
-            </div>
-            
-            <div class="my-3 p-3 bg-white rounded box-shadow">
-                <?php include_once 'modules/captions.php'; ?>
-            </div>
-            
-            <div class="my-3 p-3 bg-white rounded box-shadow">
-                <?php include_once 'modules/abbreviations.php'; ?>
+                <?php include_once 'modules/your_custom_module.php'; ?>
             </div>
         </div>
     </div>
