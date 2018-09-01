@@ -74,8 +74,8 @@ if (isset($_POST['save']))
                 $id_taxonomist = array($id_taxonomist);
             }
             
-            $values = make_values($id_specie, $id_taxonomist);
-            echo make_values($id_specie, $id_taxonomist);
+            $values = map_values($id_specie, $id_taxonomist);
+            echo map_values($id_specie, $id_taxonomist);
             $sql .= "INSERT INTO sp_taxonomists_map (id_specie, id_taxonomist)
                     VALUES ".$values."";
                     */
@@ -122,8 +122,8 @@ if (isset($_POST['save']))
                 // Update sp_taxonomists_map
                 /*
                 $id_specie = $id;
-                $values = make_values($id_specie, $id_taxonomist);
-                echo make_values($id_specie, $id_taxonomist);
+                $values = map_values($id_specie, $id_taxonomist);
+                echo map_values($id_specie, $id_taxonomist);
                 $sql .= 'UPDATE sp_taxonomists_map
                         SET id_specie="'.$id_specie.'", ="'.$id_taxonomist.'"
                         ';
@@ -230,7 +230,7 @@ else
 /*
  *  Make the pairs of a single value with multiples values
  */
-function make_values($single, $multiples) {
+function map_values($single, $multiples) {
     $pairs = array();
 
     foreach ($multiples as $mult) {
