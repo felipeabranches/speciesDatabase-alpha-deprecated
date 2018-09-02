@@ -16,7 +16,6 @@ $page_count = 10;
 </head>
 
 <body class="bg-light">
-<?php include_once 'fields/fields.php'; ?>
 <?php include_once 'modules/menu.php'; ?>
 <div class="container-fluid" role="main">
     <div class="row my-2 p-2">
