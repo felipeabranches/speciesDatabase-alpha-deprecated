@@ -38,31 +38,7 @@ CREATE TABLE IF NOT EXISTS `camp_campaings` (
   `published` tinyint(1) NOT NULL DEFAULT '1',
   `id_ref` int(10) UNSIGNED NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
-
--- --------------------------------------------------------
-
---
--- Estrutura da tabela `camp_waypoints`
---
-
-DROP TABLE IF EXISTS `camp_waypoints`;
-CREATE TABLE IF NOT EXISTS `camp_waypoints` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) COLLATE utf8_bin NOT NULL,
-  `id_unit` int(10) UNSIGNED NOT NULL DEFAULT '0',
-  `place` varchar(255) COLLATE utf8_bin NOT NULL,
-  `latitude` decimal(11,7) NOT NULL,
-  `longitude` decimal(11,7) NOT NULL,
-  `date` date NOT NULL,
-  `entity` varchar(255) COLLATE utf8_bin NOT NULL,
-  `description` varchar(5120) COLLATE utf8_bin NOT NULL,
-  `note` varchar(255) COLLATE utf8_bin NOT NULL,
-  `image` varchar(255) COLLATE utf8_bin NOT NULL,
-  `published` tinyint(1) NOT NULL DEFAULT '1',
-  `id_ref` int(10) UNSIGNED NOT NULL DEFAULT '0',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 -- --------------------------------------------------------
 
@@ -86,7 +62,7 @@ CREATE TABLE IF NOT EXISTS `camp_tombs` (
   `published` tinyint(1) NOT NULL DEFAULT '1',
   `id_ref` int(10) UNSIGNED NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 -- --------------------------------------------------------
 
@@ -107,7 +83,7 @@ CREATE TABLE IF NOT EXISTS `camp_units` (
   `published` tinyint(1) NOT NULL DEFAULT '1',
   `id_ref` int(10) UNSIGNED NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 -- --------------------------------------------------------
 
@@ -126,7 +102,31 @@ CREATE TABLE IF NOT EXISTS `camp_units_types` (
   `published` tinyint(1) NOT NULL DEFAULT '1',
   `id_ref` int(10) UNSIGNED NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `camp_waypoints`
+--
+
+DROP TABLE IF EXISTS `camp_waypoints`;
+CREATE TABLE IF NOT EXISTS `camp_waypoints` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) COLLATE utf8_bin NOT NULL,
+  `id_unit` int(10) UNSIGNED NOT NULL DEFAULT '0',
+  `place` varchar(255) COLLATE utf8_bin NOT NULL,
+  `latitude` decimal(11,7) NOT NULL,
+  `longitude` decimal(11,7) NOT NULL,
+  `date` date NOT NULL,
+  `entity` varchar(255) COLLATE utf8_bin NOT NULL,
+  `description` varchar(5120) COLLATE utf8_bin NOT NULL,
+  `note` varchar(255) COLLATE utf8_bin NOT NULL,
+  `image` varchar(255) COLLATE utf8_bin NOT NULL,
+  `published` tinyint(1) NOT NULL DEFAULT '1',
+  `id_ref` int(10) UNSIGNED NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 -- --------------------------------------------------------
 
@@ -155,7 +155,7 @@ CREATE TABLE IF NOT EXISTS `sp_species` (
   `image` varchar(255) COLLATE utf8_bin NOT NULL,
   `published` tinyint(1) NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=67 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 -- --------------------------------------------------------
 
@@ -177,7 +177,7 @@ CREATE TABLE IF NOT EXISTS `sp_taxa` (
   `published` tinyint(1) NOT NULL DEFAULT '1',
   `id_ref` int(10) UNSIGNED NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=40 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 -- --------------------------------------------------------
 
@@ -196,7 +196,7 @@ CREATE TABLE IF NOT EXISTS `sp_taxa_types` (
   `published` tinyint(1) NOT NULL DEFAULT '1',
   `id_ref` int(10) UNSIGNED NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 -- --------------------------------------------------------
 
@@ -213,7 +213,7 @@ CREATE TABLE IF NOT EXISTS `sp_taxonomists` (
   `image` varchar(255) COLLATE utf8_bin NOT NULL,
   `published` tinyint(1) NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=43 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 -- --------------------------------------------------------
 
