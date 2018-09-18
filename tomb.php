@@ -22,10 +22,10 @@ $id = $_GET['id'];
         <div class="col-12 col-md-8">
             <div class="my-3 p-3 bg-white rounded box-shadow">
                 <?php
-                $sql = 'SELECT t.name AS tomb, t.entity AS determinator, t.date AS t_date, t.specie_count AS s_count, t.note AS note, s.date AS s_date, s.id_unit AS unit, s.name AS spot, s.place AS place, s.entity AS collector, s.latitude AS latitude, s.longitude AS longitude, sp.id AS spID, CONCAT(sp.gender, " ", sp.specie) AS nomenclature, c.name AS campaing
+                $sql = 'SELECT t.name AS tomb, t.entity AS determinator, t.date AS t_date, t.specie_count AS s_count, t.note AS note, s.date AS s_date, s.id_unit AS unit, s.name AS waypoint, s.place AS place, s.entity AS collector, s.latitude AS latitude, s.longitude AS longitude, sp.id AS spID, CONCAT(sp.genus, " ", sp.specie) AS nomenclature, c.name AS campaing
                         FROM camp_tombs AS t
-                        LEFT JOIN camp_spots AS s
-                            ON s.id = t.id_spot
+                        LEFT JOIN camp_waypoints AS s
+                            ON s.id = t.id_waypoint
                         LEFT JOIN sp_species AS sp
                             ON sp.id = t.id_specie
                         LEFT JOIN camp_campaings AS c

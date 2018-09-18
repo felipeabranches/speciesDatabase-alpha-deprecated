@@ -22,7 +22,7 @@ $page_title = 'Espécies';
             <div class="my-3 p-3 bg-white rounded box-shadow">
                 <h5>Peixes</h5>
                 <?php
-                $sql = 'SELECT sp.id AS id, CONCAT(sp.gender, " ", sp.specie) AS nomenclature, sp.year AS year, GROUP_CONCAT(tx.name) AS taxonomists
+                $sql = 'SELECT sp.id AS id, CONCAT(sp.genus, " ", sp.specie) AS nomenclature, sp.year AS year, GROUP_CONCAT(tx.name) AS taxonomists
                         FROM sp_taxonomists_map AS tx_map
                         LEFT JOIN sp_species AS sp
                             ON tx_map.id_specie = sp.id
@@ -31,7 +31,7 @@ $page_title = 'Espécies';
                         WHERE sp.published = 1
                             AND validate = 1
                         GROUP BY sp.id
-                        ORDER BY sp.gender, sp.specie
+                        ORDER BY sp.genus, sp.specie
                         ';
                 if($result=mysqli_query($mysqli,$sql))
                 {
