@@ -12,6 +12,9 @@
             <li class="nav-item">
                 <a class="nav-link" href="tombs_table.php">Tombamento DB</a>
             </li>
+            <li class="nav-item">
+                <a class="nav-link" href="waypoints.php">Waypoints</a>
+            </li>
         </ul>
         <ul class="navbar-nav">
             <li class="nav-item">
