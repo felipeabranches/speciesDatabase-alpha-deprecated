@@ -25,7 +25,7 @@ $id = $_GET['id'];
 if (isset($_POST['save']))
 {
     // get form data, making sure it is valid
-    $gender = mysqli_real_escape_string($mysqli, htmlspecialchars($_POST['gender']));
+    $genus = mysqli_real_escape_string($mysqli, htmlspecialchars($_POST['genus']));
     $specie = mysqli_real_escape_string($mysqli, htmlspecialchars($_POST['specie']));
     $incertae_sedis = mysqli_real_escape_string($mysqli, htmlspecialchars($_POST['incertae_sedis']));
     $dubious = mysqli_real_escape_string($mysqli, htmlspecialchars($_POST['dubious']));
@@ -45,20 +45,20 @@ if (isset($_POST['save']))
     $published = mysqli_real_escape_string($mysqli, htmlspecialchars($_POST['published']));
 
     // check to make sure both fields are entered
-    if ($gender == '' || $id_taxon == '')
+    if ($genus == '' || $id_taxon == '')
     {
         // generate error message
         $error = 'ERROR: Please fill in all required fields!';
 
         // if either field is blank, display the form again
-        renderForm ($id, $gender, $specie, $incertae_sedis, $dubious, $etymology, $common_name, $id_taxon, $id_taxonomist, $year, revised, $validate, $redirect, $habitat, $distribution, $description, $note, $image, $published, $error, $page_title);
+        renderForm ($id, $genus, $specie, $incertae_sedis, $dubious, $etymology, $common_name, $id_taxon, $id_taxonomist, $year, revised, $validate, $redirect, $habitat, $distribution, $description, $note, $image, $published, $error, $page_title);
     }
     else
     {
         if ($id == 0)
         {
-            $sql = "INSERT INTO sp_species (gender, specie, incertae_sedis, dubious, etymology, common_name, id_taxon, year, revised, validate, redirect, habitat, distribution, description, note, image, published)
-                    VALUES ('".$gender."', '".$specie."', '".$incertae_sedis."', '".$dubious."', '".$etymology."', '".$common_name."', '".$id_taxon."', '".$year."', '".$revised."', '".$validate."', '".$redirect."', '".$habitat."', '".$distribution."', '".$description."', '".$note."', '".$image."', '".$published."')"
+            $sql = "INSERT INTO sp_species (genus, specie, incertae_sedis, dubious, etymology, common_name, id_taxon, year, revised, validate, redirect, habitat, distribution, description, note, image, published)
+                    VALUES ('".$genus."', '".$specie."', '".$incertae_sedis."', '".$dubious."', '".$etymology."', '".$common_name."', '".$id_taxon."', '".$year."', '".$revised."', '".$validate."', '".$redirect."', '".$habitat."', '".$distribution."', '".$description."', '".$note."', '".$image."', '".$published."')"
                     ."\n";
 
             // New sp_taxonomists_map
@@ -115,7 +115,7 @@ if (isset($_POST['save']))
                 $id = $_POST['id'];
 
                 $sql = "UPDATE sp_species
-                        SET gender='".$gender."', specie='".$specie."', incertae_sedis='".$incertae_sedis."', dubious='".$dubious."', etymology='".$etymology."', common_name='".$common_name."', id_taxon='".$id_taxon."', year='".$year."', revised='".$revised."', validate='".$validate."', redirect='".$redirect."', habitat='".$habitat."', distribution='".$distribution."', description='".$description."', note='".$note."', image='".$image."', published='".$published."'
+                        SET genus='".$genus."', specie='".$specie."', incertae_sedis='".$incertae_sedis."', dubious='".$dubious."', etymology='".$etymology."', common_name='".$common_name."', id_taxon='".$id_taxon."', year='".$year."', revised='".$revised."', validate='".$validate."', redirect='".$redirect."', habitat='".$habitat."', distribution='".$distribution."', description='".$description."', note='".$note."', image='".$image."', published='".$published."'
                         WHERE id = ".$id
                         ."\n";
 
@@ -185,7 +185,7 @@ else
             if($row)
             {
                 // get data from db
-                $gender = $row['gender'];
+                $genus = $row['genus'];
                 $specie = $row['specie'];
                 $incertae_sedis = $row['incertae_sedis'];
                 $dubious = $row['dubious'];
@@ -204,7 +204,7 @@ else
                 $published = $row['published'];
 
                 // show form
-                renderForm ($id, $gender, $specie, $incertae_sedis, $dubious, $etymology, $common_name, $id_taxon, '', $year, $revised, $validate, $redirect, $habitat, $distribution, $description, $note, $image, $published, '', $page_title);
+                renderForm ($id, $genus, $specie, $incertae_sedis, $dubious, $etymology, $common_name, $id_taxon, '', $year, $revised, $validate, $redirect, $habitat, $distribution, $description, $note, $image, $published, '', $page_title);
             }
             else
             // if no match, display result
@@ -242,7 +242,7 @@ function map_values($single, $multiples) {
 /*
  *  Creates the record form (new or edit)
  */
-function renderForm ($id, $gender, $specie, $incertae_sedis, $dubious, $etymology, $common_name, $id_taxon, $id_taxonomist, $year, $revised,  $validate, $redirect, $habitat, $distribution, $description, $note, $image, $published, $error, $page_title)
+function renderForm ($id, $genus, $specie, $incertae_sedis, $dubious, $etymology, $common_name, $id_taxon, $id_taxonomist, $year, $revised,  $validate, $redirect, $habitat, $distribution, $description, $note, $image, $published, $error, $page_title)
 {
     if ($error != '')
     {
@@ -257,7 +257,7 @@ function renderForm ($id, $gender, $specie, $incertae_sedis, $dubious, $etymolog
             </div>
             <div class="col-12 col-md-2 text-right">
                 <button type="submit" name="save" class="btn btn-primary">Save</button>
-                <a href="sp_species.php" class="btn btn-outline-danger" role="button">Cancel</a>
+                <a href="sp_species.php?order_by=id" class="btn btn-outline-danger" role="button">Cancel</a>
             </div>
         </div>
         <div class="row">
@@ -266,7 +266,7 @@ function renderForm ($id, $gender, $specie, $incertae_sedis, $dubious, $etymolog
                     <h5>Classification</h5>
                     <div class="row">
                         <div class="col col-md-4">
-                            <?php field_text ('Gender', 'gender', $gender, 'Enter the Gender', 'required'); ?>
+                            <?php field_text ('Genus', 'genus', $genus, 'Enter the Genus', 'required'); ?>
                         </div>
                         <div class="col col-md-4">
                             <?php field_text ('Specie', 'specie', $specie, 'Enter the Specie', ''); ?>
@@ -315,7 +315,7 @@ function renderForm ($id, $gender, $specie, $incertae_sedis, $dubious, $etymolog
                     <?php field_textarea ('Habitat', 'habitat', $habitat, ''); ?>
                     <?php field_textarea ('Distribution', 'distribution', $distribution, ''); ?>
                     <?php field_toggle ('Validate', 'validate', array(1 => 'accepted', 0 => 'synonym'), 'sp_species', $id, 1, 0); ?>
-                    <?php field_selectDB ('Redirect', 'redirect', $id, 'CONCAT(gender, " ", specie)', 'sp_species', 'sp_species', 'id', '<option value="0">-- Choose --</option>', 0); ?>
+                    <?php field_selectDB ('Redirect', 'redirect', $id, 'CONCAT(genus, " ", specie)', 'sp_species', 'sp_species', 'id', '<option value="0">-- Choose --</option>', 0); ?>
                     <?php field_text ('Note', 'note', $note, 'Enter some notes...', ''); ?>
                 </div> 
             </div>

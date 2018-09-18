@@ -189,7 +189,7 @@ function renderForm ($id, $name, $id_parent, $id_type, $description, $note, $ima
     ?>
     <form action="" method="post">
         <?php if ($id) echo '<input type="hidden" name="id" value="'.$id.'" />'; ?>
-        <div class="row my-2 p-2">
+        <div class="toolbar sticky-top row my-2 p-2">
             <div class="col-12 col-md-10">
                 <h4><?php echo (!$id) ? 'New' : 'Edit'; ?> <?php echo $page_title; ?></h4>
             </div>
@@ -203,7 +203,7 @@ function renderForm ($id, $name, $id_parent, $id_type, $description, $note, $ima
                 <div class="my-3 p-3 bg-white rounded box-shadow">
                     <?php field_text ('Name', 'name', $name, 'Enter the Unit name', 'required'); ?>
                     <?php field_selectDB ('Parent', 'id_parent', $id_parent, 'name', 'camp_units', 'camp_units', 'id', '<option name="none" value="0">None</option>', 0); ?>
-                    <?php field_selectDB ('Type', 'id_type', $id_type, 'name', 'camp_units_types', 'camp_units', 'id', '<option>-- Chose --</option>', 0); ?>
+                    <?php field_selectDB ('Type', 'id_type', $id_type, 'name', 'camp_units_types', 'camp_units', 'id', '<option>-- Choose --</option>', 0); ?>
                 </div>
                 <div class="my-3 p-3 bg-white rounded box-shadow">
                     <?php field_textarea ('Description', 'description', $description, '', ''); ?>

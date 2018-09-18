@@ -197,7 +197,7 @@ function renderForm ($id, $name, $etymology, $id_parent, $id_type, $description,
             </div>
             <div class="col-12 col-md-2 text-right">
                 <button type="submit" name="save" class="btn btn-primary">Save</button>
-                <a href="sp_taxa.php" class="btn btn-outline-danger" role="button">Cancel</a>
+                <a href="sp_taxa.php?order_by=id" class="btn btn-outline-danger" role="button">Cancel</a>
             </div>
         </div>
         <div class="row">

@@ -185,7 +185,7 @@ function renderForm ($id, $name, $description, $note, $image, $published, $error
     ?>
     <form action="" method="post">
         <?php if ($id) echo '<input type="hidden" name="id" value="'.$id.'" />'; ?>
-        <div class="row my-2 p-2">
+        <div class="toolbar sticky-top row my-2 p-2">
             <div class="col-12 col-md-10">
                 <h4><?php echo (!$id) ? 'New' : 'Edit'; ?> <?php echo $page_title; ?></h4>
             </div>

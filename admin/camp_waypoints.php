@@ -19,7 +19,7 @@ $order_by = $_GET['order_by'];
 <body class="bg-light">
 <?php include_once 'modules/menu.php'; ?>
 <div class="container-fluid" role="main">
-    <div class="row my-2 p-2">
+    <div class="toolbar sticky-top row my-2 p-2">
         <div class="col-12 col-md-6">
             <h4><?php echo $page_title; ?></h4>
         </div>
@@ -57,7 +57,21 @@ $order_by = $_GET['order_by'];
 
     <div class="row">
         <div class="col-12">
-            <div class=" my-3 p-3 bg-white rounded box-shadow">
+            <div class="my-3 p-3 bg-white rounded box-shadow">
+                <?php
+                $sql = 'SELECT cs.id AS id, cs.name AS name, cs.latitude AS latitude, cs.longitude AS longitude, cs.date AS date, cs.published AS published
+                        FROM camp_waypoints AS cs
+                        ORDER BY cs.'.$order_by.'
+                        ';
+                $result = mysqli_query($mysqli, $sql);
+                if(!$result->num_rows)
+                {
+                    echo '<span>No entries</span>';
+                }
+                else
+                {
+                ?>
+                <!-- Table -->
                 <table class="table table-striped table-hover table-sm">
                     <tr width="100%">
                         <th width="5%"><a href="camp_waypoints.php?order_by=id">ID</a></th>
@@ -65,69 +79,55 @@ $order_by = $_GET['order_by'];
                         <th width="15%"><a href="camp_waypoints.php?order_by=latitude">Latitude</a></th>
                         <th width="15%"><a href="camp_waypoints.php?order_by=longitude">Longitude</a></th>
                         <th width="15%"><a href="camp_waypoints.php?order_by=date">Date</a></th>
-                        <th width="5%" colspan="2">State</th>
+                        <th width="5%" colspan="2"><a href="camp_waypoints.php?order_by=published">State</a></th>
                     </tr>
-                    <?php
-                    $sql = 'SELECT cs.id AS id, cs.name AS name, cs.latitude AS latitude, cs.longitude AS longitude, cs.date AS date, cs.published AS published
-                            FROM camp_spots AS cs
-                            ORDER BY cs.'.$order_by.'
-                            ';
-
-                    if ($result=mysqli_query ($mysqli,$sql))
+                <?php
+                    // Fetch one and one row
+                    while($row = mysqli_fetch_assoc($result))
                     {
-                        if ($result->num_rows)
+                        if($row['published'])
                         {
-                            // Fetch one and one row
-                            while ($row = mysqli_fetch_assoc ($result))
-                            {
-                                if ($row['published'])
-                                {
-                                    $published='<i class="fas fa-toggle-on"></i>';
-                                }
-                                else
-                                {
-                                    $published='<i class="fas fa-toggle-off"></i>';
-                                }
-                                echo '<tr>';
-                                echo '<td>'.$row['id'].'</td>';
-                                echo '<td><a href="camp_waypoint.php?id='.$row['id'].'">'.$row['name'].'</a></td>';
-                                echo '<td>'.$row['latitude'].'</td>';
-                                echo '<td>'.$row['longitude'].'</td>';
-                                echo '<td>'.$row['date'].'</td>';
-                                echo '<td>'.$published.'</td>';
-                                echo '<td><!--a data-toggle="modal" data-target="#modal-'.$row['id'].'"><i class="fas fa-trash-alt"></i></a--></td>';
-                                echo '</tr>';
-                                echo '<!-- Modal >
-                                    <div class="modal" id="modal-'.$row['id'].'" tabindex="-1" role="dialog">
-                                        <div class="modal-dialog" role="document">
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <h5 class="modal-title">Delete</h5>
-                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                        <span aria-hidden="true">&times;</span>
-                                                    </button>
-                                                </div>
-                                                <div class="modal-body">
-                                                    <p>Are you sure you want to delete <strong>'.$row['name'].'</strong> (ID: '.$row['id'].')?</p>
-                                                </div>
-                                                <div class="modal-footer">
-                                                    <a href="modules/camp_waypoints_delete.php?id='.$row['id'].'" class="btn btn-danger">Delete</a>
-                                                    <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div-->';
-                            }
-                            // Free result set
-                            mysqli_free_result ($result);
+                            $published='<i class="fas fa-toggle-on"></i>';
                         }
                         else
                         {
-                            echo '<tr><td colspan="4">No entries</td></tr>';
+                            $published='<i class="fas fa-toggle-off"></i>';
                         }
+                        echo '<tr>';
+                        echo '<td>'.$row['id'].'</td>';
+                        echo '<td><a href="camp_waypoint.php?id='.$row['id'].'">'.$row['name'].'</a></td>';
+                        echo '<td>'.$row['latitude'].'</td>';
+                        echo '<td>'.$row['longitude'].'</td>';
+                        echo '<td>'.$row['date'].'</td>';
+                        echo '<td>'.$published.'</td>';
+                        echo '<td><!--a data-toggle="modal" data-target="#modal-'.$row['id'].'"><i class="fas fa-trash-alt"></i></a--></td>';
+                        echo '</tr>';
+                        echo '<!-- Modal >
+                            <div class="modal" id="modal-'.$row['id'].'" tabindex="-1" role="dialog">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title">Delete</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <p>Are you sure you want to delete <strong>'.$row['name'].'</strong> (ID: '.$row['id'].')?</p>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <a href="modules/camp_waypoints_delete.php?id='.$row['id'].'" class="btn btn-danger">Delete</a>
+                                            <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div-->';
                     }
-                    ?>
+                    // Free result set
+                    mysqli_free_result ($result);
+                ?>
                 </table>
+                <?php } ?>
             </div>
         </div>
     </div>

@@ -2,6 +2,7 @@
 include_once '../init.php';
 $page_title = 'Taxa';
 $page_count = 10;
+$order_by = $_GET['order_by'];
 ?>
 <!doctype html>
 <html lang="pt">
@@ -16,7 +17,6 @@ $page_count = 10;
 </head>
 
 <body class="bg-light">
-<?php include_once 'fields/fields.php'; ?>
 <?php include_once 'modules/menu.php'; ?>
 <div class="container-fluid" role="main">
     <div class="toolbar sticky-top row my-2 p-2">
@@ -30,52 +30,30 @@ $page_count = 10;
 
     <div class="row">
         <div class="col-12">
-            <div class=" my-3 p-3 bg-white rounded box-shadow">
+            <div class="my-3 p-3 bg-white rounded box-shadow">
                 <?php
                 $sql = 'SELECT t.id AS id, t.name AS name, t.id_parent AS parent, tt.name AS type, t.published AS published
                         FROM sp_taxa AS t
                         INNER JOIN sp_taxa_types AS tt
                         ON tt.id = t.id_type
-                        ORDER BY t.id
+                        ORDER BY t.'.$order_by.'
                         ';
 
                 $result = mysqli_query ($mysqli, $sql);
-                if ($result->num_rows)
+                if (!$result->num_rows)
                 {
-                    // figure out the total pages in the database
-                    $total_results = mysqli_num_rows ($result);
-                    $total_pages = ceil ($total_results / $page_count);
-                    // check if the 'page' variable is set in the URL (ex: view-paginated.php?page=1)
-                    if (isset($_GET['page']) && is_numeric($_GET['page']))
-                    {
-                        $show_page = $_GET['page'];
-                        // make sure the $show_page value is valid
-                        if ($show_page > 0 && $show_page <= $total_pages)
-                        {
-                            $start = ($show_page -1) * $page_count;
-                            $end = $start + $page_count;
-                        }
-                        else
-                        {
-                            // error - show first set of results
-                            $start = 0;
-                            $end = $page_count;
-                        }
-                    }
-                    else
-                    {
-                        // if page isn't set, show first set of results
-                        $start = 0;
-                        $end = $page_count;
-                    }
+                    echo '<span>No entries</span>';
+                }
+                else
+                {
                 ?>
                 <!-- Table -->
                 <table class="table table-striped table-hover table-sm">
                     <tr width="100%">
-                        <th width="5%">ID</th>
-                        <th width="55%">Name</th>
-                        <th width="35%">Parent</th>
-                        <th width="5%" colspan="2">State</th>
+                        <th width="5%"><a href="sp_taxa.php?order_by=id">ID</a></th>
+                        <th width="55%"><a href="sp_taxa.php?order_by=name">Name</a></th>
+                        <th width="35%"><a href="sp_taxa.php?order_by=id_parent">Parent</a></th>
+                        <th width="5%" colspan="2"><a href="sp_taxa.php?order_by=published">State</a></th>
                     </tr>
                 <?php
                     // Fetch one and one row
@@ -117,31 +95,11 @@ $page_count = 10;
                                 </div>
                             </div>';
                     }
-                }
-                else
-                {
-                    echo '<tr><td colspan="5">No entries</td></tr>';
-                }
+                    // Free result set
+                    mysqli_free_result ($result);
                 ?>
                 </table>
-
-                <!-- Pagination >
-                <nav aria-label="<?php echo $page_title; ?> results pages">
-                    <ul class="pagination">
-                    <?php
-                    for ($i = 1; $i <= $total_pages; $i++)
-                    {
-                        $disabled = ($_GET['page'] == $i) ? ' disabled' : '';
-                        echo '<li class="page-item'.$disabled.'"><a class="page-link" href="sp_taxa.php?page='.$i.'">'.$i.'</a></li>'."\n";
-                    }
-                    ?>
-                    </ul>
-                </nav-->
-
-                <?php
-                // Free result set
-                mysqli_free_result ($result);
-                ?>
+                <?php } ?>
             </div>
         </div>
     </div>
