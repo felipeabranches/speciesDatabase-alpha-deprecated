@@ -2,7 +2,7 @@
 -- Changes in `camp_campaings`
 --
 # Add "date" in YYYYMMDD format
-
+ALTER TABLE `camp_campaings` ADD `date` DATE NOT NULL AFTER `name`;
 # Drop "id_ref"
 ALTER TABLE `camp_campaings` DROP `id_ref`;
 
@@ -22,15 +22,15 @@ ALTER TABLE `camp_tombs` DROP `id_ref`;
 # Change "camp_spots" to "camp_waypoints"
 ALTER TABLE camp_spots RENAME TO camp_waypoints;
 # Alter "latitude" size to (8,6)
-
+ALTER TABLE `camp_waypoints` CHANGE `latitude` `latitude` DECIMAL(8,6) UNSIGNED NULL;
 # Alter "longitude" size to (8,6)
-
-# Alter "date" to "time" and change it's data type (DATETIME or TIMESTAMP)
-
-# Add "elevation" and define it's data type
+ALTER TABLE `camp_waypoints` CHANGE `longitude` `longitude` DECIMAL(8,6) UNSIGNED NULL;
+# Alter "date" to "time" and change its data type (DATETIME or TIMESTAMP)
+ALTER TABLE `camp_waypoints` CHANGE `date` `time` DATETIME NOT NULL;
+# Add "elevation" and define its data type
 ALTER TABLE `camp_waypoints` ADD `elevation` DECIMAL(10,6) UNSIGNED NULL AFTER `longitude`
-# Add "symbol" and define it's data type
-ALTER TABLE `camp_waypoints` ADD `symbol` VARCHAR(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT 'Flag, Blue' AFTER `date`; 
+# Add "symbol" and define its data type
+ALTER TABLE `camp_waypoints` ADD `symbol` VARCHAR(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT 'Flag, Blue' AFTER `date`; 
 # Drop "id_ref"
 ALTER TABLE `camp_waypoints` DROP `id_ref`;
 
