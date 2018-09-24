@@ -5,7 +5,8 @@
 ALTER TABLE `camp_campaings` ADD `date` DATE NOT NULL AFTER `name`;
 # Drop "id_ref"
 ALTER TABLE `camp_campaings` DROP `id_ref`;
-
+# Add "entity" and define its type
+ALTER TABLE 'camp_campaings' ADD `entity` varchar(255) COLLATE utf8_bin NOT NULL;
 
 --
 -- Changes in `camp_tombs`
