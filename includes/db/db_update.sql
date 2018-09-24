@@ -33,6 +33,9 @@ ALTER TABLE `camp_waypoints` ADD `elevation` DECIMAL(10,6) UNSIGNED NULL AFTER `
 ALTER TABLE `camp_waypoints` ADD `symbol` VARCHAR(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT 'Flag, Blue' AFTER `date`; 
 # Drop "id_ref"
 ALTER TABLE `camp_waypoints` DROP `id_ref`;
+# Drop "entity"
+ALTER TABLE 'camp_waypoints' DROP 'entity';
+
 
 
 --
