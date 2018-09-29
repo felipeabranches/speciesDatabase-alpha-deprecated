@@ -21,7 +21,7 @@ $page_title = 'Admin Panel';
     <div class="row">
         <div class="col-12 col-md-4">
             <div class="my-3 p-3 bg-white rounded box-shadow">
-                <?php admin_panel_table ('Species', 'CONCAT(gender, " ", specie)', 'sp_species', 'id'); ?>
+                <?php admin_panel_table ('Species', 'CONCAT(genus, " ", specie)', 'sp_species', 'id'); ?>
             </div>
         </div>
 
