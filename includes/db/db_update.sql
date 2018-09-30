@@ -48,3 +48,8 @@ ALTER TABLE 'camp_waypoints' DROP 'entity';
 ALTER TABLE `sp_species` CHANGE `gender` `genus` VARCHAR(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL;
 # Drop "id_ref"
 ALTER TABLE `sp_species` DROP `id_ref`;
+--
+--Tables created
+--
+CREATE TABLE `cicefetmg`.`config_globals` ( `author` VARCHAR(255) NOT NULL , `site_name` VARCHAR(255) NOT NULL , `bootstrap_cdn` BOOLEAN NOT NULL , `bootstrap_vsn` VARCHAR(255) NOT NULL , `tinymce_vsn` VARCHAR(255) NOT NULL ) ENGINE = MyISAM;
+CREATE TABLE `cicefetmg`.`users_users` ( `name` VARCHAR(255) NOT NULL , `username` VARCHAR(255) NOT NULL , `email` VARCHAR(255) NOT NULL , `password` VARBINARY(255) NOT NULL ) ENGINE = MyISAM;
