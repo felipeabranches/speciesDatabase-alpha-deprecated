@@ -31,7 +31,7 @@ ALTER TABLE `camp_waypoints` CHANGE `longitude` `longitude` DECIMAL(8,6) UNSIGNE
 # Alter "date" to "time" and change its data type (DATETIME or TIMESTAMP)
 ALTER TABLE `camp_waypoints` CHANGE `date` `time` DATETIME NOT NULL;
 # Add "elevation" and define its data type
-ALTER TABLE `camp_waypoints` ADD `elevation` DECIMAL(10,6) UNSIGNED NULL AFTER `longitude`
+ALTER TABLE `camp_waypoints` ADD `elevation` DECIMAL(10,6) UNSIGNED NULL AFTER `longitude'
 # Add "symbol" and define its data type
 ALTER TABLE `camp_waypoints` ADD `symbol` VARCHAR(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT 'Flag, Blue' AFTER `date`; 
 # Drop "id_ref"
