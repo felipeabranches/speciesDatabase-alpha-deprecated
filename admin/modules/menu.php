@@ -40,8 +40,8 @@
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownUsers" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Users</a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdownUsers">
-                    <a class="dropdown-item" href="user_users.php?order_by=id">Users</a>
-                    <a class="dropdown-item" href="user_users_types.php?order_by=id">Users Types</a>
+                    <a class="dropdown-item" href="users_users.php?order_by=id">Users</a>
+                    <a class="dropdown-item" href="users_users_types.php?order_by=id">Users Types</a>
                 </div>
             </li>
         </ul>
