@@ -24,10 +24,10 @@ ALTER TABLE `camp_tombs` DROP `id_ref`;
 --
 # Change "camp_spots" to "camp_waypoints"
 ALTER TABLE camp_spots RENAME TO camp_waypoints;
-# Alter "latitude" size to (8,6)
-ALTER TABLE `camp_waypoints` CHANGE `latitude` `latitude` DECIMAL(8,6) UNSIGNED NULL;
-# Alter "longitude" size to (8,6)
-ALTER TABLE `camp_waypoints` CHANGE `longitude` `longitude` DECIMAL(8,6) UNSIGNED NULL;
+# Alter "latitude" type of data to POINT
+ALTER TABLE `camp_waypoints` CHANGE `latitude` `latitude` POINT UNSIGNED NULL;
+# Alter "longitude" type of data to POINT
+ALTER TABLE `camp_waypoints` CHANGE `longitude` `longitude` POINT UNSIGNED NULL;
 # Alter "date" to "time" and change its data type (DATETIME or TIMESTAMP)
 ALTER TABLE `camp_waypoints` CHANGE `date` `time` DATETIME NOT NULL;
 # Add "elevation" and define its data type
@@ -53,3 +53,25 @@ ALTER TABLE `sp_species` DROP `id_ref`;
 --
 CREATE TABLE `cicefetmg`.`config_globals` ( `author` VARCHAR(255) NOT NULL , `site_name` VARCHAR(255) NOT NULL , `bootstrap_cdn` BOOLEAN NOT NULL , `bootstrap_vsn` VARCHAR(255) NOT NULL , `tinymce_vsn` VARCHAR(255) NOT NULL ) ENGINE = MyISAM;
 CREATE TABLE `cicefetmg`.`users_users` ( `name` VARCHAR(255) NOT NULL , `username` VARCHAR(255) NOT NULL , `email` VARCHAR(255) NOT NULL , `password` VARBINARY(255) NOT NULL ) ENGINE = MyISAM;
+
+
+--
+--Table users_users_types
+--
+#Creat the table
+CREATE TABLE `cicefetmg`.`users_users_types` ( `id` INT(11) NOT NULL ,
+											   `name` VARCHAR(255) CHARACTER SET utf8 COLLATE utf8_bin NULL , 
+											   `order` TINYINT(3) NULL , `description` VARCHAR(5120) CHARACTER SET utf8 COLLATE utf8_bin NULL ,
+											    `note` VARCHAR(255) CHARACTER SET utf8 COLLATE utf8_bin NULL , 
+											    `image` VARCHAR(255) CHARACTER SET utf8 COLLATE utf8_bin NULL ,
+											    `published` TINYINT(1) NULL )
+											    ENGINE = MyISAM CHARSET=utf8 COLLATE utf8_bin;
+
+#Configuration of the 'id' column
+ALTER TABLE `users_users_types` ADD PRIMARY KEY(`id`);
+ALTER TABLE `users_users_types` ADD UNIQUE(`id`);
+ALTER TABLE `users_users_types` CHANGE `id` `id` INT(11) NOT NULL AUTO_INCREMENT;
+#Creates de user_type column
+ALTER TABLE `users_users` ADD `id_user_type` VARCHAR(255) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL AFTER `password`;
+
+
