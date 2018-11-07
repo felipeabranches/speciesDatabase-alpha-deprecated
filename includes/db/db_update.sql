@@ -20,9 +20,9 @@ ALTER TABLE `camp_tombs` DROP `id_ref`;
 -- Changes in `camp_waypoints`
 --
 # Alter "latitude" type of data to POINT
-ALTER TABLE `camp_waypoints` CHANGE `latitude` `latitude` POINT UNSIGNED NULL;
+ALTER TABLE `camp_waypoints` CHANGE `latitude` `latitude` POINT NOT NULL;
 # Alter "longitude" type of data to POINT
-ALTER TABLE `camp_waypoints` CHANGE `longitude` `longitude` POINT UNSIGNED NULL;
+ALTER TABLE `camp_waypoints` CHANGE `longitude` `longitude` POINT NOT NULL;
 # Alter "date" to "time" and change its data type (DATETIME or TIMESTAMP)
 ALTER TABLE `camp_waypoints` CHANGE `date` `time` DATETIME NOT NULL;
 # Add "elevation" and define its data type
@@ -63,10 +63,12 @@ CREATE TABLE `users_users` (
   `email` VARCHAR(255) NOT NULL,
   `password` VARBINARY(255) NOT NULL
 ) ENGINE = MyISAM;
-#Creates de user_type column
+#Creates the user_type column
 ALTER TABLE `users_users` ADD `id_user_type` VARCHAR(255) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL AFTER `password`;
-
-
+#Configuration of the 1id1 column
+ALTER TABLE `users_users` ADD PRIMARY KEY(`id`);
+ALTER TABLE `users_users` ADD UNIQUE(`id`);
+ALTER TABLE `users_users` CHANGE `id` `id` INT(11) NOT NULL AUTO_INCREMENT;
 --
 -- Create `users_users_types` table
 --
