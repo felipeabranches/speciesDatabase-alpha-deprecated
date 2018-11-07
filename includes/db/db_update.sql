@@ -65,10 +65,13 @@ CREATE TABLE `users_users` (
 ) ENGINE = MyISAM;
 #Creates the user_type column
 ALTER TABLE `users_users` ADD `id_user_type` VARCHAR(255) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL AFTER `password`;
-#Configuration of the 1id1 column
+#Configuration of the 'id' column
+ALTER TABLE `users_users` ADD `id` INT(11) NOT NULL FIRST;
 ALTER TABLE `users_users` ADD PRIMARY KEY(`id`);
 ALTER TABLE `users_users` ADD UNIQUE(`id`);
 ALTER TABLE `users_users` CHANGE `id` `id` INT(11) NOT NULL AUTO_INCREMENT;
+
+
 --
 -- Create `users_users_types` table
 --
