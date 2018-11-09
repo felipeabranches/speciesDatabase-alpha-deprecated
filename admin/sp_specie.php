@@ -252,12 +252,12 @@ function renderForm ($id, $genus, $specie, $incertae_sedis, $dubious, $etymology
     <form action="" method="post">
         <?php if ($id) echo '<input type="hidden" name="id" value="'.$id.'" />'; ?>
         <div class="toolbar sticky-top row my-2 p-2">
-            <div class="col-12 col-md-10">
+            <div class="col-12 col-md-6">
                 <h4><?php echo (!$id) ? 'New' : 'Edit'; ?> <?php echo $page_title; ?></h4>
             </div>
-            <div class="col-12 col-md-2 text-right">
-                <button type="submit" name="save" class="btn btn-primary">Save</button>
-                <a href="sp_species.php?order_by=id" class="btn btn-outline-danger" role="button">Cancel</a>
+            <div class="col-12 col-md-6 text-right">
+                <button type="submit" name="save" class="btn btn-primary"><i class="fas fa-check"></i>Save</button>
+                <a href="sp_species.php?order_by=id" class="btn btn-outline-danger" role="button"><i class="fas fa-times"></i>Cancel</a>
             </div>
         </div>
         <div class="row">
@@ -274,16 +274,12 @@ function renderForm ($id, $genus, $specie, $incertae_sedis, $dubious, $etymology
                         <div class="col col-md-4">
                             <?php field_select ('Dubious specie', 'dubious', array(1 => 'aff.', 2 => 'cf.', 3 => 'sp.'), 'sp_species', $id, 0, '<option name="no" value="0">-- No --</option>', 0); ?>
                         </div>
-                    </div>
-                    <div class="row">
                         <div class="col col-md-8">
                             <?php field_selectDB ('Taxon', 'id_taxon', $id, 'name', 'sp_taxa', 'sp_species', 'id', '<option>-- Choose --</option>', 0); ?>
                         </div>
                         <div class="col col-md-4">
                             <?php field_toggle ('<em>Incertae Sedis</em>', 'incertae_sedis', array(1 => 'yes', 0 => 'no'), 'sp_species', $id, 0, 'yesno'); ?>
                         </div>
-                    </div>
-                    <div class="row">
                         <div class="col col-md-8">
                             <?php field_selectDB ('Taxonomists', 'id_taxonomist', $id, 'name', 'sp_taxonomists', 'sp_taxonomists_map', 'id_specie', '<option>-- None --</option>', 1); ?>
                         </div>

@@ -26,6 +26,8 @@ if (isset($_POST['save']))
 {
     // get form data, making sure it is valid
     $name = mysqli_real_escape_string($mysqli, htmlspecialchars($_POST['name']));
+    $entity = mysqli_real_escape_string($mysqli, htmlspecialchars($_POST['entity']));
+    $date = mysqli_real_escape_string($mysqli, htmlspecialchars($_POST['date']));
     $description = mysqli_real_escape_string($mysqli, htmlspecialchars($_POST['description']));
     $note = mysqli_real_escape_string($mysqli, htmlspecialchars($_POST['note']));
     $image = mysqli_real_escape_string($mysqli, htmlspecialchars($_POST['image']));
@@ -38,14 +40,14 @@ if (isset($_POST['save']))
         $error = 'ERROR: Please fill in all required fields!';
 
         // if either field is blank, display the form again
-        renderForm ($id, $name, $description, $note, $image, $published, $error, $page_title);
+        renderForm ($id, $name, $entity, $date, $description, $note, $image, $published, $error, $page_title);
     }
     else
     {
         if ($id == 0)
         {
-            $sql = "INSERT INTO camp_campaings (name, description, note, image, published) 
-                    VALUES ('".$name."', '".$description."', '".$note."', '".$image."', '".$published."')
+            $sql = "INSERT INTO camp_campaings (name, entity, date, description, note, image, published) 
+                    VALUES ('".$name."', '".$entity."', '".$date."', '".$description."', '".$note."', '".$image."', '".$published."')
                     "."\n";
 
             // save the data to the database
@@ -83,7 +85,7 @@ if (isset($_POST['save']))
                 $id = $_POST['id'];
 
                 $sql = "UPDATE camp_campaings
-                        SET name='".$name."', description='".$description."', note='".$note."', image='".$image."', published='".$published."'
+                        SET name='".$name."', entity='".$entity."', date='".$date."', description='".$description."', note='".$note."', image='".$image."', published='".$published."'
                         WHERE id = ".$id
                         ."\n";
 
@@ -126,7 +128,7 @@ else
     if ($id == 0)
     {
         // if the form hasn't been submitted, display the form
-        renderForm ('', '', '', '', '', '', '', $page_title);
+        renderForm ('', '', '', '', '', '', '', '', '', $page_title);
     }
     else
     {
@@ -144,13 +146,15 @@ else
             {
                 // get data from db
                 $name = $row['name'];
+                $entity = $row['entity'];
+                $date = $row['date'];
                 $description = $row['description'];
                 $note = $row['note'];
                 $image = $row['image'];
                 $published = $row['published'];
 
                 // show form
-                renderForm ($id, $name, $description, $note, $image, $published, '', $page_title);
+                renderForm ($id, $name, $entity, $date, $description, $note, $image, $published, '', $page_title);
             }
             else
             // if no match, display result
@@ -176,7 +180,7 @@ else
 /*
  *  Creates the record form (new or edit)
  */
-function renderForm ($id, $name, $description, $note, $image, $published, $error, $page_title)
+function renderForm ($id, $name, $entity, $date, $description, $note, $image, $published, $error, $page_title)
 {
     if ($error != '')
     {
@@ -198,6 +202,14 @@ function renderForm ($id, $name, $description, $note, $image, $published, $error
             <div class="col-12 col-md-8">
                 <div class="my-3 p-3 bg-white rounded box-shadow">
                     <?php field_text ('Name', 'name', $name, 'Enter the Campaing name', 'required'); ?>
+                    <div class="row">
+                        <div class="col-12 col-md-6">
+                            <?php field_text ('Entity', 'entity', $entity, 'Enter the Entity name', ''); ?>
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <?php field_date ('Date', 'date', $date, 'Enter the Date name', ''); ?>
+                        </div>
+                    </div>
                 </div>
                 <div class="my-3 p-3 bg-white rounded box-shadow">
                     <?php field_textarea ('Description', 'description', $description, '', ''); ?>

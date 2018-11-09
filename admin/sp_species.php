@@ -24,7 +24,7 @@ $order_by = $_GET['order_by'];
             <h4><?php echo $page_title; ?></h4>
         </div>
         <div class="col-12 col-md-2">
-            <a href="sp_specie.php?id=0" class="btn btn-primary float-right" role="button">New</a>
+            <a href="sp_specie.php?id=0" class="btn btn-primary float-right" role="button"><i class="fas fa-plus"></i>New</a>
         </div>
     </div>
 

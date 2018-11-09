@@ -36,7 +36,7 @@ if (isset($_POST['save']))
     //$description = mysqli_real_escape_string($mysqli, htmlspecialchars($_POST['description']));
     //$note = mysqli_real_escape_string($mysqli, htmlspecialchars($_POST['note']));
     //$image = mysqli_real_escape_string($mysqli, htmlspecialchars($_POST['image']));
-   //$published = mysqli_real_escape_string($mysqli, htmlspecialchars($_POST['published']));
+    //$published = mysqli_real_escape_string($mysqli, htmlspecialchars($_POST['published']));
 
     // check to make sure fields are entered
     if ($name == '')

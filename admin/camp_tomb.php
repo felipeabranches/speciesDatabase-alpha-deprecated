@@ -30,8 +30,8 @@ if (isset($_POST['save']))
     $id_waypoint = mysqli_real_escape_string($mysqli, htmlspecialchars($_POST['id_waypoint']));
     $id_specie = mysqli_real_escape_string($mysqli, htmlspecialchars($_POST['id_specie']));
     $specie_count = mysqli_real_escape_string($mysqli, htmlspecialchars($_POST['specie_count']));
-    $date = mysqli_real_escape_string($mysqli, htmlspecialchars($_POST['date']));
     $entity = mysqli_real_escape_string($mysqli, htmlspecialchars($_POST['entity']));
+    $date = mysqli_real_escape_string($mysqli, htmlspecialchars($_POST['date']));
     $description = mysqli_real_escape_string($mysqli, htmlspecialchars($_POST['description']));
     $note = mysqli_real_escape_string($mysqli, htmlspecialchars($_POST['note']));
     $image = mysqli_real_escape_string($mysqli, htmlspecialchars($_POST['image']));
@@ -44,14 +44,14 @@ if (isset($_POST['save']))
         $error = 'ERROR: Please fill in all required fields!';
 
         // if either field is blank, display the form again
-        renderForm ($id, $name, $id_campaing, $id_waypoint, $id_specie, $specie_count, $date, $entity, $description, $note, $image, $published, $error, $page_title);
+        renderForm ($id, $name, $id_campaing, $id_waypoint, $id_specie, $specie_count, $entity, $date, $description, $note, $image, $published, $error, $page_title);
     }
     else
     {
         if ($id == 0)
         {
-            $sql = "INSERT INTO camp_tombs (name, id_campaing, id_waypoint, id_specie, specie_count, date, entity, description, note, image, published) 
-                    VALUES ('".$name."', '".$id_campaing."', '".$id_waypoint."', '".$id_specie."', '".$specie_count."', '".$date."', '".$entity."', '".$description."', '".$note."', '".$image."', '".$published."')
+            $sql = "INSERT INTO camp_tombs (name, id_campaing, id_waypoint, id_specie, specie_count, entity, date, description, note, image, published) 
+                    VALUES ('".$name."', '".$id_campaing."', '".$id_waypoint."', '".$id_specie."', '".$specie_count."', '".$entity."', '".$date."', '".$description."', '".$note."', '".$image."', '".$published."')
                     "."\n";
 
             // save the data to the database
@@ -89,7 +89,7 @@ if (isset($_POST['save']))
                 $id = $_POST['id'];
 
                 $sql = "UPDATE camp_tombs
-                        SET name='".$name."', id_campaing='".$id_campaing."', id_waypoint='".$id_waypoint."', id_specie='".$id_specie."', specie_count='".$specie_count."', date='".$date."', entity='".$entity."', description='".$description."', note='".$note."', image='".$image."', published='".$published."'
+                        SET name='".$name."', id_campaing='".$id_campaing."', id_waypoint='".$id_waypoint."', id_specie='".$id_specie."', specie_count='".$specie_count."', entity='".$entity."', date='".$date."', description='".$description."', note='".$note."', image='".$image."', published='".$published."'
                         WHERE id = ".$id
                         ."\n";
 
@@ -154,15 +154,15 @@ else
                 $id_waypoint = $row['id_waypoint'];
                 $id_specie = $row['id_specie'];
                 $specie_count = $row['specie_count'];
-                $date = $row['date'];
                 $entity = $row['entity'];
+                $date = $row['date'];
                 $description = $row['description'];
                 $note = $row['note'];
                 $image = $row['image'];
                 $published = $row['published'];
 
                 // show form
-                renderForm ($id, $name, $id_campaing, $id_waypoint, $id_specie, $specie_count, $date, $entity, $description, $note, $image, $published, '', $page_title);
+                renderForm ($id, $name, $id_campaing, $id_waypoint, $id_specie, $specie_count, $entity, $date, $description, $note, $image, $published, '', $page_title);
             }
             else
             // if no match, display result
@@ -188,7 +188,7 @@ else
 /*
  *  Creates the record form (new or edit)
  */
-function renderForm ($id, $name, $id_campaing, $id_waypoint, $id_specie, $specie_count, $date, $entity, $description, $note, $image, $published, $error, $page_title)
+function renderForm ($id, $name, $id_campaing, $id_waypoint, $id_specie, $specie_count, $entity, $date, $description, $note, $image, $published, $error, $page_title)
 {
     if ($error != '')
     {
@@ -210,12 +210,26 @@ function renderForm ($id, $name, $id_campaing, $id_waypoint, $id_specie, $specie
             <div class="col-12 col-md-8">
                 <div class="my-3 p-3 bg-white rounded box-shadow">
                     <?php field_text ('Name', 'name', $name, 'Enter the Tomb name', 'required'); ?>
-                    <?php field_selectDB ('Campaing', 'id_campaing', $id_campaing, 'name', 'camp_campaings', 'camp_tombs', 'id', '<option>-- Choose --</option>', 0); ?>
-                    <?php field_selectDB ('Waypoint', 'id_waypoint', $id_waypoint, 'name', 'camp_waypoints', 'camp_tombs', 'id', '<option>-- Choose --</option>', 0); ?>
-                    <?php field_selectDB ('Specie', 'id_specie', $id_specie, 'CONCAT(genus, " ", specie)', 'sp_species', 'camp_tombs', 'id', '<option>-- Choose --</option>', 0); ?>
-                    <?php field_number ('Specie count', 'specie_count', $specie_count, 'Enter the Specie count', '1', '999', '1'); ?>
-                    <?php field_date ('Date', 'date', $date, 'Enter the Tomb\'s Date in YYYY-MM-DD format', ''); ?>
-                    <?php field_text ('Entity', 'entity', $entity, 'Enter the Tomb\'s Entity name', ''); ?>
+                    <div class="row">
+                        <div class="col-12 col-md-6">
+                            <?php field_selectDB ('Campaing', 'id_campaing', $id_campaing, 'name', 'camp_campaings', 'camp_tombs', 'id', '<option>-- Choose --</option>', 0); ?>
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <?php field_selectDB ('Waypoint', 'id_waypoint', $id_waypoint, 'CONCAT(name, " - ", note)', 'camp_waypoints', 'camp_tombs', 'id', '<option>-- Choose --</option>', 0); ?>
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <?php field_selectDB ('Specie', 'id_specie', $id_specie, 'CONCAT(genus, " ", specie)', 'sp_species', 'camp_tombs', 'id', '<option>-- Choose --</option>', 0); ?>
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <?php field_number ('Specie count', 'specie_count', $specie_count, 'Enter the Specie count', '1', '999', '1'); ?>
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <?php field_text ('Entity', 'entity', $entity, 'Enter the Tomb\'s Entity name', ''); ?>
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <?php field_date ('Date', 'date', $date, 'Enter the Tomb\'s Date in YYYY-MM-DD format', ''); ?>
+                        </div>
+                    </div>
                 </div>
                 <div class="my-3 p-3 bg-white rounded box-shadow">
                     <?php field_textarea ('Description', 'description', $description, '', ''); ?>

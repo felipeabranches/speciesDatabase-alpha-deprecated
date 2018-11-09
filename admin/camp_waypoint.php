@@ -31,8 +31,8 @@ if (isset($_POST['save']))
     $latitude = mysqli_real_escape_string($mysqli, htmlspecialchars($_POST['latitude']));
     $longitude = mysqli_real_escape_string($mysqli, htmlspecialchars($_POST['longitude']));
     $elevation = mysqli_real_escape_string($mysqli, htmlspecialchars($_POST['elevation']));
-    $date = mysqli_real_escape_string($mysqli, htmlspecialchars($_POST['date']));
-    $entity = mysqli_real_escape_string($mysqli, htmlspecialchars($_POST['entity']));
+    $time = mysqli_real_escape_string($mysqli, htmlspecialchars($_POST['time']));
+    $symbol = mysqli_real_escape_string($mysqli, htmlspecialchars($_POST['symbol']));
     $description = mysqli_real_escape_string($mysqli, htmlspecialchars($_POST['description']));
     $note = mysqli_real_escape_string($mysqli, htmlspecialchars($_POST['note']));
     $image = mysqli_real_escape_string($mysqli, htmlspecialchars($_POST['image']));
@@ -45,14 +45,14 @@ if (isset($_POST['save']))
         $error = 'ERROR: Please fill in all required fields!';
 
         // if either field is blank, display the form again
-        renderForm ($id, $name, $id_unit, $place, $latitude, $longitude, $elevation, $date, $entity, $description, $note, $image, $published, $error, $page_title);
+        renderForm ($id, $name, $id_unit, $place, $latitude, $longitude, $elevation, $time, $symbol, $description, $note, $image, $published, $error, $page_title);
     }
     else
     {
         if ($id == 0)
         {
-            $sql = "INSERT INTO camp_waypoints (name, id_unit, place, latitude, longitude, elevation, date, entity, description, note, image, published) 
-                    VALUES ('".$name."', '".$id_unit."', '".$place."', '".$latitude."', '".$longitude."', '".$elevation."', '".$date."', '".$entity."', '".$description."', '".$note."', '".$image."', '".$published."')
+            $sql = "INSERT INTO camp_waypoints (name, id_unit, place, latitude, longitude, elevation, time, symbol, description, note, image, published) 
+                    VALUES ('".$name."', '".$id_unit."', '".$place."', '".$latitude."', '".$longitude."', '".$elevation."', '".$time."', '".$symbol."', '".$description."', '".$note."', '".$image."', '".$published."')
                     "."\n";
 
             // save the data to the database
@@ -90,7 +90,7 @@ if (isset($_POST['save']))
                 $id = $_POST['id'];
 
                 $sql = "UPDATE camp_waypoints
-                        SET name='".$name."', id_unit='".$id_unit."', place='".$place."', latitude='".$latitude."', longitude='".$longitude."', elevation='".$elevation."', date='".$date."', entity='".$entity."', description='".$description."', note='".$note."', image='".$image."', published='".$published."'
+                        SET name='".$name."', id_unit='".$id_unit."', place='".$place."', latitude='".$latitude."', longitude='".$longitude."', elevation='".$elevation."', time='".$time."', symbol='".$symbol."', description='".$description."', note='".$note."', image='".$image."', published='".$published."'
                         WHERE id = ".$id
                         ."\n";
 
@@ -156,15 +156,15 @@ else
                 $latitude = $row['latitude'];
                 $longitude = $row['longitude'];
                 $elevation = $row['elevation'];
-                $date = $row['date'];
-                $entity = $row['entity'];
+                $time = $row['time'];
+                $symbol = $row['symbol'];
                 $description = $row['description'];
                 $note = $row['note'];
                 $image = $row['image'];
                 $published = $row['published'];
 
                 // show form
-                renderForm ($id, $name, $id_unit, $place, $latitude, $longitude, $elevation, $date, $entity, $description, $note, $image, $published, '', $page_title);
+                renderForm ($id, $name, $id_unit, $place, $latitude, $longitude, $elevation, $time, $symbol, $description, $note, $image, $published, '', $page_title);
             }
             else
             // if no match, display result
@@ -190,7 +190,7 @@ else
 /*
  *  Creates the record form (new or edit)
  */
-function renderForm ($id, $name, $id_unit, $place, $latitude, $longitude, $elevation, $date, $entity, $description, $note, $image, $published, $error, $page_title)
+function renderForm ($id, $name, $id_unit, $place, $latitude, $longitude, $elevation, $time, $symbol, $description, $note, $image, $published, $error, $page_title)
 {
     if ($error != '')
     {
@@ -212,13 +212,26 @@ function renderForm ($id, $name, $id_unit, $place, $latitude, $longitude, $eleva
             <div class="col-12 col-md-8">
                 <div class="my-3 p-3 bg-white rounded box-shadow">
                     <?php field_text ('Name', 'name', $name, 'Enter the Waypoint Name', 'required'); ?>
-                    <?php field_selectDB ('Unit', 'id_unit', $id_unit, 'name', 'camp_units', 'camp_waypoints', 'id', '<option>-- Choose --</option>', 0); ?>
-                    <?php field_text ('Place', 'place', $place, 'Enter the Waypoint Place', ''); ?>
-                    <?php field_text ('Latitude', 'latitude', $latitude, 'Enter the Waypoint Latitude in \'-23.008986\' format', ''); ?>
-                    <?php field_text ('Longitude', 'longitude', $longitude, 'Enter the Waypoint Longitude in \'-49.860089\' format', ''); ?>
-                    <?php field_text ('Elevação', 'elevation', $elevation, 'Enter the Waypoint Elevation in \'100.465358\' format', ''); ?>
-                    <?php field_date ('Date', 'date', $date, 'Enter the Waypoint Date in YYYY-MM-DD format', ''); ?>
-                    <?php field_text ('Entity', 'entity', $entity, 'Enter Waypoint Entity', ''); ?>
+                    <div class="row">
+                        <div class="col-12 col-md-6">
+                            <?php field_selectDB ('Unit', 'id_unit', $id_unit, 'name', 'camp_units', 'camp_waypoints', 'id', '<option>Choose the Waypoint Unit</option>', 0); ?>
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <?php field_text ('Place', 'place', $place, 'Enter the Waypoint Place', ''); ?>
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <?php field_text ('Latitude', 'latitude', $latitude, 'Enter the Waypoint Latitude in \'-19.008986\' format', ''); ?>
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <?php field_text ('Longitude', 'longitude', $longitude, 'Enter the Waypoint Longitude in \'-42.860089\' format', ''); ?>
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <?php field_text ('Elevation', 'elevation', $elevation, 'Enter the Waypoint Elevation in \'100.465358\' format', ''); ?>
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <?php field_text ('Time', 'time', $time, 'Enter the Waypoint Date in 2018-08-23 14:47:16 format', ''); ?>
+                        </div>
+                    </div>
                 </div>
                 <div class="my-3 p-3 bg-white rounded box-shadow">
                     <?php field_textarea ('Description', 'description', $description, '', ''); ?>
@@ -237,7 +250,8 @@ function renderForm ($id, $name, $id_unit, $place, $latitude, $longitude, $eleva
                 </div>
                 <div class="my-3 p-3 bg-white rounded box-shadow">
                     <h5>Others</h5>
-                    <?php field_text ('Note', 'note', $note, 'Enter some notes...', ''); ?>
+                    <?php field_text ('Symbol', 'symbol', $symbol, 'Enter Waypoint Symbol', ''); ?>
+                    <?php field_text ('Note', 'note', $note, 'Enter Waypoint Notes', ''); ?>
                 </div>
             </div>
         </div>

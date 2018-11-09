@@ -59,9 +59,13 @@ $order_by = $_GET['order_by'];
         <div class="col-12">
             <div class="my-3 p-3 bg-white rounded box-shadow">
                 <?php
-                $sql = 'SELECT cs.id AS id, cs.name AS name, cs.latitude AS latitude, cs.longitude AS longitude, cs.date AS date, cs.published AS published
-                        FROM camp_waypoints AS cs
-                        ORDER BY cs.'.$order_by.'
+                $sql = 'SELECT
+                            wpt.id AS id, wpt.name AS name, wpt.latitude AS latitude, wpt.longitude AS longitude, wpt.elevation AS elevation, wpt.time AS time, wpt.note AS note, wpt.published AS published,
+                            unt.name AS unit
+                        FROM camp_waypoints AS wpt
+                        LEFT JOIN camp_units AS unt
+                            ON unt.id = wpt.id_unit
+                        ORDER BY wpt.'.$order_by.'
                         ';
                 $result = mysqli_query($mysqli, $sql);
                 if(!$result->num_rows)
@@ -75,30 +79,28 @@ $order_by = $_GET['order_by'];
                 <table class="table table-striped table-hover table-sm">
                     <tr width="100%">
                         <th width="5%"><a href="camp_waypoints.php?order_by=id">ID</a></th>
-                        <th width="45%"><a href="camp_waypoints.php?order_by=name">Name</a></th>
-                        <th width="15%"><a href="camp_waypoints.php?order_by=latitude">Latitude</a></th>
-                        <th width="15%"><a href="camp_waypoints.php?order_by=longitude">Longitude</a></th>
-                        <th width="15%"><a href="camp_waypoints.php?order_by=date">Date</a></th>
+                        <th width="30%"><a href="camp_waypoints.php?order_by=name">Name</a></th>
+                        <th width="15%"><a href="camp_waypoints.php?order_by=unit">Unit</a></th>
+                        <th width="10%"><a href="camp_waypoints.php?order_by=latitude">Latitude</a></th>
+                        <th width="10%"><a href="camp_waypoints.php?order_by=longitude">Longitude</a></th>
+                        <th width="10%"><a href="camp_waypoints.php?order_by=elevation">Elevation</a></th>
+                        <th width="15%"><a href="camp_waypoints.php?order_by=time">Time</a></th>
                         <th width="5%" colspan="2"><a href="camp_waypoints.php?order_by=published">State</a></th>
                     </tr>
                 <?php
                     // Fetch one and one row
                     while($row = mysqli_fetch_assoc($result))
                     {
-                        if($row['published'])
-                        {
-                            $published='<i class="fas fa-toggle-on"></i>';
-                        }
-                        else
-                        {
-                            $published='<i class="fas fa-toggle-off"></i>';
-                        }
+                        $published = (!$row['published']) ? '<i class="fas fa-toggle-off"></i>' : '<i class="fas fa-toggle-on"></i>';
+                        $elevation = ($row['elevation'] == '0.000000') ? '-' : $row['elevation'];
                         echo '<tr>';
                         echo '<td>'.$row['id'].'</td>';
-                        echo '<td><a href="camp_waypoint.php?id='.$row['id'].'">'.$row['name'].'</a></td>';
+                        echo '<td><a href="camp_waypoint.php?id='.$row['id'].'">'.$row['name'].'</a> <span class="badge badge-secondary">'.$row['note'].'</td>';
+                        echo '<td>'.$row['unit'].'</td>';
                         echo '<td>'.$row['latitude'].'</td>';
                         echo '<td>'.$row['longitude'].'</td>';
-                        echo '<td>'.$row['date'].'</td>';
+                        echo '<td>'.$elevation.'</td>';
+                        echo '<td>'.$row['time'].'</td>';
                         echo '<td>'.$published.'</td>';
                         echo '<td><!--a data-toggle="modal" data-target="#modal-'.$row['id'].'"><i class="fas fa-trash-alt"></i></a--></td>';
                         echo '</tr>';

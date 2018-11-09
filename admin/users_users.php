@@ -34,9 +34,10 @@ $order_by = $_GET['order_by'];
                 <table class="table table-striped table-hover table-sm">
                     <tr width="100%">
                         <th width="5%"><a href="users_users.php?order_by=id">ID</a></th>
-                        <th width="55%"><a href="users_users.php?order_by=name">Name</a></th>
-                        <th width="35%"><a href="users_users.php?order_by=username">Username</a></th>
-                        <th width="35%"><a href="users_users.php?order_by=email">Email</a></th>
+                        <th width="40%"><a href="users_users.php?order_by=name">Name</a></th>
+                        <th width="25%"><a href="users_users.php?order_by=username">Username</a></th>
+                        <th width="25%"><a href="users_users.php?order_by=email">Email</a></th>
+                        <th width="5%"><a href="users_users.php?order_by=published">State</a></th>
                     </tr>
                     <?php
                     $sql = 'SELECT uu.id AS id,uu.name AS name,uu.username AS username,uu.email AS email 
