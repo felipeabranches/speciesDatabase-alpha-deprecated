@@ -22,7 +22,9 @@ $page_title = 'Espécies';
             <div class="my-3 p-3 bg-white rounded box-shadow">
                 <h5>Peixes</h5>
                 <?php
-                $sql = 'SELECT sp.id AS id, CONCAT(sp.genus, " ", sp.specie) AS nomenclature, sp.year AS year, GROUP_CONCAT(tx.name) AS taxonomists
+                $sql = 'SELECT
+                            sp.id AS id, CONCAT(sp.genus, " ", sp.specie) AS nomenclature, sp.year AS year,
+                            GROUP_CONCAT(tx.name) AS taxonomists
                         FROM sp_taxonomists_map AS tx_map
                         LEFT JOIN sp_species AS sp
                             ON tx_map.id_specie = sp.id

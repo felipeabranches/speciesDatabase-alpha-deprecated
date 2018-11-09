@@ -22,7 +22,9 @@ $id = $_GET['id'];
         <div class="col-12 col-md-8">
             <div class="my-3 p-3 bg-white rounded box-shadow">
                 <?php
-                $sql = 'SELECT sp.id AS id, sp.genus AS genus, sp.specie AS specie, sp.dubious AS dubious, sp.year AS year, sp.revised AS revised, sp.etymology AS etymology, sp.common_name AS common_name, sp.distribution AS distribution, sp.habitat AS habitat, sp.description AS description, sp.image AS image, GROUP_CONCAT(tx.name) AS taxonomists
+                $sql = 'SELECT
+                            sp.id AS id, sp.genus AS genus, sp.specie AS specie, sp.dubious AS dubious, sp.year AS year, sp.revised AS revised, sp.etymology AS etymology, sp.common_name AS common_name, sp.distribution AS distribution, sp.habitat AS habitat, sp.description AS description, sp.image AS image,
+                            GROUP_CONCAT(tx.name) AS taxonomists
                         FROM sp_taxonomists_map AS tx_map
                         LEFT JOIN sp_species AS sp
                             ON tx_map.id_specie = sp.id
@@ -149,7 +151,7 @@ $id = $_GET['id'];
 
         <div class="col-12 col-md-4">
             <div class="my-3 p-3 bg-white rounded box-shadow">
-                <h5>Tombos</h5>
+                <h5>Tombs</h5>
                 <?php
                 $sql = 'SELECT t.id AS tombID, t.name AS tomb, t.specie_count AS n
                         FROM camp_tombs AS t
@@ -165,31 +167,36 @@ $id = $_GET['id'];
                 else
                 {
                 ?>
-                <table class="table table-striped table-hover">
+                <table class="table table-striped table-hover table-sm small">
+                    <caption>Tombs</caption>
                     <thead>
                         <tr>
-                            <th scope="col">Tombo</th>
+                            <th scope="col">Tomb</th>
                             <th scope="col">N</th>
                         </tr>
                     </thead>
+                    <tbody>
                     <?php
                     $nTotal = 0;
-                    echo '<tbody>';
                     while ($row = mysqli_fetch_object($result))
                     {
-                        echo '<tr scope="row">';
-                        echo '<td><a href="tomb.php?id='.$row->tombID.'">'.$row->tomb.'</a></td>';
-                        echo '<td>'.$row->n.'</td>';
-                        echo '</tr>';
+                        ?>
+                        <tr scope="row">
+                            <td><a href="tomb.php?id=<?php echo $row->tombID; ?>"><?php echo $row->tomb; ?></a></td>
+                            <td><?php echo $row->n; ?></td>
+                        </tr>
+                        <?php
                         $nTotal += $row->n;
                     }
-                    echo '</tbody>';
-                    echo '<tfoot scope="row">';
-                    echo '<tr>';
-                    echo '<td>Total</td>';
-                    echo '<td>'.$nTotal.'</td>';
-                    echo '</tr>';
-                    echo '</tfoot>';
+                    ?>
+                    </tbody>
+                    <tfoot>
+                        <tr scope="row">
+                            <td>Total</td>
+                            <td><?php echo $nTotal; ?></td>
+                        </tr>
+                    </tfoot>
+                <?php
                 }
                 mysqli_free_result($result);
                 ?>

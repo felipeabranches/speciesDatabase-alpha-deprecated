@@ -1,6 +1,6 @@
 <?php
 include_once 'init.php';
-$page_title = 'Tombamentos';
+$page_title = 'Tombs';
 ?>
 <!doctype html>
 <html lang="pt">
@@ -17,22 +17,34 @@ $page_title = 'Tombamentos';
 <body class="bg-light">
 <?php include_once 'modules/menu.php'; ?>
 <div class="container-fluid" role="main">
+    <div class="toolbar sticky-top row my-2 p-2 d-print-none">
+        <div class="col-6">
+            <h4><?php echo $page_title; ?></h4>
+        </div>
+        <div class="col-6 text-right">
+            <button class="btn btn-primary disabled"><i class="fas fa-download"></i> Export as sheet</button>
+            <a href="tombs_card.php?id=0" class="btn btn-primary" role="button"><i class="fas fa-print"></i> Print all Tombs' labels</a>
+        </div>
+    </div>
     <div class="row">
         <div class="col-12">
             <div class="my-3 p-3 bg-white rounded box-shadow">
                 <?php
-                global $mysqli;
-                $sql = 'SELECT t.id AS tombID, t.name AS tomb, t.entity AS determinator, t.date AS t_date, t.specie_count AS s_count, t.note AS note,
-                        s.date AS s_date, s.id_unit AS unit, s.name AS waypoint, s.place AS place, s.entity AS collector, s.latitude AS latitude, s.longitude AS longitude,
-                        sp.id AS spID, CONCAT(sp.genus, " ", sp.specie) AS nomenclature,
-                        c.name AS campaing
+                $sql = 'SELECT
+                            t.id AS id, t.name AS tomb, t.entity AS determinator, t.date AS tDate, t.specie_count AS n, t.note AS tmbNote,
+                            camp.id AS campID, camp.name AS campaing, camp.date AS cDate, camp.entity AS collector,
+                            wpt.name AS waypoint, wpt.place AS place, wpt.latitude AS latitude, wpt.longitude AS longitude, wpt.note AS wptNote,
+                            un.name AS unit,
+                            sp.id AS spID, CONCAT(sp.genus, " ", sp.specie) AS nomenclature
                         FROM camp_tombs AS t
-                        INNER JOIN camp_waypoints AS s
-                            ON s.id = t.id_waypoint
-                        INNER JOIN sp_species AS sp
+                        LEFT JOIN camp_campaings AS camp
+                            ON camp.id = t.id_campaing
+                        LEFT JOIN camp_waypoints AS wpt
+                            ON wpt.id = t.id_waypoint
+                        LEFT JOIN camp_units AS un
+                            ON un.id = wpt.id_unit
+                        LEFT JOIN sp_species AS sp
                             ON sp.id = t.id_specie
-                        INNER JOIN camp_campaings AS c
-                            ON c.id = t.id_campaing
                         WHERE t.published = 1
                         ORDER BY t.id
                         ';
@@ -41,57 +53,81 @@ $page_title = 'Tombamentos';
                 {
                     if(!$result->num_rows)
                     {
-                        echo '<span>No entries</span>';
+                        echo '<p>No entries</p>';
                     }
                     else
                     {
                         ?>
                 <div class="table-responsive">
-                    <table class="table table-striped table-hover">
+                    <table class="table table-striped table-hover table-sm small">
+                        <caption>Tombs</caption>
                         <thead>
                             <tr>
-                                <th scope="col">Tombo</th>
-                                <th scope="col">Ficha de campo</th>
-                                <th scope="col">Espécie</th>
-                                <th scope="col">Data</th>
-                                <th scope="col">Drenagem</th>
-                                <th scope="col">Local/Rio</th>
-                                <th scope="col">Município</th>
-                                <th scope="col">Coletor</th>
-                                <th scope="col">Determinador</th>
-                                <th scope="col">Data determinação</th>
+                                <th scope="col">Tomb</th>
+                                <th scope="col">Campaign</th>
+                                <th scope="col">Specie</th>
+                                <th scope="col">Collected</th>
+                                <th scope="col">Unit</th>
+                                <th scope="col">Waypoint</th>
+                                <th scope="col">Place</th>
+                                <th scope="col">Collector</th>
+                                <th scope="col">Determinator</th>
+                                <th scope="col">Determined</th>
                                 <th scope="col">Latitude</th>
                                 <th scope="col">Longitude</th>
                                 <th scope="col">N</th>
-                                <th scope="col">Obs</th>
                             </tr>
                         </thead>
                         <tbody>
+                            <?php
+                            $nTotal = 0;
+                            // Fetch one and one row
+                            while ($row = mysqli_fetch_object($result))
+                            {
+                            ?>
+                            <tr scope="row">
+                                <td>
+                                    <a href="tomb.php?id=<?php echo $row->id; ?>"><?php echo $row->tomb; ?></a>
+                                    <a href="tombs_card.php?id=<?php echo $row->id; ?>" class="badge badge-dark" title="Print <?php echo $row->tomb; ?> label"><i class="fas fa-print"></i></a>
+                                </td>
+                                <td><a href="campaign.php?id=<?php echo $row->campID; ?>"><?php echo $row->campaing; ?></a></td>
+                                <td><a href="specie.php?id=<?php echo $row->spID; ?>"><?php echo $row->nomenclature; ?></a></td>
+                                <td><?php echo $row->cDate; ?></td>
+                                <td><?php echo $row->unit; ?></td>
+                                <td>
+                                    <?php echo $row->waypoint; ?>
+                                    <?php if ($row->wptNote): ?>
+                                        <span data-toggle="tooltip" data-placement="top" title="<?php echo $row->wptNote; ?>"><i class="fas fa-info-circle"></i></span>
+                                    <?php endif; ?>
+                                </td>
+                                <td><?php echo $row->place; ?></td>
+                                <td><?php echo $row->collector; ?></td>
+                                <td><?php echo $row->determinator; ?></td>
+                                <td><?php echo $row->tDate; ?></td>
+                                <td><?php echo $row->latitude; ?></td>
+                                <td><?php echo $row->longitude; ?></td>
+                                <td>
+                                    <?php echo $row->n; ?>
+                                    <?php if ($row->tmbNote): ?>
+                                        <span data-toggle="tooltip" data-placement="top" title="<?php echo $row->tmbNote; ?>"><i class="fas fa-info-circle"></i></span>
+                                    <?php endif; ?>
+                                </td>
+                            </tr>
+                            <?php
+                                $nTotal += $row->n;
+                            }
+                        ?>
+                        </tbody>
+                        <tfoot scope="row">
+                            <tr>
+                                <td colspan="12">Total</td>
+                                <td><?php echo $nTotal; ?></td>
+                            </tr>
+                        </tfoot>
                         <?php
-                        // Fetch one and one row
-                        while ($row = mysqli_fetch_object($result))
-                        {
-                            echo '<tr scope="row">';
-                            echo '<td><a href="tomb.php?id='.$row->tombID.'">'.$row->tomb.'</a></th>'."\n";
-                            echo '<td>'.$row->campaing.'</td>'."\n";
-                            echo '<td><a href="specie.php?id='.$row->spID.'">'.$row->nomenclature.'</a></td>'."\n";
-                            echo '<td>'.$row->s_date.'</td>'."\n";
-                            echo '<td>'.$row->unit.'</td>'."\n";
-                            echo '<td>'.$row->waypoint.'</td>'."\n";
-                            echo '<td>'.$row->place.'</td>'."\n";
-                            echo '<td>'.$row->collector.'</td>'."\n";
-                            echo '<td>'.$row->determinator.'</td>'."\n";
-                            echo '<td>'.$row->t_date.'</td>'."\n";
-                            echo '<td>'.$row->latitude.'</td>'."\n";
-                            echo '<td>'.$row->longitude.'</td>'."\n";
-                            echo '<td>'.$row->s_count.'</td>'."\n";
-                            echo '<td>'.$row->note.'</td>'."\n";
-                            echo '</tr>';
-                        }
                         // Free result set
                         mysqli_free_result($result);
                         ?>
-                        </tbody>
                     </table>
                 </div>
                 <?php
@@ -104,5 +140,12 @@ $page_title = 'Tombamentos';
     </div>
 </div>
 <?php include_once 'modules/footer.php'; ?>
+<script>
+$(function () {
+    $('[data-toggle="tooltip"]').tooltip()
+})
+</script>
+<!-- Fontawesome -->
+<script defer src="https://use.fontawesome.com/releases/v5.0.9/js/all.js" integrity="sha384-8iPTk2s/jMVj81dnzb/iFR2sdA7u06vHJyyLlAd4snFpCl/SnyUjRrbdJsw1pGIl" crossorigin="anonymous"></script>
 </body>
 </html>

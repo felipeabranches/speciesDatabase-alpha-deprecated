@@ -1,6 +1,6 @@
 <?php
 include_once 'init.php';
-$page_title = 'Espécie';
+$page_title = 'Waypoint';
 $id = $_GET['id'];
 ?>
 <!doctype html>
@@ -18,212 +18,118 @@ $id = $_GET['id'];
 <body class="bg-light">
 <?php include_once 'modules/menu.php'; ?>
 <div class="container-fluid" role="main">
-    <div class="row">
-        <div class="col-12 col-md-8">
-            <div class="my-3 p-3 bg-white rounded box-shadow">
-                <?php
-                $sql = 'SELECT sp.id AS id, sp.genus AS genus, sp.specie AS specie, sp.dubious AS dubious, sp.year AS year, sp.revised AS revised, sp.etymology AS etymology, sp.common_name AS common_name, sp.distribution AS distribution, sp.habitat AS habitat, sp.description AS description, sp.image AS image, GROUP_CONCAT(tx.name) AS taxonomists
-                        FROM sp_taxonomists_map AS tx_map
-                        LEFT JOIN sp_species AS sp
-                            ON tx_map.id_specie = sp.id
-                        LEFT JOIN sp_taxonomists AS tx
-                            ON tx_map.id_taxonomist = tx.id
-                        WHERE sp.published = 1
-                            AND sp.validate = 1
-                            AND sp.id = '.$id.'
-                        ';
-                $result = mysqli_query($mysqli, $sql);
-
-                if(!$result->num_rows)
-                {
-                ?>
-                <h4 class="alert-heading">Specie not found</h4>
-                <div class="alert alert-warning my-4" role="alert">
-                    <h5>No result!</h5>
-                    <p>You are trying to reach a specie that don\'t have a record on our database.</p>
-                    <p>There\'s some actions you may take:</p>
-                    <ul>
-                        <li>Check if the passed ID on browser url realy exists</li>
-                        <li>Return to the <a href="species.php" class="alert-link">species list</a> and choose the desire spicie.</li>
-                    </ul>
-                    <hr>
-                    <p class="mb-0">If you think that it\'s not your mistake, enter in <a href="mailto:peixespnsc@gmail.com" class="alert-link">contact</a> and let us know.</p>
-                </div>
-                <?php
-                }
-                else
-                {
-                    while($row = mysqli_fetch_object($result))
-                    {
-                        $dubious = $row->dubious;
-                        switch ($dubious) {
-                            case 0:
-                                $dubious = '';
-                                $abbr = '';
-                                break;
-                            case 1:
-                                $dubious = ' aff.';
-                                $abbr = ' <abbr title="affinis">aff.</abbr>';
-                                break;
-                            case 2:
-                                $dubious = ' cf.';
-                                $abbr = ' <abbr title="conferre">cf.</abbr>';
-                                break;
-                            case 3:
-                                $dubious = ' sp.';
-                                $abbr = ' <abbr title="specie">sp.</abbr>';
-                                break;
-                            default:
-                                $dubious = '';
-                                $abbr = '';
-                                break;                                
-                        }
-                        $nomenclature = $row->genus;
-                        $nomenclature .= $abbr;
-                        $nomenclature .= ' '.$row->specie;
-                        
-                        $taxonomist = explode(',', $row->taxonomists);
-                        if (count($taxonomist) == 1)
-                        {
-                            $taxonomist = $row->taxonomists;
-                        }
-                        else
-                        {
-                            $last = array_pop($taxonomist);
-                            $firsts = implode(', ', $taxonomist);
-                            $taxonomist = sprintf('%s & %s', $firsts, $last);
-                        }
-                        if(!$row->revised)
-                        {
-                            $identification = $taxonomist.', '.$row->year;
-                        }
-                        else
-                        {
-                            $identification = '('.$taxonomist.', '.$row->year.')';
-                        }
-                    ?>
-                <div class="nomenclature">
-                    <h4 class="specie"><?php echo $nomenclature; ?></h4>
-                    <span class="taxonomist"><?php echo $identification; ?></span>
-                </div>
-                <figure class="figure">
-                    <img src="<?php echo $row->image; ?>" alt="<?php echo $row->genus.$dubious.' '.$row->specie; ?>" class="figure-img img-fluid rounded" />
-                    <figcaption class="figure-caption">Foto: Nome, Ano (arquivo.JPG)</figcaption>
-                </figure>
-                <dl>
-                    <?php
-                    if ($row->etymology)
-                    {
-                    ?>
-                    <dt>Etimologia</dt><dd><?php echo $row->etymology; ?></dd>
-                    <?php
-                    }
-                    if ($row->common_name)
-                    {
-                    ?>
-                    <dt>Nome popular</dt><dd><?php echo $row->common_name; ?></dd>
-                    <?php
-                    }
-                    if ($row->distribution)
-                    {
-                    ?>
-                    <dt>Distribuição</dt><dd><?php echo $row->distribution; ?></dd>
-                    <?php
-                    }
-                    if ($row->habitat)
-                    {
-                    ?>
-                    <dt>Habitat</dt><dd><?php echo $row->habitat; ?></dd>
-                    <?php
-                    }
-                    ?>
-                </dl>
-                    <?php
-                        echo $row->description;
-                    }
-                }
-                mysqli_free_result($result);
-                ?>
-            </div>
+    <div class="toolbar sticky-top row my-2 p-2">
+        <div class="col-12">
+            <h4><?php echo $page_title; ?> #<?php echo $id; ?></h4>
         </div>
-
-        <div class="col-12 col-md-4">
+    </div>
+    <div class="row">
+        <div class="col-12">
             <div class="my-3 p-3 bg-white rounded box-shadow">
-                <h5>Tombos</h5>
                 <?php
-                $sql = 'SELECT t.id AS tombID, t.name AS tomb, t.specie_count AS n
+                $sql = 'SELECT
+                            t.specie_count AS count,
+                            wpt.name AS waypoint,
+                            sp.id AS spID, CONCAT(sp.genus, " ", sp.specie) AS nomenclature
                         FROM camp_tombs AS t
-                        LEFT JOIN sp_species AS s
-                            ON t.id_specie = s.id
-                        WHERE s.id = '.$id.'
+                        LEFT JOIN camp_waypoints AS wpt
+                            ON t.id_waypoint = wpt.id
+                        LEFT JOIN sp_species AS sp
+                            ON t.id_specie = sp.id
+                        WHERE wpt.published = 1
+                            AND wpt.id = '.$id.'
                         ';
                 $result = mysqli_query($mysqli, $sql);
-                if(!$result->num_rows)
-                {
-                    echo '<p>No entries</p>';
-                }
-                else
-                {
-                ?>
-                <table class="table table-striped table-hover">
-                    <thead>
-                        <tr>
-                            <th scope="col">Tombo</th>
-                            <th scope="col">N</th>
-                        </tr>
-                    </thead>
-                    <?php
-                    $nTotal = 0;
-                    echo '<tbody>';
-                    while ($row = mysqli_fetch_object($result))
-                    {
-                        echo '<tr scope="row">';
-                        echo '<td><a href="tomb.php?id='.$row->tombID.'">'.$row->tomb.'</a></td>';
-                        echo '<td>'.$row->n.'</td>';
-                        echo '</tr>';
-                        $nTotal += $row->n;
-                    }
-                    echo '</tbody>';
-                    echo '<tfoot scope="row">';
-                    echo '<tr>';
-                    echo '<td>Total</td>';
-                    echo '<td>'.$nTotal.'</td>';
-                    echo '</tr>';
-                    echo '</tfoot>';
-                }
-                mysqli_free_result($result);
-                ?>
-                </table>
-            </div>
 
-            <div class="my-3 p-3 bg-white rounded box-shadow">
-                <h5>Sinônimos</h5>
-                <?php
-                $sql = 'SELECT s.genus AS genus, s.specie AS specie
-                        FROM sp_species AS s
-                        WHERE s.validate = 0
-                            AND s.redirect = '.$id.'
-                        ';
-                $result = mysqli_query($mysqli, $sql);
-                if(!$result->num_rows)
-                {
-                    echo '<p>No entries</p>';
-                }
-                else
-                {
-                    echo '<ul>';
-                    while ($row = mysqli_fetch_object($result))
-                    {
-                        echo '<li>'.$row->genus.' '.$row->specie.'</li>';
-                    }
-                    echo '</ul>';
-                }
-                mysqli_free_result($result);
-                ?>
+                if(!$result->num_rows): ?>
+                <p>No entries</p>
+                <?php else: ?>
+                <div class="table-responsive">
+                    <table class="table table-striped table-hover table-sm small">
+                        <!--caption>Total species</caption-->
+                        <thead>
+                            <tr>
+                                <th scope="col">Waypoint</th>
+                                <?php
+                                $array = '';
+                                $cntTotal = 0;
+                                while($row = mysqli_fetch_object($result)):
+                                    $cnt = $row->count;
+                                    $cntTotal += $cnt;
+                                    $array[] .= $cnt;
+                                    $wpt = $row->waypoint;
+                                ?>
+                                <th scope="col">
+                                    <!--sp<?php echo $row->spID; ?>
+                                    <span data-toggle="tooltip" data-placement="top" title="--><?php echo $row->nomenclature; ?><!--"><i class="fas fa-info-circle"></i></span>-->
+                                </th>
+                                <?php endwhile; ?>
+                                <th scope="col">Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><?php echo $wpt; ?></td>
+                                <?php foreach($array as $i): ?>
+                                <td><?php echo $i; ?></td>
+                                <?php endforeach; ?>
+                                <td><?php echo $cntTotal; ?></td>
+                            </tr>
+                            <tr>
+                                <td>&nbsp;</td>
+                                <?php foreach($array as $i): ?>
+                                <td>&nbsp;</td>
+                                <?php endforeach; ?>
+                                <td>&nbsp;</td>
+                            </tr>
+                            <tr>
+                                <td>pi</td>
+                                <?php foreach($array as $i): ?>
+                                <td><?php echo $i/$cntTotal; ?></td>
+                                <?php endforeach; ?>
+                                <td>&nbsp;</td>
+                            </tr>
+                            <tr>
+                                <td>lnpi</td>
+                                <?php foreach($array as $i): ?>
+                                <td><?php echo log($i/$cntTotal); ?></td>
+                                <?php endforeach; ?>
+                                <td>&nbsp;</td>
+                            </tr>
+                            <tr>
+                                <td>pi*lnpi</td>
+                                <?php foreach($array as $i): ?>
+                                <td><?php echo $i/$cntTotal*log($i/$cntTotal); ?></td>
+                                <?php endforeach; ?>
+                                <td>&nbsp;</td>
+                            </tr>
+                            <tr>
+                                <td>Shannon</td>
+                                <?php
+                                $shannon = 0;
+                                foreach($array as $i):
+                                    $shannon += $i/$cntTotal*log($i/$cntTotal);
+                                ?>
+                                <td>&nbsp;</td>
+                                <?php endforeach; ?>
+                                <td><?php echo (!$shannon) ? 0 : -1*$shannon; ?></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <?php endif; ?>
+                <?php mysqli_free_result($result); ?>
             </div>
         </div>
     </div>
 </div>
 <?php include_once 'modules/footer.php'; ?>
+<script>
+$(function () {
+    $('[data-toggle="tooltip"]').tooltip()
+})
+</script>
+<!-- Fontawesome -->
+<script defer src="https://use.fontawesome.com/releases/v5.0.9/js/all.js" integrity="sha384-8iPTk2s/jMVj81dnzb/iFR2sdA7u06vHJyyLlAd4snFpCl/SnyUjRrbdJsw1pGIl" crossorigin="anonymous"></script>
 </body>
 </html>
