@@ -77,18 +77,27 @@ function taxa_recursive_tree($id)
                             $firsts = implode(', ', $taxonomist);
                             $taxonomist = sprintf('%s & %s', $firsts, $last);
                         }
-                        if(!$specie->revised)
-                        {
-                            $identification = $taxonomist.', '.$specie->year;
-                        }
-                        else
-                        {
-                            $identification = '('.$taxonomist.', '.$specie->year.')';
-                        }
+                        $identification = (!$specie->revised) ? $taxonomist.' '.$specie->year : '('.$taxonomist.' '.$specie->year.')';
                         echo '<li>'."\n";
                         echo '<span class="badge badge-light"><a href="specie.php?id='.$specie->id.'" target="_blank">'.$nomenclature.' </a></span>'."\n";
                         if($taxonomist) echo ' <span class="badge badge-light">'.$identification.'</span>'."\n";
-                        //echo (!$specie->tombs) ? '' : ' <span class="badge badge-primary">Tombado</span>'."\n";
+
+                        $tomb = 'SELECT sp.id AS spID
+                                FROM camp_tombs AS t
+                                LEFT JOIN sp_species AS sp
+                                    ON sp.id = t.id_specie
+                                WHERE t.published = 1
+                                    AND sp.id = '.$specie->id.'
+                                ';
+                        if($result1=mysqli_query($mysqli,$tomb))
+                        {
+                            if($result1->num_rows)
+                            {
+                                echo ' <span class="badge badge-primary">Tombado</span>'."\n";
+                            }
+                            // Free result set
+                            mysqli_free_result($result1);
+                        }
                         /*echo ' <span class="badge badge-brd">BRD*</span>'."\n";
                         echo ' <span class="badge badge-danger">Gênero</span>'."\n";
                         echo ' <span class="changed">Leporinus mormyrops</span>'."\n";*/
