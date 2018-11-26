@@ -32,8 +32,10 @@ class Taxonomists
     public function getTaxonomists($id, $order_by)
     {
         $id = (!$_GET['id'] || $id == 0 || $id == NULL) ? '' : ' AND tt.id IN ('.$_GET['id'].')';
+        $order_by = (!$_GET['order_by'] || $order_by == NULL) ? 'id' : $_GET['order_by'];
 
-        $sql = 'SELECT tt.id AS ttID, tt.name AS author, tt.description AS description, tt.note AS note, tt.image AS image
+        $sql = 'SELECT
+                    tt.id AS id, tt.name AS name, tt.description AS description, tt.note AS note, tt.image AS image
                 FROM sp_taxonomists AS tt
                 WHERE tt.published = 1'.$id.'
                 ORDER BY tt.'.$order_by.'
@@ -44,7 +46,8 @@ class Taxonomists
 
     public function getTaxonomist($id)
     {
-        $sql = 'SELECT tt.id AS ttID, tt.name AS author, tt.description AS description, tt.note AS note, tt.image AS image
+        $sql = 'SELECT
+                    tt.id AS id, tt.name AS name, tt.description AS description, tt.note AS note, tt.image AS image
                 FROM sp_taxonomists AS tt
                 WHERE tt.published = 1
                     AND tt.id = '.$id.'
