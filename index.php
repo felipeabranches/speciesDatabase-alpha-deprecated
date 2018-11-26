@@ -23,8 +23,8 @@ $page_title = 'Species';
             <div class="my-3 p-3 bg-white rounded box-shadow">
                 <?php
                 echo '<h5>Choose a title</h5>'; // complete with a title that match with your id
-		taxa_recursive_tree('id'); // complete with a disere id to be this list parent
-		?>
+                taxa_recursive_tree('id'); // complete with a disere id to be this list parent
+                ?>
             </div>
             <?php mysqli_close($mysqli); ?>
         </div>
@@ -37,5 +37,7 @@ $page_title = 'Species';
     </div>
 </div>
 <?php include_once 'modules/footer.php'; ?>
+<!-- Fontawesome -->
+<script defer src="https://use.fontawesome.com/releases/v5.0.9/js/all.js" integrity="sha384-8iPTk2s/jMVj81dnzb/iFR2sdA7u06vHJyyLlAd4snFpCl/SnyUjRrbdJsw1pGIl" crossorigin="anonymous"></script>
 </body>
 </html>

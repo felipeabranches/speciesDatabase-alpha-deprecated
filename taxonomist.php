@@ -1,12 +1,12 @@
 <?php
 include_once 'init.php';
 $id = $_GET['id'];
+$page_title = 'Taxonomist';
 
 include_once 'libraries/species/taxonomists.php';
 $taxonomist = new Taxonomists;
-$ttResult = mysqli_query($mysqli, $taxonomist->getTaxonomist($id));
-$tt = mysqli_fetch_object($ttResult);
-$spResult = mysqli_query($mysqli, $taxonomist->getSpecies($id));
+$result = mysqli_query($mysqli, $taxonomist->getTaxonomist($id));
+$tt = mysqli_fetch_object($result);
 ?>
 <!doctype html>
 <html lang="pt">
@@ -16,7 +16,7 @@ $spResult = mysqli_query($mysqli, $taxonomist->getSpecies($id));
     <meta name="description" content="">
     <meta name="keywords" content="">
     <meta name="author" content="<?php echo $author; ?>">
-	<title><?php echo (!$ttResult->num_rows) ? 'No entries' : $tt->author; ?> - <?php echo $site_name; ?></title>
+	<title><?php echo (!$result->num_rows) ? 'No '.$page_title : $tt->name; ?> - <?php echo $site_name; ?></title>
     <?php include_once 'modules/head.php'; ?>
 </head>
 
@@ -25,42 +25,47 @@ $spResult = mysqli_query($mysqli, $taxonomist->getSpecies($id));
 <div class="container-fluid" role="main">
     <div class="toolbar sticky-top row my-2 p-2">
         <div class="col-12">
-            <?php if (!$ttResult->num_rows): ?>
+            <?php if (!$result->num_rows): ?>
             <h4>No entries</h4>
             <?php else: ?>
-            <h4 class="float-left"><?php echo $tt->author; ?></h4>
-            <span class="float-right">ID#<span class="badge badge-secondary badge-pill"><?php echo $tt->ttID; ?></span></span>
+            <h4 class="float-left"><?php echo $tt->name; ?></h4>
+            <span class="float-right">ID#<span class="badge badge-secondary badge-pill"><?php echo $tt->id; ?></span></span>
             <?php endif; ?>
         </div>
     </div>
 
-    <?php if (!$ttResult->num_rows): ?>
     <div class="row">
-        <div class="col-12">
+        <div class="col-12 col-md-4">
             <div class="my-3 p-3 bg-white rounded box-shadow">
+                <?php if (!$result->num_rows): ?>
                 <p>No entries</p>
-            </div>
-        </div>
-    </div>
-    <?php else: ?>
-    <div class="row">
-        <div class="col-12 col-md-4">
-            <div class="my-3 p-3 bg-white rounded box-shadow">
+                <?php else: ?>
                 <?php if ($tt->image): ?>
-                <img class="card-img-top" src="<?php echo $tt->image; ?>" alt="<?php echo $tt->author; ?>">
+                <figure class="figure">
+                    <img src="<?php echo $tt->image; ?>" alt="<?php echo $tt->name; ?>" class="figure-img img-fluid rounded">
+                    <figcaption class="figure-caption">Foto: Nome, Ano (arquivo.JPG)</figcaption>
+                </figure>
                 <?php endif; ?>
-                <span class="badge badge-secondary"><?php echo $tt->note; ?></span>
+                <p class="badge badge-secondary"><?php echo $tt->note; ?></p>
+                <?php endif; ?>
             </div>
         </div>
+
         <div class="col-12 col-md-4">
             <div class="my-3 p-3 bg-white rounded box-shadow">
+                <?php if (!$result->num_rows): ?>
+                <p>No entries</p>
+                <?php else: ?>
                 <?php echo $tt->description; ?>
+                <?php endif; ?>
+                <?php mysqli_free_result($result); ?>
             </div>
         </div>
-        <?php mysqli_free_result($ttResult); ?>
+
         <div class="col-12 col-md-4">
             <div class="my-3 p-3 bg-white rounded box-shadow">
                 <h5>Species</h5>
+                <?php $spResult = mysqli_query($mysqli, $taxonomist->getSpecies($id)); ?>
                 <?php if (!$spResult->num_rows): ?>
                 <p>No entries</p>
                 <?php else: ?>
@@ -73,18 +78,14 @@ $spResult = mysqli_query($mysqli, $taxonomist->getSpecies($id));
                         </tr>
                     </thead>
                     <tbody>
-                    <?php
-                    $spTotal = 0;
-                    while ($sp = mysqli_fetch_object($spResult)):
-                        ?>
+                        <?php $spTotal = 0; ?>
+                        <?php while ($sp = mysqli_fetch_object($spResult)): ?>
                         <tr scope="row">
                             <td><a href="specie.php?id=<?php echo $sp->spID; ?>" target="_blank"><?php echo $sp->nomenclature; ?></a></td>
                             <td><?php echo $sp->year; ?></td>
                         </tr>
-                        <?php
-                        $spTotal++;
-                    endwhile;
-                    ?>
+                        <?php $spTotal++; ?>
+                        <?php endwhile; ?>
                     </tbody>
                     <tfoot>
                         <tr scope="row">
@@ -97,9 +98,8 @@ $spResult = mysqli_query($mysqli, $taxonomist->getSpecies($id));
             </div>
         </div>
     </div>
-    <?php endif; ?>
-    <?php mysqli_close($mysqli); ?>
 </div>
+<?php mysqli_close($mysqli); ?>
 <?php include_once 'modules/footer.php'; ?>
 </body>
 </html>
