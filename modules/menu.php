@@ -10,6 +10,15 @@
                 <a class="nav-link" href="index.php">Species</a>
             </li>
             <li class="nav-item">
+                <a class="nav-link" href="taxonomists_card.php?id=0&order_by=id">Taxonomists</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="campaigns_card.php?id=0&order_by=id">Campaigns</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="waypoints_card.php?id=0&order_by=id">Waypoints</a>
+            </li>
+            <li class="nav-item">
                 <a class="nav-link" href="tombs_table.php">Tombs</a>
             </li>
         </ul>
