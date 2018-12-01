@@ -26,7 +26,7 @@ if (isset($_POST['save']))
 {
     // get form data, making sure it is valid
     $name = mysqli_real_escape_string($mysqli, htmlspecialchars($_POST['name']));
-    $description = mysqli_real_escape_string($mysqli, htmlspecialchars($_POST['description']));
+    $description = mysqli_real_escape_string($mysqli, $_POST['description']);
     $note = mysqli_real_escape_string($mysqli, htmlspecialchars($_POST['note']));
     $image = mysqli_real_escape_string($mysqli, htmlspecialchars($_POST['image']));
     $published = mysqli_real_escape_string($mysqli, htmlspecialchars($_POST['published']));
