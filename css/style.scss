@@ -1,6 +1,7 @@
 $red:   #dc3545;
 $green: #28a745;
 $blue:  #17a2b8;
+$dottedLineSpacing: 6;
 
 @mixin shadow() {
     -webkit-box-shadow: 0 1px 4px 0 rgba(204, 204, 204, .5);
@@ -13,6 +14,19 @@ $blue:  #17a2b8;
         -ms-transition: all 0.3s ease-in-out;
          -o-transition: all 0.3s ease-in-out;
             transition: all 0.3s ease-in-out;
+}
+
+@mixin dotted-line($color, $alignment) {
+    background-image: linear-gradient(to right, $color 0%, $color (100% / $dottedLineSpacing), transparent (100% / $dottedLineSpacing));
+    background-position: 0 $alignment;
+    background-repeat: repeat-x;
+    background-size: ($dottedLineSpacing + px) 1px;
+}
+@mixin dotted-line-vertical($color, $alignment) {
+    background-image: linear-gradient(to top, $color 0%, $color (100% / $dottedLineSpacing), transparent (100% / $dottedLineSpacing));
+    background-position: $alignment 0;
+    background-repeat: repeat-y;
+    background-size: 1px ($dottedLineSpacing + px);
 }
 
 /*  ------------------------------------
@@ -69,6 +83,17 @@ body {
     background: #fff;
     @include shadow();
     top: 56px;
+    
+    a,
+    button {
+        margin-left: .5rem;
+    }
+    .fa-check,
+    .fa-plus,
+    .fa-times {
+        font-size: .8rem;
+        margin-right: 1rem;
+    }
 }
 /*
  *  Forms
@@ -173,6 +198,21 @@ body {
     }
 }
 /*
+ * Card
+ */
+.card {
+    dt, dd {
+        position: relative;
+        float: left;
+    }
+    dt {
+        width: 40%;
+    }
+    dd {
+        width: 60%;
+    }
+}
+/*
  *  Badges
  */
 .badge {
@@ -200,4 +240,21 @@ body {
     font-size: 75%;
     font-style: italic;
     font-weight: 700;
+}
+//  Keys
+.key {
+    &-desc {
+        background-color: #fff;
+        float: left;
+    }
+    &-opt {
+        text-align: right;
+        display: block;
+        @include dotted-line (#333, 1.1rem);
+        
+        a {
+            background-color: #fff;
+        }
+    }
+    
 }
