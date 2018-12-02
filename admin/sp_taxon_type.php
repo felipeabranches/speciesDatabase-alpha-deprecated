@@ -82,7 +82,7 @@ if (isset($_POST['save']))
                 // get form data, making sure it is valid
                 $id = $_POST['id'];
 
-                $sql = "UPDATE sp_taxa
+                $sql = "UPDATE sp_taxa_types
                         SET name='".$name."', description='".$description."', note='".$note."', image='".$image."', published='".$published."'
                         WHERE id = ".$id
                         ."\n";
@@ -135,7 +135,7 @@ else
         if (isset($_GET['id']) && is_numeric($_GET['id']) && $_GET['id'] > 0)
         {
             // query db
-            $result = mysqli_query($mysqli, 'SELECT * FROM sp_taxa WHERE id = '.$id)
+            $result = mysqli_query($mysqli, 'SELECT * FROM sp_taxa_types WHERE id = '.$id)
                 or die($sql_err);
             $row = mysqli_fetch_array($result);
 
