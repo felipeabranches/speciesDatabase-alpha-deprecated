@@ -265,25 +265,25 @@ function renderForm ($id, $genus, $specie, $incertae_sedis, $dubious, $etymology
                 <div class="my-3 p-3 bg-white rounded box-shadow">
                     <h5>Classification</h5>
                     <div class="row">
-                        <div class="col col-md-4">
+                        <div class="col-12 col-md-4">
                             <?php field_text ('Genus', 'genus', $genus, 'Enter the Genus', 'required'); ?>
                         </div>
-                        <div class="col col-md-4">
+                        <div class="col-12 col-md-4">
                             <?php field_text ('Specie', 'specie', $specie, 'Enter the Specie', ''); ?>
                         </div>
-                        <div class="col col-md-4">
+                        <div class="col-12 col-md-4">
                             <?php field_select ('Dubious specie', 'dubious', array(1 => 'aff.', 2 => 'cf.', 3 => 'sp.'), 'sp_species', $id, 0, '<option name="no" value="0">-- No --</option>', 0); ?>
                         </div>
-                        <div class="col col-md-8">
+                        <div class="col-12 col-md-8">
                             <?php field_selectDB ('Taxon', 'id_taxon', $id, 'name', 'sp_taxa', 'sp_species', 'id', '<option>-- Choose --</option>', 0); ?>
                         </div>
-                        <div class="col col-md-4">
+                        <div class="col-12 col-md-4">
                             <?php field_toggle ('<em>Incertae Sedis</em>', 'incertae_sedis', array(1 => 'yes', 0 => 'no'), 'sp_species', $id, 0, 'yesno'); ?>
                         </div>
-                        <div class="col col-md-8">
+                        <div class="col-12 col-md-8">
                             <?php field_selectDB ('Taxonomists', 'id_taxonomist', $id, 'name', 'sp_taxonomists', 'sp_taxonomists_map', 'id_specie', '<option>-- None --</option>', 1); ?>
                         </div>
-                        <div class="col col-md-4">
+                        <div class="col-12 col-md-4">
                             <?php field_toggle ('Revised', 'revised', array(1 => 'yes', 0 => 'no'), 'sp_species', $id, 0, 'yesno'); ?>
                             <?php field_text ('Year', 'year', $year, 'Enter the identification Year in YYYY format', ''); ?>
                         </div>
