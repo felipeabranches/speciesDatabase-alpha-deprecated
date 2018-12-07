@@ -7,7 +7,8 @@ ALTER TABLE `camp_campaings` ADD `entity` varchar(255) COLLATE utf8_bin NOT NULL
 ALTER TABLE `camp_campaings` ADD `date` DATE NOT NULL AFTER `entity`;
 # Drop "id_ref"
 ALTER TABLE `camp_campaings` DROP `id_ref`;
-
+# Correct table name renaming it from `camp_campaings` to `camp_campaigns`
+RENAME TABLE `camp_campaings` TO `camp_campaigns`;
 
 --
 -- Changes in `camp_tombs`
