@@ -90,7 +90,7 @@ $page_title = 'Tombs';
                                     <a href="tomb.php?id=<?php echo $row->id; ?>"><?php echo $row->tomb; ?></a>
                                     <a href="tombs_card.php?id=<?php echo $row->id; ?>" class="badge badge-dark" title="Print <?php echo $row->tomb; ?> label"><i class="fas fa-print"></i></a>
                                 </td>
-                                <td><a href="campaign.php?id=<?php echo $row->campID; ?>"><?php echo $row->campaing; ?></a></td>
+                                <td><a href="campaign.php?id=<?php echo $row->campID; ?>"><?php echo $row->campaign; ?></a></td>
                                 <td><a href="specie.php?id=<?php echo $row->spID; ?>"><?php echo $row->nomenclature; ?></a></td>
                                 <td><?php echo $row->cDate; ?></td>
                                 <td><?php echo $row->unit; ?></td>
