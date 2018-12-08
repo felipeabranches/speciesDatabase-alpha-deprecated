@@ -32,13 +32,13 @@ $page_title = 'Tombs';
                 <?php
                 $sql = 'SELECT
                             t.id AS id, t.name AS tomb, t.entity AS determinator, t.date AS tDate, t.specie_count AS n, t.note AS tmbNote,
-                            camp.id AS campID, camp.name AS campaing, camp.date AS cDate, camp.entity AS collector,
+                            camp.id AS campID, camp.name AS campaign, camp.date AS cDate, camp.entity AS collector,
                             wpt.name AS waypoint, wpt.place AS place, wpt.latitude AS latitude, wpt.longitude AS longitude, wpt.note AS wptNote,
                             un.name AS unit,
                             sp.id AS spID, CONCAT(sp.genus, " ", sp.specie) AS nomenclature
                         FROM camp_tombs AS t
-                        LEFT JOIN camp_campaings AS camp
-                            ON camp.id = t.id_campaing
+                        LEFT JOIN camp_campaigns AS camp
+                            ON camp.id = t.id_campaign
                         LEFT JOIN camp_waypoints AS wpt
                             ON wpt.id = t.id_waypoint
                         LEFT JOIN camp_units AS un
