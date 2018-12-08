@@ -1,6 +1,6 @@
 <?php
 include_once '../init.php';
-$page_title = 'Campaings';
+$page_title = 'Campaigns';
 $page_count = 10;
 $order_by = $_GET['order_by'];
 ?>
@@ -24,7 +24,7 @@ $order_by = $_GET['order_by'];
             <h4><?php echo $page_title; ?></h4>
         </div>
         <div class="col-12 col-md-2">
-            <a href="camp_campaing.php?id=0" class="btn btn-primary float-right" role="button">New</a>
+            <a href="camp_campaign.php?id=0" class="btn btn-primary float-right" role="button">New</a>
         </div>
     </div>
 
@@ -33,7 +33,7 @@ $order_by = $_GET['order_by'];
             <div class="my-3 p-3 bg-white rounded box-shadow">
                 <?php
                 $sql = 'SELECT camp.id AS id, camp.name AS name, camp.entity AS collector, camp.date AS date, camp.published AS published
-                        FROM camp_campaings AS camp
+                        FROM camp_campaigns AS camp
                         ORDER BY camp.'.$order_by.'
                         ';
 
@@ -48,11 +48,11 @@ $order_by = $_GET['order_by'];
                 <!-- Table -->
                 <table class="table table-striped table-hover table-sm">
                     <tr width="100%">
-                        <th width="5%"><a href="camp_campaings.php?order_by=id">ID</a></th>
-                        <th width="50%"><a href="camp_campaings.php?order_by=name">Name</a></th>
-                        <th width="25%"><a href="camp_campaings.php?order_by=entity">Collector</a></th>
-                        <th width="15%"><a href="camp_campaings.php?order_by=date">Date</a></th>
-                        <th width="5%" colspan="2"><a href="camp_campaings.php?order_by=published">State</a></th>
+                        <th width="5%"><a href="camp_campaigns.php?order_by=id">ID</a></th>
+                        <th width="50%"><a href="camp_campaigns.php?order_by=name">Name</a></th>
+                        <th width="25%"><a href="camp_campaigns.php?order_by=entity">Collector</a></th>
+                        <th width="15%"><a href="camp_campaigns.php?order_by=date">Date</a></th>
+                        <th width="5%" colspan="2"><a href="camp_campaigns.php?order_by=published">State</a></th>
                     </tr>
                 <?php
                     // Fetch one and one row
@@ -62,7 +62,7 @@ $order_by = $_GET['order_by'];
                         $collector = (!$row['collector']) ? '<em>Null</em>' : $row['collector'];
                         echo '<tr>';
                         echo '<td>'.$row['id'].'</td>';
-                        echo '<td><a href="camp_campaing.php?id='.$row['id'].'">'.$row['name'].'</a></td>';
+                        echo '<td><a href="camp_campaign.php?id='.$row['id'].'">'.$row['name'].'</a></td>';
                         echo '<td>'.$collector.'</td>';
                         echo '<td>'.$row['date'].'</td>';
                         echo '<td>'.$published.'</td>';
@@ -82,7 +82,7 @@ $order_by = $_GET['order_by'];
                                             <p>Are you sure you want to delete <strong>'.$row['name'].'</strong> (ID: '.$row['id'].')?</p>
                                         </div>
                                         <div class="modal-footer">
-                                            <a href="modules/camp_campaings_delete.php?id='.$row['id'].'" class="btn btn-danger">Delete</a>
+                                            <a href="modules/camp_campaigns_delete.php?id='.$row['id'].'" class="btn btn-danger">Delete</a>
                                             <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
                                         </div>
                                     </div>
