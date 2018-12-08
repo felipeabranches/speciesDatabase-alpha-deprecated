@@ -1,7 +1,7 @@
 <?php
 include_once '../init.php';
 include_once '../libraries/fields/fields.php';
-$page_title = 'Campaing';
+$page_title = 'Campaign';
 $id = $_GET['id'];
 ?>
 <!doctype html>
@@ -46,7 +46,7 @@ if (isset($_POST['save']))
     {
         if ($id == 0)
         {
-            $sql = "INSERT INTO camp_campaings (name, entity, date, description, note, image, published) 
+            $sql = "INSERT INTO camp_campaigns (name, entity, date, description, note, image, published) 
                     VALUES ('".$name."', '".$entity."', '".$date."', '".$description."', '".$note."', '".$image."', '".$published."')
                     "."\n";
 
@@ -74,7 +74,7 @@ if (isset($_POST['save']))
             }
 
             // once saved, redirect back to the view page
-            header ('refresh:0;url=camp_campaings.php'); // header ('Location:camp_campaings.php');
+            header ('refresh:0;url=camp_campaigns.php'); // header ('Location:camp_campaigns.php');
         }
         else
         {
@@ -84,7 +84,7 @@ if (isset($_POST['save']))
                 // get form data, making sure it is valid
                 $id = $_POST['id'];
 
-                $sql = "UPDATE camp_campaings
+                $sql = "UPDATE camp_campaigns
                         SET name='".$name."', entity='".$entity."', date='".$date."', description='".$description."', note='".$note."', image='".$image."', published='".$published."'
                         WHERE id = ".$id
                         ."\n";
@@ -113,7 +113,7 @@ if (isset($_POST['save']))
                 }
 
                 // once saved, redirect back to the view page
-                header ('refresh:0;url=camp_campaings.php'); // header ('Location:camp_campaings.php');
+                header ('refresh:0;url=camp_campaigns.php'); // header ('Location:camp_campaigns.php');
             }
             else
             {
@@ -137,7 +137,7 @@ else
         if (isset($_GET['id']) && is_numeric($_GET['id']) && $_GET['id'] > 0)
         {
             // query db
-            $result = mysqli_query($mysqli, 'SELECT * FROM camp_campaings WHERE id = '.$id)
+            $result = mysqli_query($mysqli, 'SELECT * FROM camp_campaigns WHERE id = '.$id)
                 or die($sql_err);
             $row = mysqli_fetch_array($result);
 
@@ -195,13 +195,13 @@ function renderForm ($id, $name, $entity, $date, $description, $note, $image, $p
             </div>
             <div class="col-12 col-md-2 text-right">
                 <button type="submit" name="save" class="btn btn-primary">Save</button>
-                <a href="camp_campaings.php?order_by=id" class="btn btn-outline-danger" role="button">Cancel</a>
+                <a href="camp_campaigns.php?order_by=id" class="btn btn-outline-danger" role="button">Cancel</a>
             </div>
         </div>
         <div class="row">
             <div class="col-12 col-md-8">
                 <div class="my-3 p-3 bg-white rounded box-shadow">
-                    <?php field_text ('Name', 'name', $name, 'Enter the Campaing name', 'required'); ?>
+                    <?php field_text ('Name', 'name', $name, 'Enter the Campaign name', 'required'); ?>
                     <div class="row">
                         <div class="col-12 col-md-6">
                             <?php field_text ('Entity', 'entity', $entity, 'Enter the Entity name', ''); ?>
@@ -219,7 +219,7 @@ function renderForm ($id, $name, $entity, $date, $description, $note, $image, $p
             <div class="col-12 col-md-4">
                 <div class="my-3 p-3 bg-white rounded box-shadow">
                     <h5>State</h5>
-                    <?php field_toggle ('Published', 'published', array(1 => 'yes', 0 => 'no'), 'camp_campaings', $id, 1, 'yesno'); ?>
+                    <?php field_toggle ('Published', 'published', array(1 => 'yes', 0 => 'no'), 'camp_campaigns', $id, 1, 'yesno'); ?>
                     <?php if ($id) echo '<p><strong>ID:</strong> '.$id.'</p>'; ?>
                 </div>
                 <div class="my-3 p-3 bg-white rounded box-shadow">
