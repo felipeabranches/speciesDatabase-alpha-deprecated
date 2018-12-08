@@ -36,7 +36,7 @@ class Campaigns
 
         $sql = 'SELECT
                     cp.id AS id, cp.name AS name, cp.entity AS entity, cp.date AS date, cp.note AS note, cp.image AS image
-                FROM camp_campaings AS cp
+                FROM camp_campaigns AS cp
                 WHERE cp.published = 1'.$id.'
                 ORDER BY cp.'.$order_by.'
                 ;';
@@ -48,7 +48,7 @@ class Campaigns
     {
         $sql = 'SELECT
                     cp.id AS id, cp.name AS name, cp.entity AS entity, cp.date AS date, cp.description AS description, cp.note AS note, cp.image AS image
-                FROM camp_campaings AS cp
+                FROM camp_campaigns AS cp
                 WHERE cp.published = 1
                     AND cp.id = '.$id.'
                 ';
@@ -63,8 +63,8 @@ class Campaigns
                     wpt.id AS wptID, wpt.name AS waypoint, wpt.note AS wptNote,
                     sp.id AS spID, CONCAT(sp.genus, " ", sp.specie) AS nomenclature
                 FROM camp_tombs AS tb
-                LEFT JOIN camp_campaings AS cp
-                    ON cp.id = tb.id_campaing
+                LEFT JOIN camp_campaigns AS cp
+                    ON cp.id = tb.id_campaign
                 LEFT JOIN camp_waypoints AS wpt
                     ON wpt.id = tb.id_waypoint
                 LEFT JOIN sp_species AS sp
@@ -82,8 +82,8 @@ class Campaigns
         $sql = 'SELECT
                     DISTINCT wpt.id AS wptID, wpt.name AS name, wpt.note AS note
                 FROM camp_tombs AS tb
-                LEFT JOIN camp_campaings AS cp
-                    ON cp.id = tb.id_campaing
+                LEFT JOIN camp_campaigns AS cp
+                    ON cp.id = tb.id_campaign
                 LEFT JOIN camp_waypoints AS wpt
                     ON wpt.id = tb.id_waypoint
                 WHERE tb.published = 1
