@@ -1,4 +1,4 @@
-CREATE TABLE IF NOT EXISTS `wpt_country` (
+CREATE TABLE IF NOT EXISTS `wpt_countries` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(80) NOT NULL,
   `nicename` varchar(80) NOT NULL,
