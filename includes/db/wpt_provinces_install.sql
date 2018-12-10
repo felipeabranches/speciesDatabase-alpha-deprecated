@@ -1,7 +1,7 @@
 CREATE TABLE IF NOT EXISTS `wpt_provinces` (
 `id` int(11) NOT NULL AUTO_INCREMENT,
-`name` varchar(80) NOT NULL,
-`acronym` varchar(80) NOT NULL,
+`name` varchar(63) NOT NULL,
+`acronym` varchar(3) NOT NULL,
 `id_country` int(11) NOT NULL,
 `description` varchar(5120) COLLATE utf8_bin NOT NULL,
 `note` varchar(255) COLLATE utf8_bin NOT NULL,
