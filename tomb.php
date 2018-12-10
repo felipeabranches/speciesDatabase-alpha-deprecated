@@ -33,8 +33,8 @@ $id = $_GET['id'];
                     unt.name AS unitType,
                     sp.id AS spID, CONCAT(sp.genus, " ", sp.specie) AS nomenclature, sp.note AS spNote, sp.image AS spIMG
                 FROM camp_tombs AS t
-                LEFT JOIN camp_campaings AS c
-                    ON c.id = t.id_campaing
+                LEFT JOIN camp_campaigns AS c
+                    ON c.id = t.id_campaign
                 LEFT JOIN camp_waypoints AS wpt
                     ON wpt.id = t.id_waypoint
                 LEFT JOIN camp_units AS un
