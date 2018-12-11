@@ -39,7 +39,7 @@ $page_title = 'Tombs';
                         FROM camp_tombs AS t
                         LEFT JOIN camp_campaigns AS camp
                             ON camp.id = t.id_campaign
-                        LEFT JOIN camp_waypoints AS wpt
+                        LEFT JOIN wpt_waypoints AS wpt
                             ON wpt.id = t.id_waypoint
                         LEFT JOIN camp_units AS un
                             ON un.id = wpt.id_unit
