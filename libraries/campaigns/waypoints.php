@@ -38,7 +38,7 @@ class Waypoints
                     wpt.id AS id, wpt.name AS name, wpt.place AS place, wpt.latitude AS latitude, wpt.longitude AS longitude, wpt.elevation AS elevation, wpt.time As time, wpt.note AS note, wpt.image AS image,
                     unit.name AS unit,
                     untt.name AS unitType
-                FROM camp_waypoints AS wpt
+                FROM wpt_waypoints AS wpt
                 LEFT JOIN camp_units AS unit
                     ON unit.id = wpt.id_unit
                 LEFT JOIN camp_units_types AS untt
@@ -54,7 +54,7 @@ class Waypoints
     {
         $sql = 'SELECT
                     wpt.id AS id, wpt.name AS name, wpt.latitude AS latitude, wpt.longitude AS longitude, wpt.description AS description, wpt.note AS note, wpt.image AS image
-                FROM camp_waypoints AS wpt
+                FROM wpt_waypoints AS wpt
                 WHERE wpt.published = 1
                     AND wpt.id = '.$id.'
                 ';
@@ -69,7 +69,7 @@ class Waypoints
                     wpt.id AS wptID, wpt.name AS waypoint, wpt.note AS wptNote,
                     sp.id AS spID, CONCAT(sp.genus, " ", sp.specie) AS nomenclature
                 FROM camp_tombs AS tb
-                LEFT JOIN camp_waypoints AS wpt
+                LEFT JOIN wpt_waypoints AS wpt
                     ON wpt.id = tb.id_waypoint
                 LEFT JOIN sp_species AS sp
                     ON sp.id = tb.id_specie
@@ -88,7 +88,7 @@ class Waypoints
                 FROM camp_tombs AS tb
                 LEFT JOIN camp_campaings AS cp
                     ON cp.id = tb.id_campaing
-                LEFT JOIN camp_waypoints AS wpt
+                LEFT JOIN wpt_waypoints AS wpt
                     ON wpt.id = tb.id_waypoint
                 WHERE tb.published = 1
                     AND wpt.id = '.$id.'
