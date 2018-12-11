@@ -65,7 +65,7 @@ class Campaigns
                 FROM camp_tombs AS tb
                 LEFT JOIN camp_campaigns AS cp
                     ON cp.id = tb.id_campaign
-                LEFT JOIN camp_waypoints AS wpt
+                LEFT JOIN wpt_waypoints AS wpt
                     ON wpt.id = tb.id_waypoint
                 LEFT JOIN sp_species AS sp
                     ON sp.id = tb.id_specie
@@ -84,7 +84,7 @@ class Campaigns
                 FROM camp_tombs AS tb
                 LEFT JOIN camp_campaigns AS cp
                     ON cp.id = tb.id_campaign
-                LEFT JOIN camp_waypoints AS wpt
+                LEFT JOIN wpt_waypoints AS wpt
                     ON wpt.id = tb.id_waypoint
                 WHERE tb.published = 1
                     AND cp.id = '.$id.'
