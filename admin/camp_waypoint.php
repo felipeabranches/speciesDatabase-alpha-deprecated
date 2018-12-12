@@ -51,7 +51,7 @@ if (isset($_POST['save']))
     {
         if ($id == 0)
         {
-            $sql = "INSERT INTO camp_waypoints (name, id_unit, place, latitude, longitude, elevation, time, symbol, description, note, image, published) 
+            $sql = "INSERT INTO wpt_waypoints (name, id_unit, place, latitude, longitude, elevation, time, symbol, description, note, image, published) 
                     VALUES ('".$name."', '".$id_unit."', '".$place."', '".$latitude."', '".$longitude."', '".$elevation."', '".$time."', '".$symbol."', '".$description."', '".$note."', '".$image."', '".$published."')
                     "."\n";
 
@@ -89,7 +89,7 @@ if (isset($_POST['save']))
                 // get form data, making sure it is valid
                 $id = $_POST['id'];
 
-                $sql = "UPDATE camp_waypoints
+                $sql = "UPDATE wpt_waypoints
                         SET name='".$name."', id_unit='".$id_unit."', place='".$place."', latitude='".$latitude."', longitude='".$longitude."', elevation='".$elevation."', time='".$time."', symbol='".$symbol."', description='".$description."', note='".$note."', image='".$image."', published='".$published."'
                         WHERE id = ".$id
                         ."\n";
@@ -142,7 +142,7 @@ else
         if (isset($_GET['id']) && is_numeric($_GET['id']) && $_GET['id'] > 0)
         {
             // query db
-            $result = mysqli_query($mysqli, 'SELECT * FROM camp_waypoints WHERE id = '.$id)
+            $result = mysqli_query($mysqli, 'SELECT * FROM wpt_waypoints WHERE id = '.$id)
                 or die($sql_err);
             $row = mysqli_fetch_array($result);
 
@@ -214,7 +214,7 @@ function renderForm ($id, $name, $id_unit, $place, $latitude, $longitude, $eleva
                     <?php field_text ('Name', 'name', $name, 'Enter the Waypoint Name', 'required'); ?>
                     <div class="row">
                         <div class="col-12 col-md-6">
-                            <?php field_selectDB ('Unit', 'id_unit', $id_unit, 'name', 'camp_units', 'camp_waypoints', 'id', '<option>Choose the Waypoint Unit</option>', 0); ?>
+                            <?php field_selectDB ('Unit', 'id_unit', $id_unit, 'name', 'camp_units', 'wpt_waypoints', 'id', '<option>Choose the Waypoint Unit</option>', 0); ?>
                         </div>
                         <div class="col-12 col-md-6">
                             <?php field_text ('Place', 'place', $place, 'Enter the Waypoint Place', ''); ?>
@@ -241,7 +241,7 @@ function renderForm ($id, $name, $id_unit, $place, $latitude, $longitude, $eleva
             <div class="col-12 col-md-4">
                 <div class="my-3 p-3 bg-white rounded box-shadow">
                     <h5>State</h5>
-                    <?php field_toggle ('Published', 'published', array(1 => 'yes', 0 => 'no'), 'camp_waypoints', $id, 1, 'yesno'); ?>
+                    <?php field_toggle ('Published', 'published', array(1 => 'yes', 0 => 'no'), 'wpt_waypoints', $id, 1, 'yesno'); ?>
                     <?php if ($id) echo '<p><strong>ID:</strong> '.$id.'</p>'; ?>
                 </div>
                 <div class="my-3 p-3 bg-white rounded box-shadow">

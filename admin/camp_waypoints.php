@@ -62,7 +62,7 @@ $order_by = $_GET['order_by'];
                 $sql = 'SELECT
                             wpt.id AS id, wpt.name AS name, wpt.latitude AS latitude, wpt.longitude AS longitude, wpt.elevation AS elevation, wpt.time AS time, wpt.note AS note, wpt.published AS published,
                             unt.name AS unit
-                        FROM camp_waypoints AS wpt
+                        FROM wpt_waypoints AS wpt
                         LEFT JOIN camp_units AS unt
                             ON unt.id = wpt.id_unit
                         ORDER BY wpt.'.$order_by.'

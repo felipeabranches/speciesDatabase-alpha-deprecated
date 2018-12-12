@@ -43,7 +43,7 @@ $wpt = mysqli_fetch_object($result);
                             wpt.name AS waypoint,
                             sp.id AS spID, CONCAT(sp.genus, " ", sp.specie) AS nomenclature
                         FROM camp_tombs AS t
-                        LEFT JOIN camp_waypoints AS wpt
+                        LEFT JOIN wpt_waypoints AS wpt
                             ON t.id_waypoint = wpt.id
                         LEFT JOIN sp_species AS sp
                             ON t.id_specie = sp.id

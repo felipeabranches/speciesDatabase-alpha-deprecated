@@ -215,7 +215,7 @@ function renderForm ($id, $name, $id_campaing, $id_waypoint, $id_specie, $specie
                             <?php field_selectDB ('Campaing', 'id_campaing', $id_campaing, 'name', 'camp_campaings', 'camp_tombs', 'id', '<option>-- Choose --</option>', 0); ?>
                         </div>
                         <div class="col-12 col-md-6">
-                            <?php field_selectDB ('Waypoint', 'id_waypoint', $id_waypoint, 'CONCAT(name, " - ", note)', 'camp_waypoints', 'camp_tombs', 'id', '<option>-- Choose --</option>', 0); ?>
+                            <?php field_selectDB ('Waypoint', 'id_waypoint', $id_waypoint, 'CONCAT(name, " - ", note)', 'wpt_waypoints', 'camp_tombs', 'id', '<option>-- Choose --</option>', 0); ?>
                         </div>
                         <div class="col-12 col-md-6">
                             <?php field_selectDB ('Specie', 'id_specie', $id_specie, 'CONCAT(genus, " ", specie)', 'sp_species', 'camp_tombs', 'id', '<option>-- Choose --</option>', 0); ?>
