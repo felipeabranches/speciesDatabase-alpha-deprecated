@@ -66,43 +66,9 @@ CREATE TABLE IF NOT EXISTS `camp_tombs` (
 
 -- --------------------------------------------------------
 
---
--- Estrutura da tabela `camp_units`
---
-
-DROP TABLE IF EXISTS `camp_units`;
-CREATE TABLE IF NOT EXISTS `camp_units` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) COLLATE utf8_bin NOT NULL,
-  `id_parent` int(10) UNSIGNED NOT NULL DEFAULT '0',
-  `id_type` int(10) UNSIGNED NOT NULL DEFAULT '0',
-  `level` int(10) UNSIGNED NOT NULL DEFAULT '0',
-  `description` varchar(5120) COLLATE utf8_bin NOT NULL,
-  `note` varchar(255) COLLATE utf8_bin NOT NULL,
-  `image` varchar(255) COLLATE utf8_bin NOT NULL,
-  `published` tinyint(1) NOT NULL DEFAULT '1',
-  `id_ref` int(10) UNSIGNED NOT NULL DEFAULT '0',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
-
 -- --------------------------------------------------------
 
 --
--- Estrutura da tabela `camp_units_types`
---
-
-DROP TABLE IF EXISTS `camp_units_types`;
-CREATE TABLE IF NOT EXISTS `camp_units_types` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) COLLATE utf8_bin NOT NULL,
-  `order` tinyint(3) NOT NULL DEFAULT '0',
-  `description` varchar(5120) COLLATE utf8_bin NOT NULL,
-  `note` varchar(255) COLLATE utf8_bin NOT NULL,
-  `image` varchar(255) COLLATE utf8_bin NOT NULL,
-  `published` tinyint(1) NOT NULL DEFAULT '1',
-  `id_ref` int(10) UNSIGNED NOT NULL DEFAULT '0',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 -- --------------------------------------------------------
 
