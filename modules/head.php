@@ -10,6 +10,8 @@ else:
 <?php
 endif;
 ?>
+    <!-- Fontawesome -->
+    <link href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" rel="stylesheet" integrity="sha384-gfdkjb5BdAXd+lj+gudLWI+BXq4IuLW5IT+brZEZsLFm++aCMlF1V92rMkPaX4PP" crossorigin="anonymous">
     <!-- speciesDatabase CSS -->
     <link href="<?php echo $base_url; ?>/css/style.min.css" rel="stylesheet" type="text/css" />
     <!-- speciesDatabase Favicon -->
