@@ -2,7 +2,6 @@
 -- Estrutura da tabela `camp_units`
 --
 
-DROP TABLE IF EXISTS `camp_units`;
 CREATE TABLE IF NOT EXISTS `camp_units` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(255) COLLATE utf8_bin NOT NULL,
@@ -21,7 +20,6 @@ CREATE TABLE IF NOT EXISTS `camp_units` (
 -- Estrutura da tabela `camp_units_types`
 --
 
-DROP TABLE IF EXISTS `camp_units_types`;
 CREATE TABLE IF NOT EXISTS `camp_units_types` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(255) COLLATE utf8_bin NOT NULL,
@@ -38,7 +36,6 @@ CREATE TABLE IF NOT EXISTS `camp_units_types` (
 -- Estrutura da tabela `wpt_countries`
 --
 
-DROP TABLE IF EXISTS `wpt_countries` 
 CREATE TABLE IF NOT EXISTS `wpt_countries` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(63) NOT NULL,
@@ -58,7 +55,6 @@ CREATE TABLE IF NOT EXISTS `wpt_countries` (
 -- Estrutura da tabela `wpt_places`
 --
 
-DROP TABLE IF EXISTS `wpt_places`;
 CREATE TABLE IF NOT EXISTS `wpt_places` (
 `id` int(11) NOT NULL AUTO_INCREMENT,
 `name` varchar(63) NOT NULL,
@@ -74,7 +70,6 @@ CREATE TABLE IF NOT EXISTS `wpt_places` (
 -- Estrutura da tabela `wpt_provinces`
 --
 
-DROP TABLE IF EXISTS `wpt_provinces`;
 CREATE TABLE IF NOT EXISTS `wpt_provinces` (
 `id` int(11) NOT NULL AUTO_INCREMENT,
 `name` varchar(63) NOT NULL,
@@ -91,8 +86,6 @@ PRIMARY KEY (`id`)
 -- Estrutura da tabela `wpt_waypoints`
 --
 
-DROP TABLE IF EXISTS `camp_waypoints`;
-DROP TABLE IF EXISTS `wpt_waypoints`;
 CREATE TABLE IF NOT EXISTS `wpt_waypoints` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(255) COLLATE utf8_bin NOT NULL,
