@@ -83,10 +83,10 @@ PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 --
--- Estrutura da tabela `wpt_waypoints`
+-- Estrutura da tabela `camp_waypoints`
 --
 
-CREATE TABLE IF NOT EXISTS `wpt_waypoints` (
+CREATE TABLE IF NOT EXISTS `camp_waypoints` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(255) COLLATE utf8_bin NOT NULL,
   `id_unit` int(10) UNSIGNED NOT NULL DEFAULT '0',
@@ -106,7 +106,8 @@ CREATE TABLE IF NOT EXISTS `wpt_waypoints` (
 --
 -- Changes in `wpt_waypoints`
 --
-
+# Rename table name "camp_waypoints" to "wpt_waypoints"
+RENAME TABLE camp_waypoints TO wpt_waypoints;
 # Alter "latitude" type of data to POINT
 ALTER TABLE `wpt_waypoints` CHANGE `latitude` `latitude` POINT NOT NULL;
 # Alter "longitude" type of data to POINT
