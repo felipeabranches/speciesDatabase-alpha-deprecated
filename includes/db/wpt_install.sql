@@ -104,7 +104,7 @@ CREATE TABLE IF NOT EXISTS `camp_waypoints` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 --
--- Changes in `wpt_waypoints`
+-- Changes in `camp_waypoints`
 --
 # Rename table name "camp_waypoints" to "wpt_waypoints"
 RENAME TABLE camp_waypoints TO wpt_waypoints;
