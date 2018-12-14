@@ -2,7 +2,7 @@
 -- Estrutura da tabela `camp_units`
 --
 
-CREATE TABLE IF NOT EXISTS `camp_units` (
+CREATE TABLE IF NOT EXISTS `wpt_units` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(255) COLLATE utf8_bin NOT NULL,
   `id_parent` int(10) UNSIGNED NOT NULL DEFAULT '0',
@@ -20,7 +20,7 @@ CREATE TABLE IF NOT EXISTS `camp_units` (
 -- Estrutura da tabela `camp_units_types`
 --
 
-CREATE TABLE IF NOT EXISTS `camp_units_types` (
+CREATE TABLE IF NOT EXISTS `wpt_units_types` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(255) COLLATE utf8_bin NOT NULL,
   `order` tinyint(3) NOT NULL DEFAULT '0',
