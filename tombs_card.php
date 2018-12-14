@@ -37,9 +37,9 @@ $id = (!$_GET['id']) ? '' : ' AND t.id IN ('.$_GET['id'].')';
                     ON c.id = t.id_campaign
                 LEFT JOIN wpt_waypoints AS wpt
                     ON wpt.id = t.id_waypoint
-                LEFT JOIN camp_units AS un
+                LEFT JOIN wpt_units AS un
                     ON un.id = wpt.id_unit
-                LEFT JOIN camp_units_types AS unt
+                LEFT JOIN wpt_units_types AS unt
                     ON unt.id = un.id_type
                 LEFT JOIN sp_species AS sp
                     ON sp.id = t.id_specie
