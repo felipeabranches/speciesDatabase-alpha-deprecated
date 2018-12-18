@@ -46,7 +46,7 @@ if (isset($_POST['save']))
     {
         if ($id == 0)
         {
-            $sql = "INSERT INTO camp_units (name, id_parent, id_type, level, description, note, image, published) 
+            $sql = "INSERT INTO wpt_units (name, id_parent, id_type, level, description, note, image, published) 
                     VALUES ('".$name."', '".$id_parent."', '".$id_type."', '".$id_type."', '".$description."', '".$note."', '".$image."', '".$published."')
                     "."\n";
 
@@ -74,7 +74,7 @@ if (isset($_POST['save']))
             }
 
             // once saved, redirect back to the view page
-            //header ("Location: camp_units.php"); //header("refresh:3;url=camp_units.php");
+            //header ("Location: wpt_units.php"); //header("refresh:3;url=wpt_units.php");
         }
         else
         {
@@ -84,7 +84,7 @@ if (isset($_POST['save']))
                 // get form data, making sure it is valid
                 $id = $_POST['id'];
 
-                $sql = "UPDATE camp_units
+                $sql = "UPDATE wpt_units
                         SET name='".$name."', id_parent='".$id_parent."', id_type='".$id_type."', level='".$id_type."', description='".$description."', note='".$note."', image='".$image."', published='".$published."'
                         WHERE id = ".$id
                         ."\n";
@@ -113,7 +113,7 @@ if (isset($_POST['save']))
                 }
 
                 // once saved, redirect back to the view page
-                //header ("Location: camp_units.php"); //header("refresh:3;url=camp_units.php");
+                //header ("Location: wpt_units.php"); //header("refresh:3;url=wpt_units.php");
             }
             else
             {
@@ -137,7 +137,7 @@ else
         if (isset($_GET['id']) && is_numeric($_GET['id']) && $_GET['id'] > 0)
         {
             // query db
-            $result = mysqli_query($mysqli, 'SELECT * FROM camp_units WHERE id = '.$id)
+            $result = mysqli_query($mysqli, 'SELECT * FROM wpt_units WHERE id = '.$id)
                 or die($sql_err);
             $row = mysqli_fetch_array($result);
 
@@ -195,15 +195,15 @@ function renderForm ($id, $name, $id_parent, $id_type, $description, $note, $ima
             </div>
             <div class="col-12 col-md-2 text-right">
                 <button type="submit" name="save" class="btn btn-primary">Save</button>
-                <a href="camp_units.php?order_by=id" class="btn btn-outline-danger" role="button">Cancel</a>
+                <a href="wpt_units.php?order_by=id" class="btn btn-outline-danger" role="button">Cancel</a>
             </div>
         </div>
         <div class="row">
             <div class="col-12 col-md-8">
                 <div class="my-3 p-3 bg-white rounded box-shadow">
                     <?php field_text ('Name', 'name', $name, 'Enter the Unit name', 'required'); ?>
-                    <?php field_selectDB ('Parent', 'id_parent', $id_parent, 'name', 'camp_units', 'camp_units', 'id', '<option name="none" value="0">None</option>', 0); ?>
-                    <?php field_selectDB ('Type', 'id_type', $id_type, 'name', 'camp_units_types', 'camp_units', 'id', '<option>-- Choose --</option>', 0); ?>
+                    <?php field_selectDB ('Parent', 'id_parent', $id_parent, 'name', 'wpt_units', 'wpt_units', 'id', '<option name="none" value="0">None</option>', 0); ?>
+                    <?php field_selectDB ('Type', 'id_type', $id_type, 'name', 'wpt_units_types', 'wpt_units', 'id', '<option>-- Choose --</option>', 0); ?>
                 </div>
                 <div class="my-3 p-3 bg-white rounded box-shadow">
                     <?php field_textarea ('Description', 'description', $description, '', ''); ?>
@@ -213,7 +213,7 @@ function renderForm ($id, $name, $id_parent, $id_type, $description, $note, $ima
             <div class="col-12 col-md-4">
                 <div class="my-3 p-3 bg-white rounded box-shadow">
                     <h5>State</h5>
-                    <?php field_toggle ('Published', 'published', array(1 => 'yes', 0 => 'no'), 'camp_units', $id, 1, 'yesno'); ?>
+                    <?php field_toggle ('Published', 'published', array(1 => 'yes', 0 => 'no'), 'wpt_units', $id, 1, 'yesno'); ?>
                     <?php if ($id) echo '<p><strong>ID:</strong> '.$id.'</p>'; ?>
                 </div>
                 <div class="my-3 p-3 bg-white rounded box-shadow">

@@ -16,26 +16,6 @@ RENAME TABLE `camp_campaings` TO `camp_campaigns`;
 # Drop "id_ref"
 ALTER TABLE `camp_tombs` DROP `id_ref`;
 
-
---
--- Changes in `camp_waypoints`
---
-# Alter "latitude" type of data to POINT
-ALTER TABLE `camp_waypoints` CHANGE `latitude` `latitude` POINT NOT NULL;
-# Alter "longitude" type of data to POINT
-ALTER TABLE `camp_waypoints` CHANGE `longitude` `longitude` POINT NOT NULL;
-# Alter "date" to "time" and change its data type (DATETIME or TIMESTAMP)
-ALTER TABLE `camp_waypoints` CHANGE `date` `time` DATETIME NOT NULL;
-# Add "elevation" and define its data type
-ALTER TABLE `camp_waypoints` ADD `elevation` DECIMAL(10,6) UNSIGNED NULL AFTER `longitude`;
-# Add "symbol" and define its data type
-ALTER TABLE `camp_waypoints` ADD `symbol` VARCHAR(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT 'Flag, Blue' AFTER `time`;
-# Drop "entity"
-ALTER TABLE `camp_waypoints` DROP `entity`;
-# Drop "id_ref"
-ALTER TABLE `camp_waypoints` DROP `id_ref`;
-
-
 --
 -- Create `config_globals` table
 --

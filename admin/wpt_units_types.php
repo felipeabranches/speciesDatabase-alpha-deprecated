@@ -1,6 +1,6 @@
 <?php
 include_once '../init.php';
-$page_title = 'Units';
+$page_title = 'Units Types';
 $page_count = 10;
 $order_by = $_GET['order_by'];
 ?>
@@ -24,7 +24,7 @@ $order_by = $_GET['order_by'];
             <h4><?php echo $page_title; ?></h4>
         </div>
         <div class="col-12 col-md-2">
-            <a href="camp_unit.php?id=0" class="btn btn-primary float-right" role="button">New</a>
+            <a href="wpt_unit_type.php?id=0" class="btn btn-primary float-right" role="button">New</a>
         </div>
     </div>
 
@@ -32,13 +32,13 @@ $order_by = $_GET['order_by'];
         <div class="col-12">
             <div class="my-3 p-3 bg-white rounded box-shadow">
                 <?php
-                $sql = 'SELECT cu.id AS id, cu.name AS name, cu.published AS published
-                        FROM camp_units AS cu
-                        ORDER BY cu.'.$order_by.'
+                $sql = 'SELECT cut.id AS id, cut.name AS name, cut.published AS published
+                        FROM wpt_units_types AS cut
+                        ORDER BY cut.'.$order_by.'
                         ';
 
-                $result = mysqli_query($mysqli, $sql);
-                if(!$result->num_rows)
+                $result = mysqli_query ($mysqli, $sql);
+                if (!$result->num_rows)
                 {
                     echo '<span>No entries</span>';
                 }
@@ -48,15 +48,15 @@ $order_by = $_GET['order_by'];
                 <!-- Table -->
                 <table class="table table-striped table-hover table-sm">
                     <tr width="100%">
-                        <th width="5%"><a href="camp_units.php?order_by=id">ID</a></th>
-                        <th width="90%"><a href="camp_units.php?order_by=name">Name</a></th>
-                        <th width="5%" colspan="2"><a href="camp_units.php?order_by=published">State</a></th>
+                        <th width="5%"><a href="wpt_units_types.php?order_by=id">ID</a></th>
+                        <th width="90%"><a href="wpt_units_types.php?order_by=name">Name</a></th>
+                        <th width="5%" colspan="2"><a href="wpt_units_types.php?order_by=published">State</a></th>
                     </tr>
                 <?php
                     // Fetch one and one row
-                    while($row = mysqli_fetch_assoc($result))
+                    while ($row = mysqli_fetch_assoc ($result))
                     {
-                        if($row['published'])
+                        if ($row['published'])
                         {
                             $published='<i class="fas fa-toggle-on"></i>';
                         }
@@ -66,7 +66,7 @@ $order_by = $_GET['order_by'];
                         }
                         echo '<tr>';
                         echo '<td>'.$row['id'].'</td>';
-                        echo '<td><a href="camp_unit.php?id='.$row['id'].'">'.$row['name'].'</a></td>';
+                        echo '<td><a href="wpt_unit_type.php?id='.$row['id'].'">'.$row['name'].'</a></td>';
                         echo '<td>'.$published.'</td>';
                         echo '<td><!--a data-toggle="modal" data-target="#modal-'.$row['id'].'"><i class="fas fa-trash-alt"></i></a--></td>';
                         echo '</tr>';
@@ -84,7 +84,7 @@ $order_by = $_GET['order_by'];
                                             <p>Are you sure you want to delete <strong>'.$row['name'].'</strong> (ID: '.$row['id'].')?</p>
                                         </div>
                                         <div class="modal-footer">
-                                            <a href="modules/camp_units_delete.php?id='.$row['id'].'" class="btn btn-danger">Delete</a>
+                                            <a href="modules/wpt_units_types_delete.php?id='.$row['id'].'" class="btn btn-danger">Delete</a>
                                             <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
                                         </div>
                                     </div>

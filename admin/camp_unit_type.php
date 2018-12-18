@@ -44,7 +44,7 @@ if (isset($_POST['save']))
     {
         if ($id == 0)
         {
-            $sql = "INSERT INTO camp_units_types (name, description, note, image, published) 
+            $sql = "INSERT INTO wpt_units_types (name, description, note, image, published) 
                     VALUES ('".$name."', '".$description."', '".$note."', '".$image."', '".$published."')
                     "."\n";
 
@@ -72,7 +72,7 @@ if (isset($_POST['save']))
             }
 
             // once saved, redirect back to the view page
-            header ("Location: camp_units_types.php"); //header("refresh:3;url=camp_units_types.php");
+            header ("Location: wpt_units_types.php"); //header("refresh:3;url=wpt_units_types.php");
         }
         else
         {
@@ -82,7 +82,7 @@ if (isset($_POST['save']))
                 // get form data, making sure it is valid
                 $id = $_POST['id'];
 
-                $sql = "UPDATE camp_units_types
+                $sql = "UPDATE wpt_units_types
                         SET name='".$name."', description='".$description."', note='".$note."', image='".$image."', published='".$published."'
                         WHERE id = ".$id
                         ."\n";
@@ -111,7 +111,7 @@ if (isset($_POST['save']))
                 }
 
                 // once saved, redirect back to the view page
-                header ("Location: camp_units_types.php"); //header("refresh:3;url=camp_units_types.php");
+                header ("Location: wpt_units_types.php"); //header("refresh:3;url=wpt_units_types.php");
             }
             else
             {
@@ -135,7 +135,7 @@ else
         if (isset($_GET['id']) && is_numeric($_GET['id']) && $_GET['id'] > 0)
         {
             // query db
-            $result = mysqli_query($mysqli, 'SELECT * FROM camp_units_types WHERE id = '.$id)
+            $result = mysqli_query($mysqli, 'SELECT * FROM wpt_units_types WHERE id = '.$id)
                 or die($sql_err);
             $row = mysqli_fetch_array($result);
 
@@ -191,7 +191,7 @@ function renderForm ($id, $name, $description, $note, $image, $published, $error
             </div>
             <div class="col-12 col-md-2 text-right">
                 <button type="submit" name="save" class="btn btn-primary">Save</button>
-                <a href="camp_units_types.php?order_by=id" class="btn btn-outline-danger" role="button">Cancel</a>
+                <a href="wpt_units_types.php?order_by=id" class="btn btn-outline-danger" role="button">Cancel</a>
             </div>
         </div>
         <div class="row">
@@ -207,7 +207,7 @@ function renderForm ($id, $name, $description, $note, $image, $published, $error
             <div class="col-12 col-md-4">
                 <div class="my-3 p-3 bg-white rounded box-shadow">
                     <h5>State</h5>
-                    <?php field_toggle ('Published', 'published', array(1 => 'yes', 0 => 'no'), 'camp_units_types', $id, 1, 'yesno'); ?>
+                    <?php field_toggle ('Published', 'published', array(1 => 'yes', 0 => 'no'), 'wpt_units_types', $id, 1, 'yesno'); ?>
                     <?php if ($id) echo '<p><strong>ID:</strong> '.$id.'</p>'; ?>
                 </div>
                 <div class="my-3 p-3 bg-white rounded box-shadow">
