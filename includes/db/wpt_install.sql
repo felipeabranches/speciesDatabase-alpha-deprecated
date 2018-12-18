@@ -106,7 +106,7 @@ CREATE TABLE IF NOT EXISTS `camp_waypoints` (
 --
 -- Changes in `camp_waypoints`
 --
-# Rename table name "camp_waypoints" to "wpt_waypoints"
+# Alter table name "camp_waypoints" to "wpt_waypoints"
 RENAME TABLE camp_waypoints TO wpt_waypoints;
 # Alter "latitude" type of data to POINT
 ALTER TABLE `wpt_waypoints` CHANGE `latitude` `latitude` POINT NOT NULL;
