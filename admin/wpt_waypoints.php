@@ -51,7 +51,7 @@ $order_by = $_GET['order_by'];
                     </div>
                 </div>
             </div>
-            <a href="camp_waypoint.php?id=0" class="btn btn-primary float-right" role="button">New</a>
+            <a href="wpt_waypoint.php?id=0" class="btn btn-primary float-right" role="button">New</a>
         </div>
     </div>
 
@@ -63,7 +63,7 @@ $order_by = $_GET['order_by'];
                             wpt.id AS id, wpt.name AS name, wpt.latitude AS latitude, wpt.longitude AS longitude, wpt.elevation AS elevation, wpt.time AS time, wpt.note AS note, wpt.published AS published,
                             unt.name AS unit
                         FROM wpt_waypoints AS wpt
-                        LEFT JOIN camp_units AS unt
+                        LEFT JOIN wpt_units AS unt
                             ON unt.id = wpt.id_unit
                         ORDER BY wpt.'.$order_by.'
                         ';
@@ -78,14 +78,14 @@ $order_by = $_GET['order_by'];
                 <!-- Table -->
                 <table class="table table-striped table-hover table-sm">
                     <tr width="100%">
-                        <th width="5%"><a href="camp_waypoints.php?order_by=id">ID</a></th>
-                        <th width="30%"><a href="camp_waypoints.php?order_by=name">Name</a></th>
-                        <th width="15%"><a href="camp_waypoints.php?order_by=unit">Unit</a></th>
-                        <th width="10%"><a href="camp_waypoints.php?order_by=latitude">Latitude</a></th>
-                        <th width="10%"><a href="camp_waypoints.php?order_by=longitude">Longitude</a></th>
-                        <th width="10%"><a href="camp_waypoints.php?order_by=elevation">Elevation</a></th>
-                        <th width="15%"><a href="camp_waypoints.php?order_by=time">Time</a></th>
-                        <th width="5%" colspan="2"><a href="camp_waypoints.php?order_by=published">State</a></th>
+                        <th width="5%"><a href="wpt_waypoints.php?order_by=id">ID</a></th>
+                        <th width="30%"><a href="wpt_waypoints.php?order_by=name">Name</a></th>
+                        <th width="15%"><a href="wpt_waypoints.php?order_by=unit">Unit</a></th>
+                        <th width="10%"><a href="wpt_waypoints.php?order_by=latitude">Latitude</a></th>
+                        <th width="10%"><a href="wpt_waypoints.php?order_by=longitude">Longitude</a></th>
+                        <th width="10%"><a href="wpt_waypoints.php?order_by=elevation">Elevation</a></th>
+                        <th width="15%"><a href="wpt_waypoints.php?order_by=time">Time</a></th>
+                        <th width="5%" colspan="2"><a href="wpt_waypoints.php?order_by=published">State</a></th>
                     </tr>
                 <?php
                     // Fetch one and one row
@@ -95,7 +95,7 @@ $order_by = $_GET['order_by'];
                         $elevation = ($row['elevation'] == '0.000000') ? '-' : $row['elevation'];
                         echo '<tr>';
                         echo '<td>'.$row['id'].'</td>';
-                        echo '<td><a href="camp_waypoint.php?id='.$row['id'].'">'.$row['name'].'</a> <span class="badge badge-secondary">'.$row['note'].'</td>';
+                        echo '<td><a href="wpt_waypoint.php?id='.$row['id'].'">'.$row['name'].'</a> <span class="badge badge-secondary">'.$row['note'].'</td>';
                         echo '<td>'.$row['unit'].'</td>';
                         echo '<td>'.$row['latitude'].'</td>';
                         echo '<td>'.$row['longitude'].'</td>';
@@ -118,7 +118,7 @@ $order_by = $_GET['order_by'];
                                             <p>Are you sure you want to delete <strong>'.$row['name'].'</strong> (ID: '.$row['id'].')?</p>
                                         </div>
                                         <div class="modal-footer">
-                                            <a href="modules/camp_waypoints_delete.php?id='.$row['id'].'" class="btn btn-danger">Delete</a>
+                                            <a href="modules/wpt_waypoints_delete.php?id='.$row['id'].'" class="btn btn-danger">Delete</a>
                                             <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
                                         </div>
                                     </div>
