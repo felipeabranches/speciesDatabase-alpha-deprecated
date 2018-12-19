@@ -4,7 +4,7 @@ $id = $_GET['id'];
 $order_by = $_GET['order_by'];
 $page_title = 'Waypoints';
 
-include_once 'libraries/campaigns/waypoints.php';
+include_once 'libraries/waypoints/waypoints.php';
 $waypoints = new Waypoints;
 $result = mysqli_query($mysqli, $waypoints->getWaypoints($id, $order_by));
 ?>
