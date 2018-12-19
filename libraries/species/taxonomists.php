@@ -29,15 +29,16 @@ class Taxonomists
         return $this->prop1 . "<br />";
     }
     
-    public function getTaxonomists($id, $order_by)
+    public function getTaxonomists($id, $order_by,$filter_by)
     {
         $id = (!$_GET['id'] || $id == 0 || $id == NULL) ? '' : ' AND tt.id IN ('.$_GET['id'].')';
         $order_by = (!$_GET['order_by'] || $order_by == NULL) ? 'id' : $_GET['order_by'];
-
+        $filter_by = ($filter_by =='published') ? '' : ' OR tt.published = 0';
         $sql = 'SELECT
-                    tt.id AS id, tt.name AS name, tt.description AS description, tt.note AS note, tt.image AS image
+                    tt.id AS id, tt.name AS name, tt.description AS description, tt.note AS note, tt.image AS image,
+                    tt.published AS published
                 FROM sp_taxonomists AS tt
-                WHERE tt.published = 1'.$id.'
+                WHERE (tt.published = 1'.$filter_by.')'.$id.'
                 ORDER BY tt.'.$order_by.'
                 ;';
         

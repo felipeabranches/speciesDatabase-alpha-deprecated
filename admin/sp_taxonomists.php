@@ -2,7 +2,12 @@
 include_once '../init.php';
 $page_title = 'Taxonomists';
 $page_count = 10;
+$id = $_GET['id'];
 $order_by = $_GET['order_by'];
+include_once '../libraries/species/taxonomists.php';
+$taxonomists = new Taxonomists;
+$filter_by = 'no filter';
+$result = mysqli_query($mysqli, $taxonomists->getTaxonomists($id, $order_by,$filter_by));
 ?>
 <!doctype html>
 <html lang="pt">
@@ -32,12 +37,6 @@ $order_by = $_GET['order_by'];
         <div class="col-12">
             <div class="my-3 p-3 bg-white rounded box-shadow">
                 <?php
-                $sql = 'SELECT tx.id AS id, tx.name AS name, tx.published AS published
-                        FROM sp_taxonomists AS tx
-                        ORDER BY tx.'.$order_by.'
-                        ';
-
-                $result = mysqli_query ($mysqli, $sql);
                 if (!$result->num_rows)
                 {
                     echo '<span>No entries</span>';
@@ -54,9 +53,9 @@ $order_by = $_GET['order_by'];
                     </tr>
                 <?php
                     // Fetch one and one row
-                    while ($row = mysqli_fetch_assoc ($result))
+                    while ($row = mysqli_fetch_object ($result))
                     {
-                        if ($row['published'])
+                        if ($row->published)
                         {
                             $published='<i class="fas fa-toggle-on"></i>';
                         }
@@ -65,13 +64,13 @@ $order_by = $_GET['order_by'];
                             $published='<i class="fas fa-toggle-off"></i>';
                         }
                         echo '<tr>';
-                        echo '<td>'.$row['id'].'</td>';
-                        echo '<td><a href="sp_taxonomist.php?id='.$row['id'].'">'.$row['name'].'</a></td>';
+                        echo '<td>'.$row->id.'</td>';
+                        echo '<td><a href="sp_taxonomist.php?id='.$row->id.'">'.$row->name.'</a></td>';
                         echo '<td>'.$published.'</td>';
-                        echo '<td><a data-toggle="modal" data-target="#modal-'.$row['id'].'"><i class="fas fa-trash-alt"></i></a></td>';
+                        echo '<td><a data-toggle="modal" data-target="#modal-'.$row->id.'"><i class="fas fa-trash-alt"></i></a></td>';
                         echo '</tr>'."\n";
                         echo '<!-- Modal -->
-                            <div class="modal" id="modal-'.$row['id'].'" tabindex="-1" role="dialog">
+                            <div class="modal" id="modal-'.$row->id.'" tabindex="-1" role="dialog">
                                 <div class="modal-dialog" role="document">
                                     <div class="modal-content">
                                         <div class="modal-header">
@@ -81,10 +80,10 @@ $order_by = $_GET['order_by'];
                                             </button>
                                         </div>
                                         <div class="modal-body">
-                                            <p>Are you sure you want to delete <strong>'.$row['name'].'</strong> (ID: '.$row['id'].')?</p>
+                                            <p>Are you sure you want to delete <strong>'.$row->name.'</strong> (ID: '.$row->id.')?</p>
                                         </div>
                                         <div class="modal-footer">
-                                            <a href="modules/sp_taxonomists_delete.php?id='.$row['id'].'" class="btn btn-danger">Delete</a>
+                                            <a href="modules/sp_taxonomists_delete.php?id='.$row->id.'" class="btn btn-danger">Delete</a>
                                             <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
                                         </div>
                                     </div>

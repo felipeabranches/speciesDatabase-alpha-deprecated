@@ -3,10 +3,10 @@ include_once 'init.php';
 $id = $_GET['id'];
 $order_by = $_GET['order_by'];
 $page_title = 'Taxonomists';
-
+$filter_by = 'published';
 include_once 'libraries/species/taxonomists.php';
 $taxonomists = new Taxonomists;
-$result = mysqli_query($mysqli, $taxonomists->getTaxonomists($id, $order_by));
+$result = mysqli_query($mysqli, $taxonomists->getTaxonomists($id, $order_by,$filter_by));
 ?>
 <!doctype html>
 <html lang="pt">
