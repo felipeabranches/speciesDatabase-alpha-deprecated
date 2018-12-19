@@ -1,8 +1,7 @@
 --
 -- Estrutura da tabela `camp_units`
 --
-
-CREATE TABLE IF NOT EXISTS `wpt_units` (
+CREATE TABLE IF NOT EXISTS `camp_units` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(255) COLLATE utf8_bin NOT NULL,
   `id_parent` int(10) UNSIGNED NOT NULL DEFAULT '0',
@@ -17,10 +16,15 @@ CREATE TABLE IF NOT EXISTS `wpt_units` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 --
+-- Changes in `camp_units`
+--
+-- Alter table name "camp_units" to "wpt_units"
+RENAME TABLE camp_units TO wpt_units;
+
+--
 -- Estrutura da tabela `camp_units_types`
 --
-
-CREATE TABLE IF NOT EXISTS `wpt_units_types` (
+CREATE TABLE IF NOT EXISTS `camp_units_types` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(255) COLLATE utf8_bin NOT NULL,
   `order` tinyint(3) NOT NULL DEFAULT '0',
@@ -33,9 +37,14 @@ CREATE TABLE IF NOT EXISTS `wpt_units_types` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 --
+-- Changes in `camp_units_types`
+--
+-- Alter table name "camp_units_types" to "wpt_units_types"
+RENAME TABLE camp_units_types TO wpt_units_types;
+
+--
 -- Estrutura da tabela `wpt_countries`
 --
-
 CREATE TABLE IF NOT EXISTS `wpt_countries` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(63) NOT NULL,
@@ -54,7 +63,6 @@ CREATE TABLE IF NOT EXISTS `wpt_countries` (
 --
 -- Estrutura da tabela `wpt_places`
 --
-
 CREATE TABLE IF NOT EXISTS `wpt_places` (
 `id` int(11) NOT NULL AUTO_INCREMENT,
 `name` varchar(63) NOT NULL,
@@ -69,7 +77,6 @@ CREATE TABLE IF NOT EXISTS `wpt_places` (
 --
 -- Estrutura da tabela `wpt_provinces`
 --
-
 CREATE TABLE IF NOT EXISTS `wpt_provinces` (
 `id` int(11) NOT NULL AUTO_INCREMENT,
 `name` varchar(63) NOT NULL,
@@ -85,7 +92,6 @@ PRIMARY KEY (`id`)
 --
 -- Estrutura da tabela `camp_waypoints`
 --
-
 CREATE TABLE IF NOT EXISTS `camp_waypoints` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(255) COLLATE utf8_bin NOT NULL,
