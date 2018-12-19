@@ -17,18 +17,27 @@
                     <a class="dropdown-item" href="sp_taxa.php?order_by=id">Taxa</a>
                     <a class="dropdown-item" href="sp_taxa_types.php?order_by=id">Taxa Types</a>
                     <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="sp_taxonomists.php?order_by=id">Taxonomists</a>
+                    <a class="dropdown-item" href="sp_taxonomists.php?id=0&order_by=id">Taxonomists</a>
+                </div>
+            </li>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownWaypoints" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Campaings</a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdownWaypoints">
+                    <a class="dropdown-item" href="wpt_waypoints.php?order_by=id">Waypoints</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="wpt_units.php?order_by=id">Units</a>
+                    <a class="dropdown-item" href="wpt_units_types.php?order_by=id">Units Types</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="wpt_places.php?order_by=id">Places</a>
+                    <a class="dropdown-item" href="wpt_provinces.php?order_by=id">Provinces</a>
+                    <a class="dropdown-item" href="wpt_countries.php?order_by=id">Countries</a>
                 </div>
             </li>
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownCampaings" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Campaings</a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdownCampaings">
                     <a class="dropdown-item" href="camp_campaings.php?order_by=id">Campaings</a>
-                    <a class="dropdown-item" href="camp_waypoints.php?order_by=id">Waypoints</a>
                     <a class="dropdown-item" href="camp_tombs.php?order_by=id">Tombs</a>
-                    <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="camp_units.php?order_by=id">Units</a>
-                    <a class="dropdown-item" href="camp_units_types.php?order_by=id">Units Types</a>
                 </div>
             </li>
             <li class="nav-item">
