@@ -79,7 +79,7 @@ if (isset($_POST['save']))
             }
 
             // once saved, redirect back to the view page
-            header ("Location: camp_waypoints.php"); //header("refresh:3;url=camp_waypoints.php");
+            header ("Location: wpt_waypoints.php"); //header("refresh:3;url=wpt_waypoints.php");
         }
         else
         {
@@ -118,7 +118,7 @@ if (isset($_POST['save']))
                 }
 
                 // once saved, redirect back to the view page
-                header ("Location: camp_waypoints.php"); //header("refresh:3;url=camp_waypoints.php");
+                header ("Location: wpt_waypoints.php"); //header("refresh:3;url=wpt_waypoints.php");
             }
             else
             {
@@ -205,7 +205,7 @@ function renderForm ($id, $name, $id_unit, $place, $latitude, $longitude, $eleva
             </div>
             <div class="col-12 col-md-2 text-right">
                 <button type="submit" name="save" class="btn btn-primary">Save</button>
-                <a href="camp_waypoints.php?order_by=id" class="btn btn-outline-danger" role="button">Cancel</a>
+                <a href="wpt_waypoints.php?order_by=id" class="btn btn-outline-danger" role="button">Cancel</a>
             </div>
         </div>
         <div class="row">
@@ -214,7 +214,7 @@ function renderForm ($id, $name, $id_unit, $place, $latitude, $longitude, $eleva
                     <?php field_text ('Name', 'name', $name, 'Enter the Waypoint Name', 'required'); ?>
                     <div class="row">
                         <div class="col-12 col-md-6">
-                            <?php field_selectDB ('Unit', 'id_unit', $id_unit, 'name', 'camp_units', 'wpt_waypoints', 'id', '<option>Choose the Waypoint Unit</option>', 0); ?>
+                            <?php field_selectDB ('Unit', 'id_unit', $id_unit, 'name', 'wpt_units', 'wpt_waypoints', 'id', '<option>Choose the Waypoint Unit</option>', 0); ?>
                         </div>
                         <div class="col-12 col-md-6">
                             <?php field_text ('Place', 'place', $place, 'Enter the Waypoint Place', ''); ?>
