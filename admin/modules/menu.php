@@ -36,7 +36,7 @@
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownCampaings" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Campaings</a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdownCampaings">
-                    <a class="dropdown-item" href="camp_campaings.php?order_by=id">Campaings</a>
+                    <a class="dropdown-item" href="camp_campaigns.php?order_by=id">Campaings</a>
                     <a class="dropdown-item" href="camp_tombs.php?order_by=id">Tombs</a>
                 </div>
             </li>
