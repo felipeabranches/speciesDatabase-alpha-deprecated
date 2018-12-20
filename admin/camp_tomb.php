@@ -26,7 +26,7 @@ if (isset($_POST['save']))
 {
     // get form data, making sure it is valid
     $name = mysqli_real_escape_string($mysqli, htmlspecialchars($_POST['name']));
-    $id_campaing = mysqli_real_escape_string($mysqli, htmlspecialchars($_POST['id_campaing']));
+    $id_campaign = mysqli_real_escape_string($mysqli, htmlspecialchars($_POST['id_campaign']));
     $id_waypoint = mysqli_real_escape_string($mysqli, htmlspecialchars($_POST['id_waypoint']));
     $id_specie = mysqli_real_escape_string($mysqli, htmlspecialchars($_POST['id_specie']));
     $specie_count = mysqli_real_escape_string($mysqli, htmlspecialchars($_POST['specie_count']));
@@ -44,14 +44,14 @@ if (isset($_POST['save']))
         $error = 'ERROR: Please fill in all required fields!';
 
         // if either field is blank, display the form again
-        renderForm ($id, $name, $id_campaing, $id_waypoint, $id_specie, $specie_count, $entity, $date, $description, $note, $image, $published, $error, $page_title);
+        renderForm ($id, $name, $id_campaign, $id_waypoint, $id_specie, $specie_count, $entity, $date, $description, $note, $image, $published, $error, $page_title);
     }
     else
     {
         if ($id == 0)
         {
-            $sql = "INSERT INTO camp_tombs (name, id_campaing, id_waypoint, id_specie, specie_count, entity, date, description, note, image, published) 
-                    VALUES ('".$name."', '".$id_campaing."', '".$id_waypoint."', '".$id_specie."', '".$specie_count."', '".$entity."', '".$date."', '".$description."', '".$note."', '".$image."', '".$published."')
+            $sql = "INSERT INTO camp_tombs (name, id_campaign, id_waypoint, id_specie, specie_count, entity, date, description, note, image, published) 
+                    VALUES ('".$name."', '".$id_campaign."', '".$id_waypoint."', '".$id_specie."', '".$specie_count."', '".$entity."', '".$date."', '".$description."', '".$note."', '".$image."', '".$published."')
                     "."\n";
 
             // save the data to the database
@@ -89,7 +89,7 @@ if (isset($_POST['save']))
                 $id = $_POST['id'];
 
                 $sql = "UPDATE camp_tombs
-                        SET name='".$name."', id_campaing='".$id_campaing."', id_waypoint='".$id_waypoint."', id_specie='".$id_specie."', specie_count='".$specie_count."', entity='".$entity."', date='".$date."', description='".$description."', note='".$note."', image='".$image."', published='".$published."'
+                        SET name='".$name."', id_campaign='".$id_campaign."', id_waypoint='".$id_waypoint."', id_specie='".$id_specie."', specie_count='".$specie_count."', entity='".$entity."', date='".$date."', description='".$description."', note='".$note."', image='".$image."', published='".$published."'
                         WHERE id = ".$id
                         ."\n";
 
@@ -150,7 +150,7 @@ else
             {
                 // get data from db
                 $name = $row['name'];
-                $id_campaing = $row['id_campaing'];
+                $id_campaign = $row['id_campaign'];
                 $id_waypoint = $row['id_waypoint'];
                 $id_specie = $row['id_specie'];
                 $specie_count = $row['specie_count'];
@@ -162,7 +162,7 @@ else
                 $published = $row['published'];
 
                 // show form
-                renderForm ($id, $name, $id_campaing, $id_waypoint, $id_specie, $specie_count, $entity, $date, $description, $note, $image, $published, '', $page_title);
+                renderForm ($id, $name, $id_campaign, $id_waypoint, $id_specie, $specie_count, $entity, $date, $description, $note, $image, $published, '', $page_title);
             }
             else
             // if no match, display result
@@ -188,7 +188,7 @@ else
 /*
  *  Creates the record form (new or edit)
  */
-function renderForm ($id, $name, $id_campaing, $id_waypoint, $id_specie, $specie_count, $entity, $date, $description, $note, $image, $published, $error, $page_title)
+function renderForm ($id, $name, $id_campaign, $id_waypoint, $id_specie, $specie_count, $entity, $date, $description, $note, $image, $published, $error, $page_title)
 {
     if ($error != '')
     {
@@ -212,7 +212,7 @@ function renderForm ($id, $name, $id_campaing, $id_waypoint, $id_specie, $specie
                     <?php field_text ('Name', 'name', $name, 'Enter the Tomb name', 'required'); ?>
                     <div class="row">
                         <div class="col-12 col-md-6">
-                            <?php field_selectDB ('Campaing', 'id_campaing', $id_campaing, 'name', 'camp_campaigns', 'camp_tombs', 'id', '<option>-- Choose --</option>', 0); ?>
+                            <?php field_selectDB ('Campaign', 'id_campaign', $id_campaign, 'name', 'camp_campaigns', 'camp_tombs', 'id', '<option>-- Choose --</option>', 0); ?>
                         </div>
                         <div class="col-12 col-md-6">
                             <?php field_selectDB ('Waypoint', 'id_waypoint', $id_waypoint, 'CONCAT(name, " - ", note)', 'wpt_waypoints', 'camp_tombs', 'id', '<option>-- Choose --</option>', 0); ?>
