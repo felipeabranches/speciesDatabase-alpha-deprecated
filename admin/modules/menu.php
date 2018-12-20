@@ -21,7 +21,7 @@
                 </div>
             </li>
             <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownWaypoints" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Campaings</a>
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownWaypoints" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Waypoints</a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdownWaypoints">
                     <a class="dropdown-item" href="wpt_waypoints.php?order_by=id">Waypoints</a>
                     <div class="dropdown-divider"></div>
