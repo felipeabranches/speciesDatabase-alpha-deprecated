@@ -32,7 +32,7 @@ if (isset($_POST['save']))
     $specie_count = mysqli_real_escape_string($mysqli, htmlspecialchars($_POST['specie_count']));
     $entity = mysqli_real_escape_string($mysqli, htmlspecialchars($_POST['entity']));
     $date = mysqli_real_escape_string($mysqli, htmlspecialchars($_POST['date']));
-    $description = mysqli_real_escape_string($mysqli, htmlspecialchars($_POST['description']));
+    $description = mysqli_real_escape_string($mysqli, $_POST['description']);
     $note = mysqli_real_escape_string($mysqli, htmlspecialchars($_POST['note']));
     $image = mysqli_real_escape_string($mysqli, htmlspecialchars($_POST['image']));
     $published = mysqli_real_escape_string($mysqli, htmlspecialchars($_POST['published']));
