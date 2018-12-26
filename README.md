@@ -10,3 +10,9 @@ Configuration
 - Complete with a title that match with your id from the line below: echo \'Choose a title\';
 - Complete with a disere id to be this list parent: taxa_recursive_tree(\'id\');
 - Create your custom modules in "modules" folder and insert then in this field: include_once \'modules/your_custom_module.php\';
+
+# speciesDatabase
+Made with the help of
+- Bootstrap https://getbootstrap.com/
+- Font Awesome https://fontawesome.com/
+- Tiny MCE https://www.tiny.cloud/
