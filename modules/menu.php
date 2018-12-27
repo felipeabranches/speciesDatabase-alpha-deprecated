@@ -19,13 +19,13 @@
                 <a class="nav-link" href="waypoints_card.php?id=0&order_by=id">Waypoints</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="tombs_table.php">Tombs</a>
+                <a class="nav-link" href="tombs_table.php?id=0&order_by=tb.id">Tombs</a>
             </li>
         </ul>
-        <ul class="navbar-nav">
+        <!--ul class="navbar-nav">
             <li class="nav-item">
                 <a class="nav-link" href="admin">Admin</a>
             </li>
-        </ul>
+        </ul-->
     </div>
 </nav>
