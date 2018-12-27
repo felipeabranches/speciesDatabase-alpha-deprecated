@@ -1,6 +1,5 @@
 <?php
-include_once ('includes/connect.php');
-
+// Some workaround so we have absolute paths both in local and remote enviroments
 $base_dir  = __DIR__; // Absolute path to your installation, ex: /var/www/mywebsite
 $doc_root  = preg_replace("!${_SERVER['SCRIPT_NAME']}$!", '', $_SERVER['SCRIPT_FILENAME']); # ex: /var/www
 $base_url  = preg_replace("!^${doc_root}!", '', $base_dir); # ex: '' or '/mywebsite'
@@ -18,6 +17,7 @@ else
     $base_url = "${protocol}://${domain}${disp_port}${base_url}"; # Ex: 'http://example.com', 'https://example.com/mywebsite', etc.
 }
 
+// Global vars
 $author = 'speciesDatabase';
 $site_name = 'speciesDatabase';
 $bootstrap_cdn = 0;
@@ -25,4 +25,12 @@ $bootstrap_vsn = '4.1.3';
 $bootstrap_path = $base_url.'/libraries/bootstrap-'.$bootstrap_vsn.'-dist';
 $tinymce_vsn = '4.7.10';
 $tinymce_path = $base_url.'/libraries/tinymce_'.$tinymce_vsn;
+
+// To the Admin menu, needs a better place to be in the future
+define('ADMIN', $base_url.'/admin/');
+define('SYSTEMATICS', ADMIN.'systematics/');
+define('FIELD', ADMIN.'field/');
+define('MUSEUM', ADMIN.'museum/');
+
+include_once ('includes/connect.php');
 ?>

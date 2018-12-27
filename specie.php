@@ -153,54 +153,49 @@ $id = $_GET['id'];
             <div class="my-3 p-3 bg-white rounded box-shadow">
                 <h5>Tombs</h5>
                 <?php
-                $sql = 'SELECT t.id AS tombID, t.name AS tomb, t.specie_count AS n
-                        FROM camp_tombs AS t
-                        LEFT JOIN sp_species AS s
-                            ON t.id_specie = s.id
-                        WHERE s.id = '.$id.'
-                        ';
-                $result = mysqli_query($mysqli, $sql);
-                if(!$result->num_rows)
-                {
-                    echo '<p>No entries</p>';
-                }
-                else
-                {
+                include_once $base_dir.'/libraries/museum/tombs.php';
+                $tombs = new Tombs;
+                $tbResult = mysqli_query($mysqli, $tombs->getTinyTombs($id, 'WHERE tb.published=1', 'tb.id', 'sp'));
                 ?>
+                <?php if(!$tbResult->num_rows): ?>
+                <span>No entries</span>
+                <?php else: ?>
                 <table class="table table-striped table-hover table-sm small">
                     <caption>Tombs</caption>
                     <thead>
                         <tr>
                             <th scope="col">Tomb</th>
+                            <th scope="col">Campaign</th>
+                            <th scope="col">Waypoint</th>
                             <th scope="col">N</th>
                         </tr>
                     </thead>
                     <tbody>
-                    <?php
-                    $nTotal = 0;
-                    while ($row = mysqli_fetch_object($result))
-                    {
-                        ?>
+                        <?php $nTotal = 0; ?>
+                        <?php while ($tb = mysqli_fetch_object($tbResult)): ?>
                         <tr scope="row">
-                            <td><a href="tomb.php?id=<?php echo $row->tombID; ?>"><?php echo $row->tomb; ?></a></td>
-                            <td><?php echo $row->n; ?></td>
+                            <td><a href="tomb.php?id=<?php echo $tb->tbID; ?>"><?php echo $tb->tomb; ?></a></td>
+                            <td><a href="campaign.php?id=<?php echo $tb->cpID; ?>"><?php echo $tb->campaign; ?></a></td>
+                            <td>
+                                <a href="waypoint.php?id=<?php echo $tb->wptID; ?>"><?php echo $tb->waypoint; ?></a>
+                                <?php if ($tb->wptNote): ?>
+                                <span data-toggle="tooltip" data-placement="top" title="<?php echo $tb->wptNote; ?>"><i class="fas fa-info-circle"></i></span>
+                                <?php endif; ?>
+                            </td>
+                            <td><?php echo $tb->n; ?></td>
                         </tr>
-                        <?php
-                        $nTotal += $row->n;
-                    }
-                    ?>
+                        <?php $nTotal += $tb->n; ?>
+                        <?php endwhile; ?>
                     </tbody>
                     <tfoot>
                         <tr scope="row">
-                            <td>Total</td>
+                            <td colspan="3">Total</td>
                             <td><?php echo $nTotal; ?></td>
                         </tr>
                     </tfoot>
-                <?php
-                }
-                mysqli_free_result($result);
-                ?>
                 </table>
+                <?php endif; ?>
+                <?php mysqli_free_result($tbResult); ?>
             </div>
 
             <div class="my-3 p-3 bg-white rounded box-shadow">
@@ -231,6 +226,11 @@ $id = $_GET['id'];
         </div>
     </div>
 </div>
-<?php include_once 'modules/footer.php'; ?>
+<?php include_once $base_dir.'/modules/footer.php'; ?>
+<script>
+$(function () {
+    $('[data-toggle="tooltip"]').tooltip()
+})
+</script>
 </body>
 </html>

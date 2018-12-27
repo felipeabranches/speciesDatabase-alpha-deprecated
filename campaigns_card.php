@@ -4,7 +4,7 @@ $id = $_GET['id'];
 $order_by = $_GET['order_by'];
 $page_title = 'Campaigns';
 
-include_once 'libraries/campaigns/campaigns.php';
+include_once 'libraries/waypoints/campaigns.php';
 $campaigns = new Campaigns;
 $result = mysqli_query($mysqli, $campaigns->getCampaigns($id, $order_by));
 ?>
@@ -63,6 +63,6 @@ $result = mysqli_query($mysqli, $campaigns->getCampaigns($id, $order_by));
         <?php mysqli_close($mysqli); ?>
     </div>
 </div>
-<?php include_once 'modules/footer.php'; ?>
+<?php include_once $base_dir.'/modules/footer.php'; ?>
 </body>
 </html>

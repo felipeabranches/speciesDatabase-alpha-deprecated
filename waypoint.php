@@ -1,9 +1,9 @@
 <?php
 include_once 'init.php';
-$id = $_GET['id'];
 $page_title = 'Waypoint';
+$id = $_GET['id'];
 
-include_once 'libraries/campaigns/waypoints.php';
+include_once 'libraries/waypoints/waypoints.php';
 $waypoint = new Waypoints;
 $result = mysqli_query($mysqli, $waypoint->getWaypoint($id));
 $wpt = mysqli_fetch_object($result);
@@ -136,7 +136,11 @@ $wpt = mysqli_fetch_object($result);
         <div class="col-12 col-md-6">
             <div class="my-3 p-3 bg-white rounded box-shadow">
                 <h5>Tombs</h5>
-                <?php $tbResult = mysqli_query($mysqli, $waypoint->getTombs($id)); ?>
+                <?php
+                include_once $base_dir.'/libraries/museum/tombs.php';
+                $tombs = new Tombs;
+                $tbResult = mysqli_query($mysqli, $tombs->getTinyTombs($id, 'WHERE tb.published=1', 'tb.id', 'wpt'));
+                ?>
                 <?php if (!$tbResult->num_rows): ?>
                 <p>No entries</p>
                 <?php else: ?>
@@ -146,7 +150,7 @@ $wpt = mysqli_fetch_object($result);
                         <tr>
                             <th scope="col">Tomb</th>
                             <th scope="col">Specie</th>
-                            <th scope="col">Waypoint</th>
+                            <th scope="col">Campaign</th>
                             <th scope="col">N</th>
                         </tr>
                     </thead>
@@ -154,14 +158,9 @@ $wpt = mysqli_fetch_object($result);
                         <?php $nTotal = 0; ?>
                         <?php while ($tb = mysqli_fetch_object($tbResult)): ?>
                         <tr scope="row">
-                            <td><a href="tomb.php?id=<?php echo $tb->tombID; ?>"><?php echo $tb->tomb; ?></a></td>
+                            <td><a href="tomb.php?id=<?php echo $tb->tbID; ?>"><?php echo $tb->tomb; ?></a></td>
                             <td><a href="specie.php?id=<?php echo $tb->spID; ?>"><?php echo $tb->nomenclature; ?></a></td>
-                            <td>
-                                <a href="waypoint.php?id=<?php echo $tb->wptID; ?>"><?php echo $tb->waypoint; ?></a>
-                                <?php if ($tb->wptNote): ?>
-                                <span data-toggle="tooltip" data-placement="top" title="<?php echo $tb->wptNote; ?>"><i class="fas fa-info-circle"></i></span>
-                                <?php endif; ?>
-                            </td>
+                            <td><a href="campaign.php?id=<?php echo $tb->cpID; ?>"><?php echo $tb->campaign; ?></a></td>
                             <td>
                                 <?php echo $tb->n; ?>
                                 <?php if ($tb->tbNote): ?>
@@ -199,7 +198,7 @@ $wpt = mysqli_fetch_object($result);
     </div>
 </div>
 <?php mysqli_close($mysqli); ?>
-<?php include_once 'modules/footer.php'; ?>
+<?php include_once $base_dir.'modules/footer.php'; ?>
 <script>
 $(function () {
     $('[data-toggle="tooltip"]').tooltip()
