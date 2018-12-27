@@ -1,6 +1,4 @@
 <?php
-include_once '../init.php';
-
 function field_checkbox ($label, $field, $value, $attributes)
 {
 ?>
@@ -70,6 +68,12 @@ function field_select ($label, $field, $values, $table, $id, $selected, $option,
 ?>
 <div class="form-group">
     <label for="<?php echo $field; ?>"><?php echo $label; ?></label>
+    <!--div class="alert alert-warning alert-dismissible fade show" role="alert">
+        <strong>Warning!</strong> Function field_selectDB deprecated. Use libraries/html/Fields.php >> Fields->selectDB instead.
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div-->
     <select id="<?php echo $field; ?>" class="form-control" name="<?php echo $field; ?>"<?php if($multiple) echo ' multiple'; ?>>
         <?php
         echo $option;
@@ -94,7 +98,7 @@ if($value)
 {
     $toSql = 'SELECT '.$field.' FROM '.$toTable.' WHERE '.$where.' = '.$value;
     $toResult = $mysqli->query($toSql);
-    $toRow = mysqli_fetch_assoc($toResult);
+    $toRow = mysqli_fetch_row($toResult);
     $selected = '';
 /*
     if($toRow[$field] == $fromRow['id'])
@@ -110,6 +114,12 @@ if($value)
 ?>
 <div class="form-group">
     <label for="<?php echo $field; ?>"><?php echo $label; ?></label>
+    <!--div class="alert alert-warning alert-dismissible fade show" role="alert">
+        <strong>Warning!</strong> Function field_selectDB deprecated. Use libraries/html/Fields.php >> Fields->selectDB instead.
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div-->
     <select id="<?php echo $field; ?>" class="form-control" name="<?php echo $field; ?>"<?php if($multiple) echo ' multiple'; ?>>
         <?php
         echo $option;
@@ -141,6 +151,12 @@ function field_text ($label, $field, $value, $placeholder, $attributes)
 ?>
 <div class="form-group">
     <label for="<?php echo $field; ?>"><?php echo $label; ?><?php if ($attributes == 'required') echo ' *'; ?></label>
+    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+        <strong>Warning!</strong> Function field_text deprecated. Use libraries/html/Fields.php >> Fields->text instead.
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
     <input type="text" class="form-control" name="<?php echo $field; ?>" id="<?php echo $field; ?>" aria-describedby="<?php echo $field; ?>Help" value="<?php echo $value; ?>" placeholder="<?php echo $placeholder; ?>"<?php if ($attributes) echo ' '.$attributes; ?>>
 </div>
 <?php
@@ -150,6 +166,12 @@ function field_textarea ($label, $field, $value, $attributes)
 {
 ?>
 <label for="<?php echo $field; ?>"><?php echo $label; ?><?php if ($attributes == 'required') echo ' *'; ?></label>
+<div class="alert alert-warning alert-dismissible fade show" role="alert">
+    <strong>Warning!</strong> Function field_textarea deprecated. Use libraries/html/Fields.php >> Fields->textarea instead.
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
 <textarea class="form-control" id="<?php echo $field; ?>" name="<?php echo $field; ?>" <?php if ($attributes) echo ' '.$attributes; ?>><?php echo $value; ?></textarea>
 <?php
 }
@@ -170,15 +192,19 @@ function field_toggle ($label, $field, $values, $table, $id, $checked, $class)
         $checked = $row[$field];
     }
     //echo $checked;
-?>
-    <div class="form-toggle<?php if ($class) echo ' '.$class; ?>">
-        <div class="form-label"><?php echo $label; ?></div>
-        <?php foreach ($values as $key => $value): ?>
-            <?php $n = mt_rand (0, 99); ?>
-            <input type="radio" name="<?php echo $field; ?>" id="<?php echo $value.$n; ?>" value="<?php echo $key; ?>"<?php if ($key == $checked) echo ' checked'; ?> />
-            <label for="<?php echo $value.$n; ?>"><?php echo ucfirst($value); ?></label>
-        <?php endforeach; ?>
-    </div>
+    ?>
+    <div class="form-label"><?php echo $label; ?></div>
+    <!--div class="alert alert-warning alert-dismissible fade show" role="alert">
+        <strong>Warning!</strong> Function field_toggle deprecated. Use libraries/html/Fields.php >> Fields->radioToggle instead.
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div-->
+    <?php foreach ($values as $key => $value): ?>
+        <?php $n = mt_rand (0, 99); ?>
+        <input type="radio" name="<?php echo $field; ?>" id="<?php echo $value.$n; ?>" value="<?php echo $key; ?>"<?php if ($key == $checked) echo ' checked'; ?> />
+        <label for="<?php echo $value.$n; ?>"><?php echo ucfirst($value); ?></label>
+    <?php endforeach; ?>
 <?php
 }
 

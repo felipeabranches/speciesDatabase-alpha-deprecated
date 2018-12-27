@@ -39,14 +39,16 @@ class Waypoints
                     unit.name AS unit,
                     untt.name AS unitType
                 FROM wpt_waypoints AS wpt
-                LEFT JOIN camp_units AS unit
+                LEFT JOIN wpt_units AS unit
                     ON unit.id = wpt.id_unit
-                LEFT JOIN camp_units_types AS untt
+                LEFT JOIN wpt_units_types AS untt
                     ON untt.id = unit.id_type
                 WHERE wpt.published = 1'.$id.'
                 ORDER BY wpt.'.$order_by.'
                 ;';
         
+        //if ($debug_mode) echo $sql;
+
         return $sql;
     }
 
@@ -62,38 +64,21 @@ class Waypoints
         return $sql;
     }
     
-    public function getTombs($id)
-    {
-        $sql = 'SELECT
-                    tb.id AS tombID, tb.name AS tomb, tb.specie_count AS n, tb.note AS tbNote,
-                    wpt.id AS wptID, wpt.name AS waypoint, wpt.note AS wptNote,
-                    sp.id AS spID, CONCAT(sp.genus, " ", sp.specie) AS nomenclature
-                FROM camp_tombs AS tb
-                LEFT JOIN wpt_waypoints AS wpt
-                    ON wpt.id = tb.id_waypoint
-                LEFT JOIN sp_species AS sp
-                    ON sp.id = tb.id_specie
-                WHERE wpt.published = 1
-                    AND wpt.id = '.$id.'
-                ORDER BY tb.id
-                ;';
-
-        return $sql;
-    }
-
     public function getCampaigns($id)
     {
         $sql = 'SELECT
                     DISTINCT cp.id AS id, cp.name AS name, cp.note AS note
                 FROM camp_tombs AS tb
-                LEFT JOIN camp_campaings AS cp
-                    ON cp.id = tb.id_campaing
+                LEFT JOIN camp_campaigns AS cp
+                    ON cp.id = tb.id_campaign
                 LEFT JOIN wpt_waypoints AS wpt
                     ON wpt.id = tb.id_waypoint
                 WHERE tb.published = 1
                     AND wpt.id = '.$id.'
                 ORDER BY cp.id
                 ';
+
+        //if ($debug_mode) echo $sql;
 
         return $sql;
     }
