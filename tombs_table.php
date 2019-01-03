@@ -1,6 +1,12 @@
 <?php
 include_once 'init.php';
 $page_title = 'Tombs';
+$id = $_GET['id'];
+$order_by = $_GET['order_by'];
+
+include_once 'libraries/museum/tombs.php';
+$tombs = new Tombs;
+$result = mysqli_query($mysqli, $tombs->getTombs($id, 'tb.published = 1', $order_by));
 ?>
 <!doctype html>
 <html lang="pt">
@@ -21,102 +27,64 @@ $page_title = 'Tombs';
         <div class="col-6">
             <h4><?php echo $page_title; ?></h4>
         </div>
-        <div class="col-6 text-right">
-            <button class="btn btn-primary disabled"><i class="fas fa-download"></i> Export as sheet</button>
-            <a href="tombs_card.php?id=0" class="btn btn-primary" role="button"><i class="fas fa-print"></i> Print all Tombs' labels</a>
-        </div>
     </div>
+
     <div class="row">
         <div class="col-12">
             <div class="my-3 p-3 bg-white rounded box-shadow">
-                <?php
-                $sql = 'SELECT
-                            t.id AS id, t.name AS tomb, t.entity AS determinator, t.date AS tDate, t.specie_count AS n, t.note AS tmbNote,
-                            camp.id AS campID, camp.name AS campaign, camp.date AS cDate, camp.entity AS collector,
-                            wpt.name AS waypoint, wpt.place AS place, wpt.latitude AS latitude, wpt.longitude AS longitude, wpt.note AS wptNote,
-                            un.name AS unit,
-                            sp.id AS spID, CONCAT(sp.genus, " ", sp.specie) AS nomenclature
-                        FROM camp_tombs AS t
-                        LEFT JOIN camp_campaigns AS camp
-                            ON camp.id = t.id_campaign
-                        LEFT JOIN wpt_waypoints AS wpt
-                            ON wpt.id = t.id_waypoint
-                        LEFT JOIN wpt_units AS un
-                            ON un.id = wpt.id_unit
-                        LEFT JOIN sp_species AS sp
-                            ON sp.id = t.id_specie
-                        WHERE t.published = 1
-                        ORDER BY t.id
-                        ';
-
-                if($result = mysqli_query($mysqli,$sql))
-                {
-                    if(!$result->num_rows)
-                    {
-                        echo '<p>No entries</p>';
-                    }
-                    else
-                    {
-                        ?>
+                <?php if(!$result->num_rows): ?>
+                <span>No entries</span>
+                <?php else: ?>
                 <div class="table-responsive">
                     <table class="table table-striped table-hover table-sm small">
                         <caption>Tombs</caption>
                         <thead>
                             <tr>
-                                <th scope="col">Tomb</th>
-                                <th scope="col">Campaign</th>
-                                <th scope="col">Specie</th>
-                                <th scope="col">Collected</th>
-                                <th scope="col">Unit</th>
-                                <th scope="col">Waypoint</th>
-                                <th scope="col">Place</th>
-                                <th scope="col">Collector</th>
+                                <th scope="col"><a href="tombs_table.php?id=0&order_by=tb.name">Tomb</a></th>
                                 <th scope="col">Determinator</th>
                                 <th scope="col">Determined</th>
+                                <th scope="col"><a href="tombs_table.php?id=0&order_by=cp.name">Campaign</a></th>
+                                <th scope="col">Collector</th>
+                                <th scope="col">Collected</th>
+                                <th scope="col"><a href="tombs_table.php?id=0&order_by=wpt.name">Waypoint</a></th>
+                                <th scope="col">Unit</th>
+                                <th scope="col">Place</th>
                                 <th scope="col">Latitude</th>
                                 <th scope="col">Longitude</th>
+                                <th scope="col"><a href="tombs_table.php?id=0&order_by=sp.genus,sp.specie">Specie</a></th>
                                 <th scope="col">N</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <?php
-                            $nTotal = 0;
-                            // Fetch one and one row
-                            while ($row = mysqli_fetch_object($result))
-                            {
-                            ?>
+                            <?php $nTotal = 0; ?>
+                            <?php while ($row = mysqli_fetch_object($result)): ?>
                             <tr scope="row">
+                                <td><a href="tomb.php?id=<?php echo $row->tbID; ?>"><?php echo $row->tomb; ?></a></td>
+                                <td><?php echo $row->tbEntity; ?></td>
+                                <td><?php echo $row->tbDate; ?></td>
+                                <td><a href="campaign.php?id=<?php echo $row->cpID; ?>"><?php echo $row->campaign; ?></a></td>
+                                <td><?php echo $row->cpEntity; ?></td>
+                                <td><?php echo $row->cpDate; ?></td>
                                 <td>
-                                    <a href="tomb.php?id=<?php echo $row->id; ?>"><?php echo $row->tomb; ?></a>
-                                    <a href="tombs_card.php?id=<?php echo $row->id; ?>" class="badge badge-dark" title="Print <?php echo $row->tomb; ?> label"><i class="fas fa-print"></i></a>
-                                </td>
-                                <td><a href="campaign.php?id=<?php echo $row->campID; ?>"><?php echo $row->campaign; ?></a></td>
-                                <td><a href="specie.php?id=<?php echo $row->spID; ?>"><?php echo $row->nomenclature; ?></a></td>
-                                <td><?php echo $row->cDate; ?></td>
-                                <td><?php echo $row->unit; ?></td>
-                                <td>
-                                    <?php echo $row->waypoint; ?>
+                                    <a href="waypoint.php?id=<?php echo $row->wptID; ?>"><?php echo $row->waypoint; ?></a>
                                     <?php if ($row->wptNote): ?>
                                         <span data-toggle="tooltip" data-placement="top" title="<?php echo $row->wptNote; ?>"><i class="fas fa-info-circle"></i></span>
                                     <?php endif; ?>
                                 </td>
+                                <td><?php echo $row->unit; ?></td>
                                 <td><?php echo $row->place; ?></td>
-                                <td><?php echo $row->collector; ?></td>
-                                <td><?php echo $row->determinator; ?></td>
-                                <td><?php echo $row->tDate; ?></td>
                                 <td><?php echo $row->latitude; ?></td>
                                 <td><?php echo $row->longitude; ?></td>
+                                <td><a href="specie.php?id=<?php echo $row->spID; ?>"><?php echo $row->genus.' '.$row->specie; ?></a></td>
                                 <td>
                                     <?php echo $row->n; ?>
-                                    <?php if ($row->tmbNote): ?>
-                                        <span data-toggle="tooltip" data-placement="top" title="<?php echo $row->tmbNote; ?>"><i class="fas fa-info-circle"></i></span>
+                                    <?php if ($row->tbNote): ?>
+                                        <span data-toggle="tooltip" data-placement="top" title="<?php echo $row->tbNote; ?>"><i class="fas fa-info-circle"></i></span>
                                     <?php endif; ?>
                                 </td>
                             </tr>
-                            <?php
-                                $nTotal += $row->n;
-                            }
-                        ?>
+                            <?php $nTotal += $row->n; ?>
+                            <?php endwhile; ?>
                         </tbody>
                         <tfoot scope="row">
                             <tr>
@@ -124,17 +92,11 @@ $page_title = 'Tombs';
                                 <td><?php echo $nTotal; ?></td>
                             </tr>
                         </tfoot>
-                        <?php
-                        // Free result set
-                        mysqli_free_result($result);
-                        ?>
                     </table>
                 </div>
-                <?php
-                    }
-                }
-                mysqli_close($mysqli);
-                ?>
+                <?php endif; ?>
+                <?php mysqli_free_result($result); ?>
+                <?php mysqli_close($mysqli); ?>
             </div>
         </div>
     </div>

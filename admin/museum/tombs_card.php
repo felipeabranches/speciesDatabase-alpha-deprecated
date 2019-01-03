@@ -1,6 +1,6 @@
 <?php
-include_once 'init.php';
-$page_title = 'Tombs';
+include_once '../../init.php';
+$page_title = 'Print Tombs\' Labels';
 $id = (!$_GET['id']) ? '' : ' AND t.id IN ('.$_GET['id'].')';
 ?>
 <!doctype html>
@@ -12,15 +12,19 @@ $id = (!$_GET['id']) ? '' : ' AND t.id IN ('.$_GET['id'].')';
     <meta name="keywords" content="">
     <meta name="author" content="<?php echo $author; ?>">
 	<title><?php echo $page_title; ?> - <?php echo $site_name; ?></title>
-    <?php include_once 'modules/head.php'; ?>
+    <?php include_once $base_dir.'/modules/head.php'; ?>
 </head>
 
 <body class="bg-light">
-<?php include_once 'modules/menu.php'; ?>
+<?php include_once $base_dir.'/admin/modules/menu.php'; ?>
 <div class="container-fluid" role="main">
     <div class="toolbar sticky-top row my-2 p-2 d-print-none">
         <div class="col-12">
-            <h4><?php echo $page_title; ?></h4>
+            <h4 class="float-left"><?php echo $page_title; ?></h4>
+            <div class="float-right">
+                <a href="<?php echo MUSEUM; ?>tombs.php?id=0&where&order_by=tb.id" class="btn btn-primary btn-sm"><i class="fas fa-chevron-left "></i>Back to Tombs</a>
+                <a href="tomb.php?id=0" class="btn btn-primary btn-sm" role="button"><i class="fas fa-plus"></i>New</a>
+            </div>
         </div>
     </div>
     <div class="row">
@@ -81,6 +85,6 @@ $id = (!$_GET['id']) ? '' : ' AND t.id IN ('.$_GET['id'].')';
         ?>
     </div>
 </div>
-<?php include_once 'modules/footer.php'; ?>
+<?php include_once $base_dir.'/modules/footer.php'; ?>
 </body>
 </html>

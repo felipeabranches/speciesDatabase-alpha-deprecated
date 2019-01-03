@@ -56,27 +56,6 @@ class Campaigns
         return $sql;
     }
 
-    public function getTombs($id)
-    {
-        $sql = 'SELECT
-                    tb.id AS tombID, tb.name AS tomb, tb.specie_count AS n, tb.note AS tbNote,
-                    wpt.id AS wptID, wpt.name AS waypoint, wpt.note AS wptNote,
-                    sp.id AS spID, CONCAT(sp.genus, " ", sp.specie) AS nomenclature
-                FROM camp_tombs AS tb
-                LEFT JOIN camp_campaigns AS cp
-                    ON cp.id = tb.id_campaign
-                LEFT JOIN wpt_waypoints AS wpt
-                    ON wpt.id = tb.id_waypoint
-                LEFT JOIN sp_species AS sp
-                    ON sp.id = tb.id_specie
-                WHERE tb.published = 1
-                    AND cp.id = '.$id.'
-                ORDER BY tb.id
-                ';
-
-        return $sql;
-    }
-    
     public function getWaypoints($id)
     {
         $sql = 'SELECT

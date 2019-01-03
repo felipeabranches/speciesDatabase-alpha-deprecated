@@ -1,8 +1,11 @@
 <?php
-include_once '../init.php';
-include_once '../libraries/fields/fields.php';
+include_once '../../init.php';
 $page_title = 'Tomb';
 $id = $_GET['id'];
+
+require_once $base_dir.'/libraries/fields/fields.php';
+require_once $base_dir.'/libraries/html/Fields.php';
+$field = new Fields;
 ?>
 <!doctype html>
 <html lang="pt">
@@ -13,11 +16,11 @@ $id = $_GET['id'];
     <meta name="keywords" content="">
     <meta name="author" content="<?php echo $author; ?>">
 	<title><?php echo (!$id) ? 'New' : 'Edit'; ?> <?php echo $page_title; ?> - <?php echo $site_name; ?></title>
-    <?php include_once '../modules/head.php'; ?>
+    <?php include_once $base_dir.'/modules/head.php'; ?>
 </head>
 
 <body class="bg-light">
-<?php include_once 'modules/menu.php'; ?>
+<?php include_once $base_dir.'/admin/modules/menu.php'; ?>
 <div class="container-fluid" role="main">
 
 <?php
@@ -37,7 +40,7 @@ if (isset($_POST['save']))
     $image = mysqli_real_escape_string($mysqli, htmlspecialchars($_POST['image']));
     $published = mysqli_real_escape_string($mysqli, htmlspecialchars($_POST['published']));
 
-    // check to make sure fields are entered
+    // check to make sure required fields are entered
     if ($name == '')
     {
         // generate error message
@@ -76,9 +79,6 @@ if (isset($_POST['save']))
                         </button>
                       </div>'."\n";
             }
-
-            // once saved, redirect back to the view page
-            header ("Location: camp_tombs.php"); //header("refresh:3;url=camp_tombs.php");
         }
         else
         {
@@ -115,9 +115,6 @@ if (isset($_POST['save']))
                             </button>
                           </div>'."\n";
                 }
-
-                // once saved, redirect back to the view page
-                header ("Location: camp_tombs.php"); //header("refresh:3;url=camp_tombs.php");
             }
             else
             {
@@ -190,6 +187,8 @@ else
  */
 function renderForm ($id, $name, $id_campaign, $id_waypoint, $id_specie, $specie_count, $entity, $date, $description, $note, $image, $published, $error, $page_title)
 {
+    global $field;
+
     if ($error != '')
     {
         echo '<div style="border:1px solid red; color:red; padding:4px;">'.$error.'</div>';
@@ -198,21 +197,27 @@ function renderForm ($id, $name, $id_campaign, $id_waypoint, $id_specie, $specie
     <form action="" method="post">
         <?php if ($id) echo '<input type="hidden" name="id" value="'.$id.'" />'; ?>
         <div class="toolbar sticky-top row my-2 p-2">
-            <div class="col-12 col-md-10">
-                <h4><?php echo (!$id) ? 'New' : 'Edit'; ?> <?php echo $page_title; ?></h4>
-            </div>
-            <div class="col-12 col-md-2 text-right">
-                <button type="submit" name="save" class="btn btn-primary">Save</button>
-                <a href="camp_tombs.php?order_by=id" class="btn btn-outline-danger" role="button">Cancel</a>
+            <div class="col-12">
+                <h4 class="float-left"><?php echo (!$id) ? 'New' : 'Edit'; ?> <?php echo $page_title; ?></h4>
+                <div class="float-right">
+                    <button type="submit" name="save" class="btn btn-primary btn-sm"><i class="fas fa-check"></i>Save</button>
+                    <a href="<?php echo MUSEUM; ?>tombs.php?id&where&order_by=tb.id" class="btn btn-outline-danger btn-sm" role="button"><i class="fas fa-times"></i>Cancel</a>
+                </div>
             </div>
         </div>
         <div class="row">
             <div class="col-12 col-md-8">
                 <div class="my-3 p-3 bg-white rounded box-shadow">
-                    <?php field_text ('Name', 'name', $name, 'Enter the Tomb name', 'required'); ?>
+                    <?php $field->text ('Name', 'name', $name, 'Enter the Tomb name', 'required'); ?>
                     <div class="row">
                         <div class="col-12 col-md-6">
-                            <?php field_selectDB ('Campaign', 'id_campaign', $id_campaign, 'name', 'camp_campaigns', 'camp_tombs', 'id', '<option>-- Choose --</option>', 0); ?>
+                            <?php $field->text ('Entity', 'entity', $entity, 'Enter the Tomb\'s Entity name', ''); ?>
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <?php field_date ('Date', 'date', $date, 'Enter the Tomb\'s Date in YYYY-MM-DD format', ''); ?>
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <?php field_selectDB ('Campaing', 'id_campaign', $id_campaign, 'name', 'camp_campaigns', 'camp_tombs', 'id', '<option>-- Choose --</option>', 0); ?>
                         </div>
                         <div class="col-12 col-md-6">
                             <?php field_selectDB ('Waypoint', 'id_waypoint', $id_waypoint, 'CONCAT(name, " - ", note)', 'wpt_waypoints', 'camp_tombs', 'id', '<option>-- Choose --</option>', 0); ?>
@@ -223,16 +228,10 @@ function renderForm ($id, $name, $id_campaign, $id_waypoint, $id_specie, $specie
                         <div class="col-12 col-md-6">
                             <?php field_number ('Specie count', 'specie_count', $specie_count, 'Enter the Specie count', '1', '999', '1'); ?>
                         </div>
-                        <div class="col-12 col-md-6">
-                            <?php field_text ('Entity', 'entity', $entity, 'Enter the Tomb\'s Entity name', ''); ?>
-                        </div>
-                        <div class="col-12 col-md-6">
-                            <?php field_date ('Date', 'date', $date, 'Enter the Tomb\'s Date in YYYY-MM-DD format', ''); ?>
-                        </div>
                     </div>
                 </div>
                 <div class="my-3 p-3 bg-white rounded box-shadow">
-                    <?php field_textarea ('Description', 'description', $description, '', ''); ?>
+                    <?php $field->textarea ('Description', 'description', $description, '', ''); ?>
                 </div>
             </div>
 
@@ -244,11 +243,11 @@ function renderForm ($id, $name, $id_campaign, $id_waypoint, $id_specie, $specie
                 </div>
                 <div class="my-3 p-3 bg-white rounded box-shadow">
                     <h5>Media</h5>
-                    <?php field_text ('Image', 'image', $image, 'Enter the Image path', ''); ?>
+                    <?php $field->text ('Image', 'image', $image, 'Enter the Image path', ''); ?>
                 </div>
                 <div class="my-3 p-3 bg-white rounded box-shadow">
                     <h5>Others</h5>
-                    <?php field_text ('Note', 'note', $note, 'Enter some notes...', ''); ?>
+                    <?php $field->text ('Note', 'note', $note, 'Enter some notes...', ''); ?>
                 </div>
             </div>
         </div>
@@ -257,7 +256,7 @@ function renderForm ($id, $name, $id_campaign, $id_waypoint, $id_specie, $specie
 }
 ?>
 </div>
-<?php include_once '../modules/footer.php'; ?>
+<?php include_once $base_dir.'/modules/footer.php'; ?>
 <!-- TinyMCE -->
 <script src="<?php echo $tinymce_path; ?>/tinymce/js/tinymce/tinymce.min.js"></script>
 <script>
@@ -266,7 +265,5 @@ function renderForm ($id, $name, $id_campaign, $id_waypoint, $id_specie, $specie
         height: 300
     });
 </script>
-<!-- Fontawesome -->
-<script defer src="https://use.fontawesome.com/releases/v5.0.9/js/all.js" integrity="sha384-8iPTk2s/jMVj81dnzb/iFR2sdA7u06vHJyyLlAd4snFpCl/SnyUjRrbdJsw1pGIl" crossorigin="anonymous"></script>
 </body>
 </html>
