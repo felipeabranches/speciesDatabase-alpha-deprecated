@@ -9,9 +9,8 @@ class Species
         global $mysqli;
 
         $sql = 'SELECT
-                    sp.id AS id, sp.genus AS genus, sp.specie AS specie, sp.dubious AS dubious
+                     sp.genus AS genus, sp.specie AS specie, sp.dubious AS dubious
                 FROM sp_species as sp
-                ORDER BY id
                 ';
 
         $result = mysqli_query($mysqli, $sql);
@@ -20,32 +19,35 @@ class Species
         if ($result_check > 0)
         {
             // Imprime as abreviações se uma especie e dubious
-            while ($row = mysqli_fetch_assoc($result))
+            while ($row = mysqli_fetch_object($result))
             {
-                $dubious = $row['dubious'];
-
-                if ($dubious == 0)
-                {
-                    echo $row['id'] . ' ' . $row['genus'] . ' ' . $row['specie'] . "<br>";
+                
+                switch($row->dubious)
+                {   
+                    case 0:
+                        $dubious = '';
+                        break;
+                    case 1:
+                        $dubious = ' <abbr title="affinis">aff.</abbr>';
+                        break;
+                    case 2:
+                        $dubious = ' <abbr title="conferre">cf.</abbr>';
+                        break;
+                    case 3:
+                        $dubious = ' <abbr title="specie">sp.</abbr>';
+                        break;
+                    default:
+                        $dubious = '';
                 }
-
-                if ($dubious == 1)
-                {
-                    echo $row['id'] . ' ' . $row['genus'] . ' ' . 'affinis' . "<br>";
-                }
-
-                if ($dubious == 2)
-                {
-                    echo $row['id'] . ' ' . $row['genus'] . ' ' . 'cf.'.' '.$row['specie'] . "<br>";
-                }
-
-                if ($dubious == 3)
-                {
-                    echo $row['id'] . ' ' . $row['genus'] . ' ' . $row['specie'] . 'sp.'. "<br>";
-                }
+                
+                $nomenclature = '<em>'.$row->genus.$dubious.' '.$row->specie.'</em>';        
             }
+                
+                
+             
         }
     }
+    
 
     function getTaxonomists()
     {
@@ -56,9 +58,9 @@ class Species
                     GROUP_CONCAT(tt.name) AS taxonomists
                 FROM sp_taxonomists_map AS sptt
                 LEFT JOIN sp_species AS sp
-                    ON sptx.id_specie = sp.id
+                    ON sptt.id_specie = sp.id
                 LEFT JOIN sp_taxonomists AS tt
-                    ON sptx.id_taxonomist = tt.id 
+                    ON sptt.id_taxonomist = tt.id 
                 WHERE sp.published = 1
                     AND sp.validate = 1
                 GROUP BY sp.id
@@ -103,12 +105,7 @@ class Species
                     echo $row['id'].' '. $taxonomist .' '. $year. "<br>";
                 }
 
-                /*
-                $last = array_pop ($taxonomist);
-                $firsts = implode (',', $taxonomist);
-                $taxonomist = sprintf ('%s & %s', $firsts, $last);
-                echo $row['id'].' '. $taxonomist . "<br>";
-                */
+                
             }
         }
     }
@@ -122,3 +119,4 @@ $teste->getNomenclature();
 $teste2 = new Species();
 $teste2->getTaxonomists();
 ?>
+
