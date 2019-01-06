@@ -18,10 +18,9 @@ class Species
 
         if ($result_check > 0)
         {
-            // Imprime as abreviações se uma especie e dubious
             while ($row = mysqli_fetch_object($result))
             {
-                
+                // Associates integer data to its corresponding HTML
                 switch($row->dubious)
                 {   
                     case 0:
@@ -39,12 +38,9 @@ class Species
                     default:
                         $dubious = '';
                 }
-                
+                // Put all nomenclature information into a variable
                 $nomenclature = '<em>'.$row->genus.$dubious.' '.$row->specie.'</em>';        
             }
-                
-                
-             
         }
     }
     
