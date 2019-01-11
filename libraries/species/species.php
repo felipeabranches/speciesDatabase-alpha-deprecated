@@ -107,7 +107,7 @@ class Species
         }
     }
     
-    function getSynonims($id)
+    function getSynonyms($id)
     {
         global $mysqli;
         
@@ -130,7 +130,7 @@ class Species
              
             if (!$row->redirect)
             {   
-                echo 'No entries for synonims';
+                echo 'No entries for synonyms';
             }
             
            
@@ -140,8 +140,8 @@ class Species
                     if (!$row->validate)
                     {
                         $id_redirect = $row->redirect;
-                        $synonim = $this->getNomenclature   ($id_redirect);
-                            return $synonim;
+                        $synonym = $this->getNomenclature   ($id_redirect);
+                            return $synonym;
                     
                     }
                 
