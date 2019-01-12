@@ -15,7 +15,7 @@ $species = new Species();
     <meta name="description" content="">
     <meta name="keywords" content="">
     <meta name="author" content="<?php echo $author; ?>">
-	<title><?php echo $page_title; ?> - <?php echo $site_name; ?></title>
+    <title><?php echo $page_title; ?> - <?php echo $site_name; ?></title>
     <?php include_once $base_dir.'/modules/head.php'; ?>
 </head>
 
