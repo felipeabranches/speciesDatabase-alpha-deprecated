@@ -1,13 +1,21 @@
 <?php
-
 class Species
 {
-    public $sql;
+    public function __construct()
+    {
+        //echo __CLASS__.' class instanciated!<br />';
+    }
+
+    public function __destruct()
+    {
+        //echo __CLASS__.' class destructed!<br />';
+    }
 
     /*
-     *
+     *  $id             int     The Species' ID.
+     *  $stripTags      bool    0 for maintain <em> and <abbr> on Nomenclature, 1 for strip. Default 0.
      */
-    function getNomenclature($id)
+    public function getNomenclature($id, $stripTags = 0)
     {
         global $mysqli;
 
@@ -15,16 +23,19 @@ class Species
                     sp.genus AS genus, sp.specie AS species, sp.dubious AS dubious
                 FROM sp_species as sp
                 WHERE sp.id = '.$id.'
-                ';
+                ;';
 
         $result = mysqli_query($mysqli, $sql);
-        $result_check = mysqli_num_rows($result);
 
-        if ($result_check > 0)
+        if (!$result->num_rows)
+        {
+            return 'Species not found!';
+        }
+        else
         {
             $row = mysqli_fetch_object($result);
 
-            // Associates integer data to its corresponding HTML
+            // Associates Dubious' integer data to its corresponding HTML
             switch ($row->dubious)
             {
                 case 0:
@@ -43,20 +54,24 @@ class Species
                     $dubious = '';
             }
 
-            // If species isn't blank return a space and the value
+            // If Species isn't blank return a space and the value
             $species = (!$row->species) ? '' : ' '.$row->species;
 
-            // Put all nomenclature information into a variable
+            // Put all Nomenclature information into a variable
             $nomenclature = '<em>'.$row->genus.$dubious.$species.'</em>';
+
+            // If stripTags' on, then strip tags from Nomenclature
+            if ($stripTags) $nomenclature = strip_tags($nomenclature);
 
             return $nomenclature;
         }
     }
 
     /*
-     *
+     *  $id             int     The Species' ID
+     *  $yearSeparator  string  Wich string separates the Taxonomists from the Year. Default ' '
      */
-    function getAuthoring($id)
+    public function getAuthoring($id, $yearSeparator = ' ')
     {
         global $mysqli;
 
@@ -70,19 +85,18 @@ class Species
                     ON sptt.id_taxonomist = tt.id
                 WHERE sp.id = '.$id.'
                 GROUP BY sp.id
-                ';
+                ;';
 
         $result = mysqli_query($mysqli, $sql);
-        $result_check = mysqli_num_rows($result);
 
-        if ($result_check > 0)
+        if ($result->num_rows)
         {
             $row = mysqli_fetch_object($result);
  
-            // If a species has authorig, return its value (eg: a genus sp. wouldn't have, and shouldn't return nothing)
+            // If a Species has Authorig, return its value (eg: a Genus sp. wouldn't have, and shouldn't return nothing)
             if ($row->taxonomists)
             {
-                // Process how to display the taxonomists
+                // Process how to display the Taxonomists
                 $taxonomist = explode(',', $row->taxonomists);
                 if (count($taxonomist) == 1)
                 {
@@ -95,66 +109,30 @@ class Species
                     $taxonomist = sprintf('%s & %s', $firsts, $last);
                 }
 
-                // Put all authoring information into a variable, with parentesis only if it's revised
-                $authoring = $taxonomist.', '.$row->year;
-                if($row->revised)
-                {
-                    $authoring = '('.$authoring.')';
-                }
+                // Put all Authoring information into a variable
+                $authoring = $taxonomist.$yearSeparator.$row->year;
+
+                // Put Authoring inside a parentesis only if it's revised
+                if ($row->revised) $authoring = '('.$authoring.')';
 
                 return $authoring;
             }
         }
     }
-    
-    function getSynonyms($id)
+
+    /*
+     *  $id     int     The Species' ID
+     */
+    public function getSynonyms($id)
     {
-        global $mysqli;
-        
         $sql = 'SELECT
-                    sp.id AS id, sp.validate AS validate, sp.redirect AS redirect
+                    sp.id AS id
                 FROM sp_species AS sp
-                WHERE sp.id = '.$id.'
-                
-                ';
-        
+                WHERE sp.redirect = '.$id.'
+                    AND sp.validate = 0
+                ;';
 
-        $result = mysqli_query($mysqli, $sql);
-        $result_check = mysqli_num_rows($result);
-
-        if ($result_check > 0)
-        {
-            
-            while ($row = mysqli_fetch_object($result))
-            {
-             
-            if (!$row->redirect)
-            {   
-                echo 'No entries for synonyms';
-            }
-            
-           
-            
-                if ($row->redirect)
-                {   
-                    if (!$row->validate)
-                    {
-                        $id_redirect = $row->redirect;
-                        $synonym = $this->getNomenclature   ($id_redirect);
-                            return $synonym;
-                    
-                    }
-                
-                }   
-                
-            }
-                
-        }
-        
-    }   
-
+        return $sql;
+    }
 }
-
 ?>
-
-
