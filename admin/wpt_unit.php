@@ -25,7 +25,7 @@ $id = $_GET['id'];
 if (isset($_POST['save']))
 {
     // get form data, making sure it is valid
-    $name = mysqli_real_escape_string($mysqli, htmlspecialchars($_POST['name']));
+    $name = mysqli_real_escape_string($mysqli, htmlspecialchars(utf8_encode($_POST['name'])));
     $id_parent = mysqli_real_escape_string($mysqli, htmlspecialchars($_POST['id_parent']));
     $id_type = mysqli_real_escape_string($mysqli, htmlspecialchars($_POST['id_type']));
     $description = mysqli_real_escape_string($mysqli, htmlspecialchars($_POST['description']));
