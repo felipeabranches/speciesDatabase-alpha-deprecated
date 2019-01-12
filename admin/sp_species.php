@@ -3,6 +3,7 @@ include_once '../init.php';
 $page_title = 'Species';
 $order_by = $_GET['order_by'];
 
+// Species class
 require_once $base_dir.'/libraries/species/species.php';
 $species = new Species();
 ?>
@@ -53,9 +54,9 @@ $species = new Species();
                     <thead>
                         <tr width="100%">
                             <th width="5%"><a href="sp_species.php?order_by=id">ID</a></th>
-                            <th width="50%"><a href="sp_species.php?order_by=genus,specie">Species</a></th>
-                            <th width="20%"><a href="sp_species.php?order_by=taxon,genus,specie">Taxon</a></th>
-                            <th width="20%"><a href="sp_species.php?order_by=validate">Validate</a></th>
+                            <th width="45%"><a href="sp_species.php?order_by=genus,specie">Species</a></th>
+                            <th width="22.5%"><a href="sp_species.php?order_by=taxon,genus,specie">Taxon</a></th>
+                            <th width="22.5%"><a href="sp_species.php?order_by=validate">Validate</a></th>
                             <th width="5%" colspan="2"><a href="sp_species.php?order_by=published">State</a></th>
                         </tr>
                     </thead>
@@ -77,7 +78,7 @@ $species = new Species();
                             <td><?php echo $id; ?></td>
                             <td>
                                 <a href="sp_specie.php?id=<?php echo $id; ?>"><?php echo $species->getNomenclature($id); ?></a>
-                                <span class="badge badge-secondary"><?php echo $species->getAuthoring($id); ?></span>
+                                <span class="badge badge-dark"><?php echo $species->getAuthoring($id); ?></span>
                             </td>
                             <td><?php echo $row->taxon.$incertae_sedis; ?></td>
                             <td><?php echo $validate; ?></td>
