@@ -5,7 +5,11 @@ $id = $_GET['id'];
 $where = (!$_GET['where'] || $_GET['where'] == NULL) ? '' : $_GET['where'];
 $order_by = $_GET['order_by'];
 
-include_once $base_dir.'/libraries/museum/tombs.php';
+// Species class
+require_once $base_dir.'/libraries/species/species.php';
+$species = new Species();
+// Tombs class
+require_once $base_dir.'/libraries/museum/tombs.php';
 $tombs = new Tombs;
 $result = mysqli_query($mysqli, $tombs->getTombs($id, $where, $order_by));
 ?>
@@ -50,7 +54,7 @@ $result = mysqli_query($mysqli, $tombs->getTombs($id, $where, $order_by));
                             <th width="15%"><a href="tombs.php?id=0&where&order_by=tb.name">Name</a></th>
                             <th width="15%"><a href="tombs.php?id=0&where&order_by=cp.name">Campaing</a></th>
                             <th width="30%"><a href="tombs.php?id=0&where&order_by=wpt.name">Waypoint</a></th>
-                            <th width="25%"><a href="tombs.php?id=0&where&order_by=sp.genus,sp.specie">Specie</a></th>
+                            <th width="25%"><a href="tombs.php?id=0&where&order_by=sp.genus,sp.specie">Species</a></th>
                             <th width="5%"><a href="tombs.php?id=0&where&order_by=tb.specie_count">N</a></th>
                             <th width="5%" colspan="2"><a href="tombs.php?id=0&where&order_by=tb.published">State</a></th>
                         </tr>
@@ -71,7 +75,7 @@ $result = mysqli_query($mysqli, $tombs->getTombs($id, $where, $order_by));
                                 <?php endif; ?>
                                 <span data-toggle="tooltip" data-placement="top" title="<?php echo $row->latitude.'/'.$row->longitude; ?>"><i class="fas fa-globe-americas"></i></span>
                             </td>
-                            <td><?php echo $row->genus.' '.$row->specie; ?></td>
+                            <td><?php echo $species->getNomenclature($row->spID); ?></td>
                             <td>
                                 <?php echo $row->n; ?>
                                 <?php if ($row->tbNote): ?>

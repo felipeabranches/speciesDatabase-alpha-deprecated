@@ -2,6 +2,10 @@
 include_once '../../init.php';
 $page_title = 'Print Tombs\' Labels';
 $id = (!$_GET['id']) ? '' : ' AND t.id IN ('.$_GET['id'].')';
+
+// Species class
+require_once $base_dir.'/libraries/species/species.php';
+$species = new Species();
 ?>
 <!doctype html>
 <html lang="pt">
@@ -35,7 +39,7 @@ $id = (!$_GET['id']) ? '' : ' AND t.id IN ('.$_GET['id'].')';
                     wpt.name AS waypoint,
                     un.name AS unit,
                     unt.name AS unitType,
-                    CONCAT(sp.genus, " ", sp.specie) AS nomenclature
+                    sp.id AS spID
                 FROM camp_tombs AS t
                 LEFT JOIN camp_campaigns AS c
                     ON c.id = t.id_campaign
@@ -66,7 +70,7 @@ $id = (!$_GET['id']) ? '' : ' AND t.id IN ('.$_GET['id'].')';
                     <div class="card mt-3 mb-3">
                         <h5 class="card-header"><?php echo $row->tomb; ?></h5>
                         <div class="card-body">
-                            <p class="card-title"><em><?php echo $row->nomenclature; ?></em> <span class="float-right">N: <?php echo $row->n; ?></span></p>
+                            <p class="card-title"><em><?php echo $species->getNomenclature($row->spID); ?></em> <span class="float-right">N: <?php echo $row->n; ?></span></p>
                             <p class="card-text text-muted"><?php echo $row->unitType; ?> <?php echo $row->unit; ?></p>
                             <p class="card-text text-muted"><?php echo $row->waypoint; ?></p>
                             <p class="card-text">Col: <?php echo $row->cEntity; ?> <span class="float-right"><?php echo $row->cDate; ?></span></p>
