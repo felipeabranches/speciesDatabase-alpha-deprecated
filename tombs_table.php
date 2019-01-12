@@ -4,7 +4,11 @@ $page_title = 'Tombs';
 $id = $_GET['id'];
 $order_by = $_GET['order_by'];
 
-include_once 'libraries/museum/tombs.php';
+// Species class
+require_once $base_dir.'/libraries/species/species.php';
+$species = new Species();
+// Tombs class
+require_once $base_dir.'/libraries/museum/tombs.php';
 $tombs = new Tombs;
 $result = mysqli_query($mysqli, $tombs->getTombs($id, 'tb.published = 1', $order_by));
 ?>
@@ -51,7 +55,7 @@ $result = mysqli_query($mysqli, $tombs->getTombs($id, 'tb.published = 1', $order
                                 <th scope="col">Place</th>
                                 <th scope="col">Latitude</th>
                                 <th scope="col">Longitude</th>
-                                <th scope="col"><a href="tombs_table.php?id=0&order_by=sp.genus,sp.specie">Specie</a></th>
+                                <th scope="col"><a href="tombs_table.php?id=0&order_by=sp.genus,sp.specie">Species</a></th>
                                 <th scope="col">N</th>
                             </tr>
                         </thead>
@@ -75,7 +79,7 @@ $result = mysqli_query($mysqli, $tombs->getTombs($id, 'tb.published = 1', $order
                                 <td><?php echo $row->place; ?></td>
                                 <td><?php echo $row->latitude; ?></td>
                                 <td><?php echo $row->longitude; ?></td>
-                                <td><a href="specie.php?id=<?php echo $row->spID; ?>"><?php echo $row->genus.' '.$row->specie; ?></a></td>
+                                <td><a href="specie.php?id=<?php echo $row->spID; ?>"><?php echo $species->getNomenclature($row->spID); ?></a></td>
                                 <td>
                                     <?php echo $row->n; ?>
                                     <?php if ($row->tbNote): ?>

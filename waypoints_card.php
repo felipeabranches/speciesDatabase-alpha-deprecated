@@ -71,6 +71,6 @@ $result = mysqli_query($mysqli, $waypoints->getWaypoints($id, $order_by));
         <?php mysqli_close($mysqli); ?>
     </div>
 </div>
-<?php include_once 'modules/footer.php'; ?>
+<?php include_once $base_dir.'/modules/footer.php'; ?>
 </body>
 </html>

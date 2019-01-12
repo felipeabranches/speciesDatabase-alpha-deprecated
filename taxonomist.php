@@ -3,7 +3,11 @@ include_once 'init.php';
 $id = $_GET['id'];
 $page_title = 'Taxonomist';
 
-include_once 'libraries/species/taxonomists.php';
+// Species class
+require_once $base_dir.'/libraries/species/species.php';
+$species = new Species();
+// Taxonomists class
+require_once $base_dir.'/libraries/species/taxonomists.php';
 $taxonomist = new Taxonomists;
 $result = mysqli_query($mysqli, $taxonomist->getTaxonomist($id));
 $tt = mysqli_fetch_object($result);
@@ -73,7 +77,7 @@ $tt = mysqli_fetch_object($result);
                     <caption>Species</caption>
                     <thead>
                         <tr>
-                            <th scope="col">Specie</th>
+                            <th scope="col">Species</th>
                             <th scope="col">Year</th>
                         </tr>
                     </thead>
@@ -81,7 +85,7 @@ $tt = mysqli_fetch_object($result);
                         <?php $spTotal = 0; ?>
                         <?php while ($sp = mysqli_fetch_object($spResult)): ?>
                         <tr scope="row">
-                            <td><a href="specie.php?id=<?php echo $sp->spID; ?>" target="_blank"><?php echo $sp->nomenclature; ?></a></td>
+                            <td><a href="specie.php?id=<?php echo $sp->spID; ?>" target="_blank"><?php echo $species->getNomenclature($sp->spID); ?></a></td>
                             <td><?php echo $sp->year; ?></td>
                         </tr>
                         <?php $spTotal++; ?>

@@ -3,7 +3,11 @@ include_once 'init.php';
 $page_title = 'Waypoint';
 $id = $_GET['id'];
 
-include_once 'libraries/waypoints/waypoints.php';
+// Species class
+require_once $base_dir.'/libraries/species/species.php';
+$species = new Species();
+// Campaign class
+require_once $base_dir.'/libraries/waypoints/waypoints.php';
 $waypoint = new Waypoints;
 $result = mysqli_query($mysqli, $waypoint->getWaypoint($id));
 $wpt = mysqli_fetch_object($result);
@@ -149,7 +153,7 @@ $wpt = mysqli_fetch_object($result);
                     <thead>
                         <tr>
                             <th scope="col">Tomb</th>
-                            <th scope="col">Specie</th>
+                            <th scope="col">Species</th>
                             <th scope="col">Campaign</th>
                             <th scope="col">N</th>
                         </tr>
@@ -159,7 +163,7 @@ $wpt = mysqli_fetch_object($result);
                         <?php while ($tb = mysqli_fetch_object($tbResult)): ?>
                         <tr scope="row">
                             <td><a href="tomb.php?id=<?php echo $tb->tbID; ?>"><?php echo $tb->tomb; ?></a></td>
-                            <td><a href="specie.php?id=<?php echo $tb->spID; ?>"><?php echo $tb->nomenclature; ?></a></td>
+                            <td><a href="specie.php?id=<?php echo $tb->spID; ?>"><?php echo $species->getNomenclature($tb->spID); ?></a></td>
                             <td><a href="campaign.php?id=<?php echo $tb->cpID; ?>"><?php echo $tb->campaign; ?></a></td>
                             <td>
                                 <?php echo $tb->n; ?>
@@ -198,7 +202,7 @@ $wpt = mysqli_fetch_object($result);
     </div>
 </div>
 <?php mysqli_close($mysqli); ?>
-<?php include_once $base_dir.'modules/footer.php'; ?>
+<?php include_once $base_dir.'/modules/footer.php'; ?>
 <script>
 $(function () {
     $('[data-toggle="tooltip"]').tooltip()

@@ -3,7 +3,11 @@ include_once 'init.php';
 $page_title = 'Campaign';
 $id = $_GET['id'];
 
-include_once 'libraries/waypoints/campaigns.php';
+// Species class
+require_once $base_dir.'/libraries/species/species.php';
+$species = new Species();
+// Campaign class
+require_once $base_dir.'/libraries/waypoints/campaigns.php';
 $campaign = new Campaigns;
 $result = mysqli_query($mysqli, $campaign->getCampaign($id));
 $cp = mysqli_fetch_object($result);
@@ -69,7 +73,7 @@ $cp = mysqli_fetch_object($result);
                     <thead>
                         <tr>
                             <th scope="col">Tomb</th>
-                            <th scope="col">Specie</th>
+                            <th scope="col">Species</th>
                             <th scope="col">Waypoint</th>
                             <th scope="col">N</th>
                         </tr>
@@ -79,7 +83,7 @@ $cp = mysqli_fetch_object($result);
                         <?php while ($tb = mysqli_fetch_object($tbResult)): ?>
                         <tr scope="row">
                             <td><a href="tomb.php?id=<?php echo $tb->tbID; ?>"><?php echo $tb->tomb; ?></a></td>
-                            <td><a href="specie.php?id=<?php echo $tb->spID; ?>"><?php echo $tb->nomenclature; ?></a></td>
+                            <td><a href="specie.php?id=<?php echo $tb->spID; ?>"><?php echo $species->getNomenclature($tb->spID); ?></a></td>
                             <td>
                                 <a href="waypoint.php?id=<?php echo $tb->wptID; ?>"><?php echo $tb->waypoint; ?></a>
                                 <?php if ($tb->wptNote): ?>

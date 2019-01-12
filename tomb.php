@@ -2,6 +2,10 @@
 include_once 'init.php';
 $page_title = 'Tomb';
 $id = $_GET['id'];
+
+// Species class
+require_once $base_dir.'/libraries/species/species.php';
+$species = new Species();
 ?>
 <!doctype html>
 <html lang="pt">
@@ -31,7 +35,7 @@ $id = $_GET['id'];
                     wpt.id AS wptID, wpt.name AS waypoint, wpt.place AS place, wpt.latitude AS latitude, wpt.longitude AS longitude, wpt.elevation AS elevation, wpt.time AS time, wpt.note AS wptNote, wpt.image AS wptIMG,
                     un.name AS unit,
                     unt.name AS unitType,
-                    sp.id AS spID, CONCAT(sp.genus, " ", sp.specie) AS nomenclature, sp.note AS spNote, sp.image AS spIMG
+                    sp.id AS spID, sp.note AS spNote, sp.image AS spIMG
                 FROM camp_tombs AS t
                 LEFT JOIN camp_campaigns AS c
                     ON c.id = t.id_campaign
@@ -88,7 +92,7 @@ $id = $_GET['id'];
                 <!--img class="card-img-top" src="<?php echo $row->spIMG; ?>" alt="<?php echo $row->nomenclature; ?>"-->
                 <?php endif; ?>
                 <div class="card-header">
-                    <h5 class="float-left"><?php echo $row->nomenclature; ?></h5>
+                    <h5 class="float-left"><?php echo $species->getNomenclature($row->spID); ?></h5>
                     <a href="specie.php?id=<?php echo $row->spID; ?>" class="btn btn-primary btn-sm float-right">Details</a>
                 </div>
                 <div class="card-body">

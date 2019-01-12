@@ -1,7 +1,9 @@
 <?php
 include_once 'init.php';
-$page_title = 'Espécie';
 $id = $_GET['id'];
+
+require_once $base_dir.'/libraries/species/species.php';
+$species = new Species();
 ?>
 <!doctype html>
 <html lang="pt">
@@ -11,149 +13,84 @@ $id = $_GET['id'];
     <meta name="description" content="">
     <meta name="keywords" content="">
     <meta name="author" content="<?php echo $author; ?>">
-	<title><?php echo $page_title; ?> - <?php echo $site_name; ?></title>
-    <?php include_once 'modules/head.php'; ?>
+	<title><?php echo $species->getNomenclature($id, 1); ?> - <?php echo $site_name; ?></title>
+    <?php include_once $base_dir.'/modules/head.php'; ?>
 </head>
 
 <body class="bg-light">
-<?php include_once 'modules/menu.php'; ?>
+<?php include_once $base_dir.'/modules/menu.php'; ?>
 <div class="container-fluid" role="main">
+    <div class="toolbar sticky-top row my-2 p-2">
+        <div class="col-12">
+            <!-- Nomenclature and Authoring -->
+            <div class="nomenclature">
+                <h4 class="specie"><?php echo $species->getNomenclature($id); ?></h4>
+                <span class="taxonomist"><?php echo $species->getAuthoring($id); ?></span>
+            </div>
+        </div>
+    </div>
+
     <div class="row">
         <div class="col-12 col-md-8">
             <div class="my-3 p-3 bg-white rounded box-shadow">
                 <?php
                 $sql = 'SELECT
-                            sp.id AS id, sp.genus AS genus, sp.specie AS specie, sp.dubious AS dubious, sp.year AS year, sp.revised AS revised, sp.etymology AS etymology, sp.common_name AS common_name, sp.distribution AS distribution, sp.habitat AS habitat, sp.description AS description, sp.image AS image,
-                            GROUP_CONCAT(tx.name) AS taxonomists
-                        FROM sp_taxonomists_map AS tx_map
-                        LEFT JOIN sp_species AS sp
-                            ON tx_map.id_specie = sp.id
-                        LEFT JOIN sp_taxonomists AS tx
-                            ON tx_map.id_taxonomist = tx.id
+                            sp.id AS id, sp.etymology AS etymology, sp.common_name AS common_name, sp.distribution AS distribution, sp.habitat AS habitat, sp.description AS description, sp.image AS image
+                        FROM sp_species AS sp
                         WHERE sp.published = 1
                             AND sp.validate = 1
                             AND sp.id = '.$id.'
                         ';
                 $result = mysqli_query($mysqli, $sql);
-
-                if(!$result->num_rows)
-                {
                 ?>
-                <h4 class="alert-heading">Specie not found</h4>
-                <div class="alert alert-warning my-4" role="alert">
+                <?php if(!$result->num_rows): ?>
+                <!-- Alert -->
+                <div class="alert alert-warning mb-0" role="alert">
                     <h5>No result!</h5>
-                    <p>You are trying to reach a specie that don\'t have a record on our database.</p>
-                    <p>There\'s some actions you may take:</p>
+                    <p>You are trying to reach a species that don't have a record on our database.</p>
+                    <p>There's some actions you may take:</p>
                     <ul>
                         <li>Check if the passed ID on browser url realy exists</li>
-                        <li>Return to the <a href="species.php" class="alert-link">species list</a> and choose the desire spicie.</li>
+                        <li>Return to the <a href="index.php" class="alert-link">species list</a> and choose the desire species.</li>
                     </ul>
                     <hr>
-                    <p class="mb-0">If you think that it\'s not your mistake, enter in <a href="mailto:peixespnsc@gmail.com" class="alert-link">contact</a> and let us know.</p>
+                    <p class="mb-0">If you think that it's not your mistake, enter in <a href="mailto:peixespnsc@gmail.com" class="alert-link">contact</a> and let us know.</p>
                 </div>
-                <?php
-                }
-                else
-                {
-                    while($row = mysqli_fetch_object($result))
-                    {
-                        $dubious = $row->dubious;
-                        switch ($dubious) {
-                            case 0:
-                                $dubious = '';
-                                $abbr = '';
-                                break;
-                            case 1:
-                                $dubious = ' aff.';
-                                $abbr = ' <abbr title="affinis">aff.</abbr>';
-                                break;
-                            case 2:
-                                $dubious = ' cf.';
-                                $abbr = ' <abbr title="conferre">cf.</abbr>';
-                                break;
-                            case 3:
-                                $dubious = ' sp.';
-                                $abbr = ' <abbr title="specie">sp.</abbr>';
-                                break;
-                            default:
-                                $dubious = '';
-                                $abbr = '';
-                                break;                                
-                        }
-                        $nomenclature = $row->genus;
-                        $nomenclature .= $abbr;
-                        $nomenclature .= ' '.$row->specie;
-                        
-                        $taxonomist = explode(',', $row->taxonomists);
-                        if (count($taxonomist) == 1)
-                        {
-                            $taxonomist = $row->taxonomists;
-                        }
-                        else
-                        {
-                            $last = array_pop($taxonomist);
-                            $firsts = implode(', ', $taxonomist);
-                            $taxonomist = sprintf('%s & %s', $firsts, $last);
-                        }
-                        if(!$row->revised)
-                        {
-                            $identification = $taxonomist.', '.$row->year;
-                        }
-                        else
-                        {
-                            $identification = '('.$taxonomist.', '.$row->year.')';
-                        }
-                    ?>
-                <div class="nomenclature">
-                    <h4 class="specie"><?php echo $nomenclature; ?></h4>
-                    <span class="taxonomist"><?php echo $identification; ?></span>
-                </div>
+                <?php else: ?>
+                <?php $row = mysqli_fetch_object($result); ?>
+                <!-- Image -->
                 <figure class="figure">
-                    <img src="<?php echo $row->image; ?>" alt="<?php echo $row->genus.$dubious.' '.$row->specie; ?>" class="figure-img img-fluid rounded" />
+                    <img src="<?php echo $row->image; ?>" alt="<?php echo $species->getNomenclature($id, 1); ?>" class="figure-img img-fluid rounded" />
                     <figcaption class="figure-caption">Foto: Nome, Ano (arquivo.JPG)</figcaption>
                 </figure>
+                <!-- Others infos -->
                 <dl>
-                    <?php
-                    if ($row->etymology)
-                    {
-                    ?>
-                    <dt>Etimologia</dt><dd><?php echo $row->etymology; ?></dd>
-                    <?php
-                    }
-                    if ($row->common_name)
-                    {
-                    ?>
-                    <dt>Nome popular</dt><dd><?php echo $row->common_name; ?></dd>
-                    <?php
-                    }
-                    if ($row->distribution)
-                    {
-                    ?>
-                    <dt>Distribuição</dt><dd><?php echo $row->distribution; ?></dd>
-                    <?php
-                    }
-                    if ($row->habitat)
-                    {
-                    ?>
-                    <dt>Habitat</dt><dd><?php echo $row->habitat; ?></dd>
-                    <?php
-                    }
-                    ?>
+                <?php if ($row->etymology): ?>
+                <dt>Etimologia</dt><dd><?php echo $row->etymology; ?></dd>
+                <?php endif; ?>
+                <?php if ($row->common_name): ?>
+                <dt>Nome popular</dt><dd><?php echo $row->common_name; ?></dd>
+                <?php endif; ?>
+                <?php if ($row->distribution): ?>
+                <dt>Distribuição</dt><dd><?php echo $row->distribution; ?></dd>
+                <?php endif; ?>
+                <?php if ($row->habitat): ?>
+                <dt>Habitat</dt><dd><?php echo $row->habitat; ?></dd>
+                <?php endif; ?>
                 </dl>
-                    <?php
-                        echo $row->description;
-                    }
-                }
-                mysqli_free_result($result);
-                ?>
+                <!-- Description -->
+                <?php echo $row->description; ?>
+                <?php endif; ?>
+                <?php mysqli_free_result($result); ?>
             </div>
         </div>
 
         <div class="col-12 col-md-4">
             <div class="my-3 p-3 bg-white rounded box-shadow">
+                <!-- Tombs -->
                 <h5>Tombs</h5>
                 <?php
-                include_once $base_dir.'/libraries/museum/tombs.php';
+                require_once $base_dir.'/libraries/museum/tombs.php';
                 $tombs = new Tombs;
                 $tbResult = mysqli_query($mysqli, $tombs->getTinyTombs($id, 'WHERE tb.published=1', 'tb.id', 'sp'));
                 ?>
@@ -199,29 +136,22 @@ $id = $_GET['id'];
             </div>
 
             <div class="my-3 p-3 bg-white rounded box-shadow">
-                <h5>Sinônimos</h5>
+                <!-- Synonyms -->
+                <h5>Synonyms</h5>
                 <?php
-                $sql = 'SELECT s.genus AS genus, s.specie AS specie
-                        FROM sp_species AS s
-                        WHERE s.validate = 0
-                            AND s.redirect = '.$id.'
-                        ';
-                $result = mysqli_query($mysqli, $sql);
-                if(!$result->num_rows)
-                {
-                    echo '<p>No entries</p>';
-                }
-                else
-                {
-                    echo '<ul>';
-                    while ($row = mysqli_fetch_object($result))
-                    {
-                        echo '<li>'.$row->genus.' '.$row->specie.'</li>';
-                    }
-                    echo '</ul>';
-                }
-                mysqli_free_result($result);
+                $sql = $species->getSynonyms($id);
+                $synonyms = mysqli_query($mysqli, $sql);
                 ?>
+                <?php if(!$synonyms->num_rows): ?>
+                <span>No entries</span>
+                <?php else: ?>
+                <ul>
+                <?php while ($row = mysqli_fetch_object($synonyms)): ?>
+                <li><?php echo $species->getNomenclature($row->id); ?></li>
+                <?php endwhile; ?>
+                </ul>
+                <?php endif; ?>
+                <?php mysqli_free_result($synonyms); ?>
             </div>
         </div>
     </div>
