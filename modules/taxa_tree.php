@@ -26,10 +26,13 @@ function taxa_recursive_tree($id)
             if ($i == 0) echo '<ul>';
             echo '<li><span class="badge badge-light">'.$taxon->name.'</span>';
             taxa_recursive_tree($taxon->id);
+            
+            // Species class
+            require_once 'libraries/species/species.php';
+            $species = new Species();
 
             $subsql = 'SELECT
-                        sp.id AS id, sp.genus AS genus, sp.specie AS specie, sp.dubious AS dubious, sp.year AS year, sp.revised AS revised, sp.image AS img,
-                        GROUP_CONCAT(tx.name) AS taxonomists
+                        sp.id AS id, sp.image AS img
                     FROM sp_taxonomists_map AS tx_map
                     LEFT JOIN sp_species AS sp
                         ON tx_map.id_specie = sp.id
@@ -48,44 +51,15 @@ function taxa_recursive_tree($id)
                     echo '<ul>'."\n";
                     while($sp = mysqli_fetch_object($subresult))
                     {
-                        // Nomenclature
-                        switch($sp->dubious)
-                        {
-                            case 0:
-                                $dubious = '';
-                                break;
-                            case 1:
-                                $dubious = ' <abbr title="affinis">aff.</abbr>';
-                                break;
-                            case 2:
-                                $dubious = ' <abbr title="conferre">cf.</abbr>';
-                                break;
-                            case 3:
-                                $dubious = ' <abbr title="specie">sp.</abbr>';
-                                break;
-                            default:
-                                $dubious = '';
-                        }
-                        $nomenclature = $sp->genus.$dubious.' '.$sp->specie;
-                        // Identification
-                        $taxonomist = explode(',', $sp->taxonomists);
-                        if(count($taxonomist) == 1)
-                        {
-                            $taxonomist = $sp->taxonomists;
-                        }
-                        else
-                        {
-                            $last = array_pop($taxonomist);
-                            $firsts = implode(', ', $taxonomist);
-                            $taxonomist = sprintf('%s & %s', $firsts, $last);
-                        }
-                        $identification = (!$sp->revised) ? $taxonomist.' '.$sp->year : '('.$taxonomist.' '.$sp->year.')';
                         echo '<li>'."\n";
-                        echo '<span class="badge badge-light"><a href="specie.php?id='.$sp->id.'" target="_blank">'.$nomenclature.' </a></span>'."\n";
-                        if($taxonomist) echo ' <span class="badge badge-light">'.$identification.'</span>'."\n";
+                        // Nomenclature
+                        echo '<span class="badge badge-light"><a href="specie.php?id='.$sp->id.'" target="_blank">'.$species->getNomenclature($sp->id).' </a></span>'."\n";
+                        // Authoring
+                        if($species->getAuthoring($sp->id)) echo ' <span class="badge badge-light">'.$species->getAuthoring($sp->id).'</span>'."\n";
                         // Image
                         echo ($sp->img != '' && file_exists($sp->img)) ? '<i class="fas fa-image"></i>' : '';
 
+                        // Tombed badges
                         $tomb = 'SELECT sp.id AS spID
                                 FROM camp_tombs AS t
                                 LEFT JOIN sp_species AS sp
@@ -93,18 +67,15 @@ function taxa_recursive_tree($id)
                                 WHERE t.published = 1
                                     AND sp.id = '.$sp->id.'
                                 ';
-                        if($result1=mysqli_query($mysqli,$tomb))
+                        if ($tombed = mysqli_query($mysqli, $tomb))
                         {
-                            if($result1->num_rows)
+                            if ($tombed->num_rows)
                             {
                                 echo ' <span class="badge badge-primary">Tombado</span>'."\n";
                             }
                             // Free result set
-                            mysqli_free_result($result1);
+                            mysqli_free_result($tombed);
                         }
-                        /*echo ' <span class="badge badge-brd">BRD*</span>'."\n";
-                        echo ' <span class="badge badge-danger">Gênero</span>'."\n";
-                        echo ' <span class="changed">Leporinus mormyrops</span>'."\n";*/
                         echo '</li>'."\n";
                     }
                     echo '</ul>'."\n";
