@@ -59,7 +59,7 @@ $species = new Species();
             <?php else: ?>
             <?php $row = mysqli_fetch_object($result); ?>
             <div class="my-3 p-3 bg-white rounded box-shadow">
-                <?php if ($row->image || file_exists($row->image)): ?>
+                <?php if ($row->image && file_exists($row->image)): ?>
                 <!-- Image -->
                 <figure class="figure">
                     <img src="<?php echo $row->image; ?>" alt="<?php echo $species->getNomenclature($id, 1); ?>" class="figure-img img-fluid rounded" />
