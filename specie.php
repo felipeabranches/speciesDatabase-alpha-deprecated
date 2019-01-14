@@ -2,6 +2,7 @@
 include_once 'init.php';
 $id = $_GET['id'];
 
+// Species class
 require_once $base_dir.'/libraries/species/species.php';
 $species = new Species();
 ?>
@@ -32,37 +33,39 @@ $species = new Species();
 
     <div class="row">
         <div class="col-12 col-md-8">
+            <?php
+            $sql = 'SELECT
+                        sp.id AS id, sp.etymology AS etymology, sp.common_name AS common_name, sp.distribution AS distribution, sp.habitat AS habitat, sp.description AS description, sp.image AS image
+                    FROM sp_species AS sp
+                    WHERE sp.published = 1
+                        AND sp.validate = 1
+                        AND sp.id = '.$id.'
+                    ';
+            $result = mysqli_query($mysqli, $sql);
+            ?>
+            <?php if(!$result->num_rows): ?>
+            <!-- Alert -->
+            <div class="alert alert-warning mb-0" role="alert">
+                <h5>No result!</h5>
+                <p>You are trying to reach a species that don't have a record on our database.</p>
+                <p>There's some actions you may take:</p>
+                <ul>
+                    <li>Check if the passed ID on browser url realy exists</li>
+                    <li>Return to the <a href="index.php" class="alert-link">species list</a> and choose the desire species.</li>
+                </ul>
+                <hr>
+                <p class="mb-0">If you think that it's not your mistake, enter in <a href="mailto:peixespnsc@gmail.com" class="alert-link">contact</a> and let us know.</p>
+            </div>
+            <?php else: ?>
+            <?php $row = mysqli_fetch_object($result); ?>
             <div class="my-3 p-3 bg-white rounded box-shadow">
-                <?php
-                $sql = 'SELECT
-                            sp.id AS id, sp.etymology AS etymology, sp.common_name AS common_name, sp.distribution AS distribution, sp.habitat AS habitat, sp.description AS description, sp.image AS image
-                        FROM sp_species AS sp
-                        WHERE sp.published = 1
-                            AND sp.validate = 1
-                            AND sp.id = '.$id.'
-                        ';
-                $result = mysqli_query($mysqli, $sql);
-                ?>
-                <?php if(!$result->num_rows): ?>
-                <!-- Alert -->
-                <div class="alert alert-warning mb-0" role="alert">
-                    <h5>No result!</h5>
-                    <p>You are trying to reach a species that don't have a record on our database.</p>
-                    <p>There's some actions you may take:</p>
-                    <ul>
-                        <li>Check if the passed ID on browser url realy exists</li>
-                        <li>Return to the <a href="index.php" class="alert-link">species list</a> and choose the desire species.</li>
-                    </ul>
-                    <hr>
-                    <p class="mb-0">If you think that it's not your mistake, enter in <a href="mailto:peixespnsc@gmail.com" class="alert-link">contact</a> and let us know.</p>
-                </div>
-                <?php else: ?>
-                <?php $row = mysqli_fetch_object($result); ?>
+                <?php if ($row->image || file_exists($row->image)): ?>
                 <!-- Image -->
                 <figure class="figure">
                     <img src="<?php echo $row->image; ?>" alt="<?php echo $species->getNomenclature($id, 1); ?>" class="figure-img img-fluid rounded" />
                     <figcaption class="figure-caption">Foto: Nome, Ano (arquivo.JPG)</figcaption>
                 </figure>
+                <?php endif; ?>
                 <!-- Others infos -->
                 <dl>
                 <?php if ($row->etymology): ?>
